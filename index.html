@@ -891,8 +891,14 @@ body.interna footer{background:transparent;position:relative;z-index:1}
 
             <section class="paso-panel" data-titulo="Tipografía" aria-labelledby="pf3b">
               <h2 id="pf3b"><span class="num">5</span>Tipografía</h2>
-              <div class="grupo"><div class="fuentes" role="radiogroup" aria-label="Tipografía" id="fuentes"></div>
-                <span class="sub" style="display:block;margin-top:10px">Son fuentes seguras: se ven igual en todos los correos.</span>
+              <div class="grupo"><span class="etq">Tipografía</span><div class="fuentes" role="radiogroup" aria-label="Tipografía" id="fuentes"></div>
+                <span class="sub" style="display:block;margin-top:8px">Son fuentes seguras: se ven igual en todos los correos.</span></div>
+              <div class="grupo"><span class="etq">Tipografía del nombre (si quieres mezclar)</span><div class="fuentes" role="radiogroup" aria-label="Tipografía del nombre" id="fuentes-nombre"></div></div>
+              <div class="par-colores">
+                <div class="grupo"><span class="etq">Mayúsculas y minúsculas del nombre</span>
+                  <div class="seg" role="radiogroup" aria-label="Nombre"><label><input type="radio" name="caseNombre" value="auto" checked><span>Según el diseño</span></label><label><input type="radio" name="caseNombre" value="normal"><span>Normal</span></label><label><input type="radio" name="caseNombre" value="mayus"><span>MAYÚSCULAS</span></label><label><input type="radio" name="caseNombre" value="minus"><span>minúsculas</span></label></div></div>
+                <div class="grupo"><span class="etq">Mayúsculas y minúsculas del cargo</span>
+                  <div class="seg" role="radiogroup" aria-label="Cargo"><label><input type="radio" name="caseCargo" value="auto" checked><span>Según el diseño</span></label><label><input type="radio" name="caseCargo" value="normal"><span>Normal</span></label><label><input type="radio" name="caseCargo" value="mayus"><span>MAYÚSCULAS</span></label><label><input type="radio" name="caseCargo" value="minus"><span>minúsculas</span></label></div></div>
               </div>
               <div class="nav-pasos"><button type="button" class="btn-atr" data-ir="3"><i aria-hidden="true">←</i> Atrás</button><button type="button" class="btn-sig" data-ir="5">Siguiente <i aria-hidden="true">→</i></button></div>
             </section>
@@ -1233,9 +1239,11 @@ function crealab(){
   var NOMBRES_F={arial:'Arial',georgia:'Georgia',verdana:'Verdana',trebuchet:'Trebuchet',tahoma:'Tahoma'};
   var EJRED={wa:'+00 000 000 0000',ig:'@usuario',li:'usuario',yt:'@canal'};
   var MUESTRA={nombre:'Nombre Apellido',cargo:'Cargo de prueba',empresa:'Empresa de prueba',correo:'correo@ejemplo.com',tel:'+00 000 000 0000',wa:'+00 000 000 0000',web:'www.ejemplo.com',ig:'@usuario',li:'usuario',yt:'@canal'};
-  var S=Object.assign({nombre:'',cargo:'',empresa:'',correo:'',tel:'',web:'',plantilla:'minimalista',forma:'redonda',sinfoto:'inicial',fotoModo:'inicial',fase:0,color:'#63404D',texto:'#2B1721',fuente:'arial',fuenteN:'georgia',foto:'',orient:'horizontal',colorEtq:'',colorIco:'',color2:'#926974',cx:{},pal:0,redesSel:[],rd:{}},leer('crealab.firma')||{});
+  var S=Object.assign({nombre:'',cargo:'',empresa:'',correo:'',tel:'',web:'',plantilla:'minimalista',forma:'redonda',sinfoto:'inicial',fotoModo:'inicial',fase:0,color:'#63404D',texto:'#2B1721',fuente:'arial',fuenteNombre:'',caseNombre:'auto',caseCargo:'auto',fuenteN:'georgia',foto:'',orient:'horizontal',colorEtq:'',colorIco:'',color2:'#926974',cx:{},pal:0,redesSel:[],rd:{}},leer('crealab.firma')||{});
   S.color=hexOk(S.color,'#63404D');if(S.color.toLowerCase()==='#6b3fa0')S.color='#63404D';S.texto=hexOk(S.texto,'#2B1721');S.foto=imgOk(S.foto);
   if(!FUENTES[S.fuente])S.fuente='arial';if(!FUENTES[S.fuenteN])S.fuenteN='georgia';
+  function sanitizarTipo(){if(S.fuenteNombre&&!FUENTES[S.fuenteNombre])S.fuenteNombre='';['caseNombre','caseCargo'].forEach(function(k){if(['auto','mayus','minus','normal'].indexOf(S[k])<0)S[k]='auto'})}
+  sanitizarTipo();
   if(S.plantilla==='editorial'||S.plantilla==='tarjeta')S.plantilla='lineas';
   if(['minimalista','perfil','destacada','portada','lineas'].indexOf(S.plantilla)<0)S.plantilla='minimalista';
   if(['subir','inicial','nada'].indexOf(S.fotoModo)<0)S.fotoModo='inicial';S.sinfoto=S.fotoModo==='nada'?'nada':'inicial';S.fase=(typeof S.fase==='number'&&S.fase>=0&&S.fase<=3)?S.fase:0;if(S.forma!=='cuadrada')S.forma='redonda';if(S.orient!=='vertical')S.orient='horizontal';sanitizarCx();
@@ -1414,15 +1422,18 @@ function crealab(){
       return '<table '+T+AL(alin)+'><tr><td>'+inner+'</td></tr></table>';
     }
     /* nombre y cargo segun el diseno */
+    var fn=(S.fuenteNombre&&FUENTES[S.fuenteNombre])?FUENTES[S.fuenteNombre]:f;
+    function tcase(t,m){return m==='mayus'?t.toUpperCase():(m==='minus'?t.toLowerCase():t)}
+    var cNom=S.caseNombre,cCar=S.caseCargo;
     var NOM={minimalista:[tx,26],perfil:[tx,22],destacada:[sobreC,21],portada:[(VERT?sobreC:c),26],lineas:[tx,21]}[P];
     var bannerTxt=(P==='destacada'||(P==='portada'&&VERT)),bgTxt=bannerTxt?c:fondoCuerpo;
     NOM[0]=legible(K('nombre',NOM[0]),bgTxt,bannerTxt?7:4.5);
-    function nTd(alin){return '<tr><td align="'+alin+'" style="font-family:'+f+';font-size:'+NOM[1]+'px;line-height:'+Math.round(NOM[1]*1.22)+'px;font-weight:bold;color:'+NOM[0]+(P==='lineas'?';text-transform:uppercase;letter-spacing:1.2px':'')+'">'+esc(nombre)+'</td></tr>'}
+    function nTd(alin){return '<tr><td align="'+alin+'" style="font-family:'+fn+';font-size:'+NOM[1]+'px;line-height:'+Math.round(NOM[1]*1.22)+'px;font-weight:bold;color:'+NOM[0]+((P==='lineas'&&cNom==='auto')?';text-transform:uppercase;letter-spacing:1.2px':'')+'">'+esc(tcase(nombre,cNom))+'</td></tr>'}
     function cTd(alin){
       var e=empresa,k=cargo,cc=X.cargo?legible(hexOk(X.cargo,''),bgTxt):'';
-      if(P==='lineas')return (k?'<tr><td align="'+alin+'" style="font-family:'+f+';font-size:10.5px;line-height:16px;letter-spacing:2.2px;text-transform:uppercase;font-weight:bold;color:'+(cc||tx)+'">'+esc(k)+'</td></tr>':'')+(e?'<tr><td align="'+alin+'" style="font-family:'+f+';font-size:10.5px;line-height:16px;letter-spacing:1.6px;text-transform:uppercase;color:'+suave+'">'+esc(e)+'</td></tr>':'');
+      if(P==='lineas')return (k?'<tr><td align="'+alin+'" style="font-family:'+f+';font-size:10.5px;line-height:16px;letter-spacing:2.2px;'+(cCar==='auto'?'text-transform:uppercase;':'')+'font-weight:bold;color:'+(cc||tx)+'">'+esc(tcase(k,cCar))+'</td></tr>':'')+(e?'<tr><td align="'+alin+'" style="font-family:'+f+';font-size:10.5px;line-height:16px;letter-spacing:1.6px;text-transform:uppercase;color:'+suave+'">'+esc(e)+'</td></tr>':'');
       var enBloque=(P==='destacada'||(P==='portada'&&VERT)),col=legible(enBloque?sobreC:c,bgTxt),ec=legible(enBloque?sobreC:suave,bgTxt);
-      var t=k?esc(k)+(e?'<span style="color:'+ec+'">&nbsp;&nbsp;·&nbsp;&nbsp;'+esc(e)+'</span>':''):esc(e);
+      var t=k?esc(tcase(k,cCar))+(e?'<span style="color:'+ec+'">&nbsp;&nbsp;·&nbsp;&nbsp;'+esc(e)+'</span>':''):esc(e);
       return t?'<tr><td align="'+alin+'" style="font-family:'+f+';font-size:13px;line-height:19px;color:'+(cc||col)+'">'+t+'</td></tr>':'';
     }
     var base='<table '+T+' style="font-family:'+f+'">';
@@ -1615,7 +1626,16 @@ function crealab(){
     l.innerHTML='<input type="radio" name="plantilla" value="'+p[0]+'"><span class="dgs"><span class="dg" data-p="'+p[0]+'"></span><b>'+p[1]+'</b></span>';
     $('diag').appendChild(l);
   });
-  radiosS('forma','forma');radiosS('fuente','fuente');
+  (function(){
+    var cn=$('fuentes-nombre');
+    var nombres=[['','Igual']].concat(Object.keys(FUENTES).map(function(k){return [k,NOMBRES_F[k]]}));
+    nombres.forEach(function(p){
+      var l=document.createElement('label');
+      l.innerHTML='<input type="radio" name="fuenteNombre" value="'+p[0]+'"><span><b style="font-family:'+(p[0]?FUENTES[p[0]].replace(/"/g,'&quot;'):'inherit')+'">Aa</b><small>'+p[1]+'</small></span>';
+      cn.appendChild(l);
+    });
+  })();
+  radiosS('forma','forma');radiosS('fuente','fuente');radiosS('fuenteNombre','fuenteNombre');radiosS('caseNombre','caseNombre');radiosS('caseCargo','caseCargo');
   function marcarRadios(){
     [['plantilla','plantilla',1],['orient','orient',2],['fotoModo','fotoModo',3],['alinear','alinear',0]].forEach(function(p){
       document.querySelectorAll('input[name="'+p[0]+'"]').forEach(function(r){r.checked=(S.fase>=p[2]&&r.value===S[p[1]])});
@@ -1734,14 +1754,16 @@ function crealab(){
         var d=JSON.parse(r.result);if(typeof d!=='object'||!d)throw 0;
         Object.keys(S).forEach(function(k){if(typeof d[k]==='string')S[k]=d[k]});
         S.color=hexOk(S.color,'#63404D');S.texto=hexOk(S.texto,'#2B1721');S.foto=imgOk(S.foto);
-        if(!FUENTES[S.fuente])S.fuente='arial';if(!FUENTES[S.fuenteN])S.fuenteN='georgia';
+        if(!FUENTES[S.fuente])S.fuente='arial';if(!FUENTES[S.fuenteN])S.fuenteN='georgia';sanitizarTipo();
+  function sanitizarTipo(){if(S.fuenteNombre&&!FUENTES[S.fuenteNombre])S.fuenteNombre='';['caseNombre','caseCargo'].forEach(function(k){if(['auto','mayus','minus','normal'].indexOf(S[k])<0)S[k]='auto'})}
+  sanitizarTipo();
         if(['minimalista','perfil','destacada','portada','lineas'].indexOf(S.plantilla)<0)S.plantilla='minimalista';
         if(['subir','inicial','nada'].indexOf(S.fotoModo)<0)S.fotoModo='inicial';S.sinfoto=S.fotoModo==='nada'?'nada':'inicial';S.fase=(typeof S.fase==='number'&&S.fase>=0&&S.fase<=3)?S.fase:0;if(S.forma!=='cuadrada')S.forma='redonda';if(S.orient!=='vertical')S.orient='horizontal';sanitizarCx();
         if(d.vars&&typeof d.vars==='object')['minimalista','perfil','destacada','portada','lineas'].forEach(function(k){S.vars[k]=([0,1,2,3].indexOf(d.vars[k])>=0?d.vars[k]:0)});
         if(Array.isArray(d.redesSel))S.redesSel=d.redesSel.filter(function(k,i,a){return REDK[k]&&a.indexOf(k)===i});
         if(d.rd&&typeof d.rd==='object')S.rd=Object.keys(d.rd).reduce(function(o,k){if(REDK[k]&&typeof d.rd[k]==='string')o[k]=d.rd[k];return o},{});
         campos.forEach(function(k){$('f-'+k).value=S[k]});
-        ['forma','fuente','fuenteN'].forEach(function(n){document.querySelectorAll('input[name="'+n+'"]').forEach(function(x){x.checked=(x.value===S[n])})});if(S.alinear!=='centro')S.alinear='izq';S.fase=3;S.fotoModo=(S.fotoModo==='subir'&&!S.foto)?'inicial':S.fotoModo;S.sinfoto=S.fotoModo==='nada'?'nada':'inicial';marcarRadios();
+        ['forma','fuente','fuenteN','fuenteNombre','caseNombre','caseCargo'].forEach(function(n){document.querySelectorAll('input[name="'+n+'"]').forEach(function(x){x.checked=(x.value===S[n])})});if(S.alinear!=='centro')S.alinear='izq';S.fase=3;S.fotoModo=(S.fotoModo==='subir'&&!S.foto)?'inicial':S.fotoModo;S.sinfoto=S.fotoModo==='nada'?'nada':'inicial';marcarRadios();
         if(d.cx&&typeof d.cx==='object')S.cx=d.cx;S.pal=(typeof d.pal==='number'&&d.pal>=0&&d.pal<COMBOS.length)?d.pal:0;sanitizarCx();refrescarTodo();
         sincRedes();estadoFoto();pintarFirma();aviso('Respaldo cargado');
       }catch(e){aviso('Ese archivo no es un respaldo válido.')}
@@ -1788,7 +1810,7 @@ function crealab(){
       refrescarTodo();
     }
     if(i===4||todo){
-      S.fuente='arial';document.querySelectorAll('input[name="fuente"]').forEach(function(x){x.checked=(x.value==='arial')});
+      S.fuente='arial';S.fuenteNombre='';S.caseNombre='auto';S.caseCargo='auto';[['fuente','arial'],['fuenteNombre',''],['caseNombre','auto'],['caseCargo','auto']].forEach(function(p){document.querySelectorAll('input[name="'+p[0]+'"]').forEach(function(x){x.checked=(x.value===p[1])})});
     }
     pintarFirma();aviso(todo?'Empezaste de cero':'Listo, limpiado');
   }
