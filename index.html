@@ -610,6 +610,63 @@ body.interna footer{background:transparent;position:relative;z-index:1}
 @media (min-width:901px){
   .herr-grid.ancha,.herr-grid:not(.ancha){grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important}
 }
+
+/* ===== v14 paso de redes ===== */
+.red-fila{display:flex;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+.red-check{margin-top:0;min-width:130px}
+.red-campo{flex:1;min-width:200px;animation:fade .3s var(--ease)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+.red-ico{flex:none;display:grid;place-items:center;width:38px;height:38px;border-radius:11px;background:var(--lila)}
+.red-ico .marca-ico{width:18px;height:18px;color:var(--ciruela)}
+.red-fila .red-campo{flex:1;min-width:0}
+
+/* ===== v15 seleccion sutil: borde fino y suave en todas las opciones ===== */
+.tile input:checked+span,
+.redes-mini input:checked+span,
+.fuentes input:checked+span,
+.logos input:checked+span,
+.diag input:checked+.dgs{border-color:var(--rosa);background:var(--lila);box-shadow:none}
+.redes-mini input:checked+span .marca-ico{color:var(--ciruela)}
+.diag input:checked+.dgs{color:var(--ciruela)}
+
+/* ===== v16 pasos que se abren de a poco ===== */
+.rev-paso{animation:fade .4s var(--ease)}
+.icono-sutil{width:28px;height:28px;border-radius:50%;border:none;background:transparent;color:var(--rosa);cursor:pointer;display:grid;place-items:center;padding:0;transition:background .25s,color .25s}
+.icono-sutil:hover{background:var(--lila);color:var(--ciruela)}
+.icono-sutil svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.icono-sutil.gira svg{animation:giraIcono .5s var(--ease)}
+@keyframes giraIcono{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+
+/* ===== v17 colores: combinaciones ===== */
+.combos-col{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+.combos-col button{display:flex;align-items:center;padding:5px 8px;height:34px;border-radius:999px;border:1.5px solid var(--rosa-claro);background:#fff;cursor:pointer;transition:border-color .25s,transform .25s var(--ease)}
+.combos-col button:hover{transform:translateY(-2px);border-color:var(--malva)}
+.combos-col button i{display:block;width:22px;height:22px;border-radius:50%;box-shadow:0 0 0 2px #fff}
+.combos-col button i+i{margin-left:-8px}
+.combos-col button.on{border-color:var(--rosa);background:var(--lila)}
+
+/* ===== v18 limpiar ===== */
+.paso-panel{position:relative}
+.limpiar{position:absolute;top:0;right:0;font:inherit;font-size:.8rem;font-weight:600;color:var(--rosa);background:none;border:none;cursor:pointer;padding:5px 8px;border-radius:8px;transition:color .2s,background .2s}
+.limpiar:hover{color:var(--ciruela);background:var(--lila)}
+
+/* ===== v19 colores en dos columnas ===== */
+.par-colores{display:grid;grid-template-columns:1fr 1fr;gap:6px 18px}
+.par-colores .grupo{margin-bottom:12px;min-width:0}
+.colores.compacto{gap:6px}
+.colores.compacto .sw{width:26px;height:26px;border-width:2px}
+.colores.compacto input[type=color]{width:26px;height:26px}
+.colores.der .pop-color{left:auto;right:0}
+#btn-personalizar{margin-top:4px}
+
+/* ===== v20 siete combinaciones en una fila ===== */
+.combos-col{gap:8px;flex-wrap:nowrap}
+.combos-col button{padding:5px 6px;flex:none}
+.combos-col button i{width:20px;height:20px}
+.combos-col button i+i{margin-left:-7px}
+
+.combos-col{flex-wrap:wrap}
 </style>
 </head>
 <body>
@@ -768,57 +825,75 @@ body.interna footer{background:transparent;position:relative;z-index:1}
                 <div class="campo"><label for="f-empresa">Empresa (opcional)</label><input type="text" id="f-empresa" placeholder="Ej: Mi estudio"></div>
                 <div class="campo"><label for="f-correo">Correo</label><input type="email" id="f-correo" autocomplete="email" placeholder="maria@correo.com"></div>
                 <div class="campo"><label for="f-tel">Teléfono</label><input type="tel" id="f-tel" autocomplete="tel" placeholder="+57 300 000 0000"></div>
-                <div class="campo"><label for="f-wa">WhatsApp (opcional)</label><input type="tel" id="f-wa" placeholder="+57 300 000 0000"></div>
                 <div class="campo"><label for="f-web">Sitio web (opcional)</label><input type="text" id="f-web" placeholder="www.misitio.com"></div>
-                <div class="campo"><label for="f-ig">Instagram (opcional)</label><input type="text" id="f-ig" placeholder="@usuario"></div>
-                <div class="campo"><label for="f-li">LinkedIn (opcional)</label><input type="text" id="f-li" placeholder="tu-usuario o link"></div>
-                <div class="campo ancho"><label for="f-yt">YouTube (opcional)</label><input type="text" id="f-yt" placeholder="@canal o link"></div>
               </div>
               <div class="nav-pasos"><span></span><button type="button" class="btn-sig" data-ir="1">Siguiente <i aria-hidden="true">→</i></button></div>
             </section>
 
-            <section class="paso-panel" data-titulo="Diseño" aria-labelledby="pf2">
-              <h2 id="pf2"><span class="num">2</span>Elige tu diseño</h2>
-              <div class="grupo" style="margin-bottom:12px"><span class="etq">Orientación</span><div class="seg" role="radiogroup" aria-label="Orientación"><label><input type="radio" name="orient" value="horizontal" checked><span>Horizontal</span></label><label><input type="radio" name="orient" value="vertical"><span>Vertical</span></label></div></div>
-              <span class="etq">Diseño</span>
-              <div class="diag" id="diag" role="radiogroup" aria-label="Diseño de la firma"></div>
-              <div class="fila-diag"><button type="button" class="btn-mini claro" id="btn-diag">Cambiar diagramación</button><span class="sub" id="txt-diag"></span></div>
-              <div class="grupo" style="margin-top:20px"><span class="etq">Foto (opcional)</span>
-                <div class="foto-fila" style="margin-top:8px">
-                  <img class="miniatura" id="mini-foto" alt="">
-                  <button class="btn-mini" type="button" id="btn-foto">Elegir foto</button>
-                  <button class="btn-mini claro" type="button" id="btn-quitar-foto" hidden>Quitar</button>
-                  <input type="file" id="f-foto" accept="image/png,image/jpeg,image/webp" hidden>
-                </div>
-                <div class="seg" role="radiogroup" aria-label="Forma de la foto">
-                  <label><input type="radio" name="forma" value="redonda" checked><span>Redonda</span></label>
-                  <label><input type="radio" name="forma" value="cuadrada"><span>Cuadrada</span></label>
-                </div>
-                <div id="fila-sinfoto" style="margin-top:10px"><span class="etq">Si no pones foto</span><div class="seg" role="radiogroup" aria-label="Sin foto"><label><input type="radio" name="sinfoto" value="inicial" checked><span>Círculo con mi inicial</span></label><label><input type="radio" name="sinfoto" value="nada"><span>Sin círculo</span></label></div></div>
-                <div class="aviso" id="aviso-foto" hidden>Tu foto se ve en la vista previa. Al copiar la firma se sube y queda con un link público, algo normal en una firma. Por ahora esa subida todavía no está activa, así que la firma se copia sin foto.</div>
-              </div>
+            <section class="paso-panel" data-titulo="Redes" aria-labelledby="pfr">
+              <h2 id="pfr"><span class="num">2</span>Redes sociales</h2>
+              <p class="sub" style="margin:-6px 0 14px">Toca los íconos de las redes que quieres mostrar y escribe tu usuario o link.</p>
+              <div class="redes-mini" id="red-grid" role="group" aria-label="Redes sociales"></div>
+              <div id="red-campos" style="margin-top:16px"></div>
               <div class="nav-pasos"><button type="button" class="btn-atr" data-ir="0"><i aria-hidden="true">←</i> Atrás</button><button type="button" class="btn-sig" data-ir="2">Siguiente <i aria-hidden="true">→</i></button></div>
             </section>
 
-            <section class="paso-panel" data-titulo="Colores" aria-labelledby="pf3">
-              <h2 id="pf3"><span class="num">3</span>Colores</h2>
-              <div class="grupo"><span class="etq">Color principal</span><div class="colores" id="col-principal"></div></div>
-              <div class="grupo"><span class="etq">Color del texto</span><div class="colores" id="col-texto"></div></div>
-              <div class="grupo" data-d="minimalista"><div class="fila-titulo"><span class="etq">Color de las etiquetas</span><button type="button" class="btn-mini claro peq" id="btn-etq-auto">Automático</button></div><div class="colores" id="col-etq"></div></div>
-              <div class="grupo" data-d="perfil destacada portada"><div class="fila-titulo"><span class="etq">Color del círculo de los íconos</span><button type="button" class="btn-mini claro peq" id="btn-ico-auto">Automático</button></div><div class="colores" id="col-ico"></div></div>
+            <section class="paso-panel" data-titulo="Diseño" aria-labelledby="pf2">
+              <h2 id="pf2"><span class="num">3</span>Elige tu diseño</h2>
+              <div class="grupo" id="g-diseno">
+                <div class="fila-titulo"><span class="etq">Diseño</span>
+                  <button type="button" class="icono-sutil" id="btn-diag" title="Cambiar diagramación" aria-label="Cambiar diagramación"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg></button>
+                </div>
+                <div class="diag" id="diag" role="radiogroup" aria-label="Diseño de la firma"></div>
+              </div>
+              <div class="grupo rev-paso" id="g-orient" hidden><span class="etq">Orientación</span>
+                <div class="seg" role="radiogroup" aria-label="Orientación"><label><input type="radio" name="orient" value="horizontal"><span>Horizontal</span></label><label><input type="radio" name="orient" value="vertical"><span>Vertical</span></label></div>
+              </div>
+              <div class="grupo rev-paso" id="g-foto" hidden><span class="etq">Foto</span>
+                <div class="seg" role="radiogroup" aria-label="Foto de la firma">
+                  <label><input type="radio" name="fotoModo" value="subir"><span>Subir foto</span></label>
+                  <label><input type="radio" name="fotoModo" value="inicial"><span>Mi inicial</span></label>
+                  <label><input type="radio" name="fotoModo" value="nada"><span>Sin foto</span></label>
+                </div>
+                <div id="foto-subir" class="rev-paso" hidden>
+                  <div class="foto-fila" style="margin-top:12px">
+                    <img class="miniatura" id="mini-foto" alt="">
+                    <button class="btn-mini" type="button" id="btn-foto">Elegir foto</button>
+                    <button class="btn-mini claro" type="button" id="btn-quitar-foto" hidden>Quitar</button>
+                    <input type="file" id="f-foto" accept="image/png,image/jpeg,image/webp" hidden>
+                  </div>
+                  <div class="seg" id="fila-forma" role="radiogroup" aria-label="Forma de la foto" hidden>
+                    <label><input type="radio" name="forma" value="redonda" checked><span>Redonda</span></label>
+                    <label><input type="radio" name="forma" value="cuadrada"><span>Cuadrada</span></label>
+                  </div>
+                  <div class="aviso" id="aviso-foto" hidden>Tu foto se ve en la vista previa. Al copiar la firma se sube y queda con un link público, algo normal en una firma. Por ahora esa subida todavía no está activa, así que la firma se copia sin foto.</div>
+                </div>
+              </div>
               <div class="nav-pasos"><button type="button" class="btn-atr" data-ir="1"><i aria-hidden="true">←</i> Atrás</button><button type="button" class="btn-sig" data-ir="3">Siguiente <i aria-hidden="true">→</i></button></div>
             </section>
 
-            <section class="paso-panel" data-titulo="Tipografía" aria-labelledby="pf3b">
-              <h2 id="pf3b"><span class="num">4</span>Tipografía</h2>
-              <div class="grupo"><div class="fuentes" role="radiogroup" aria-label="Tipografía" id="fuentes"></div>
-                <span class="sub" style="display:block;margin-top:10px">Son fuentes seguras: se ven igual en todos los correos.</span>
+            <section class="paso-panel" data-titulo="Colores" aria-labelledby="pf3">
+              <h2 id="pf3"><span class="num">4</span>Colores</h2>
+              <div class="grupo"><span class="etq">Combinaciones</span><div class="combos-col" id="combos-col" role="group" aria-label="Combinaciones de color"></div></div>
+              <div class="par-colores">
+                <div class="grupo"><span class="etq">Color principal</span><div class="colores compacto" id="col-principal"></div></div>
+                <div class="grupo"><span class="etq">Color secundario</span><div class="colores compacto der" id="col-secundario"></div></div>
               </div>
+              <button type="button" class="btn-mini claro" id="btn-personalizar" aria-expanded="false" aria-controls="col-avanzado">Personalizar colores</button>
+              <div id="col-avanzado" class="par-colores rev-paso" hidden style="margin-top:16px"></div>
               <div class="nav-pasos"><button type="button" class="btn-atr" data-ir="2"><i aria-hidden="true">←</i> Atrás</button><button type="button" class="btn-sig" data-ir="4">Siguiente <i aria-hidden="true">→</i></button></div>
             </section>
 
+            <section class="paso-panel" data-titulo="Tipografía" aria-labelledby="pf3b">
+              <h2 id="pf3b"><span class="num">5</span>Tipografía</h2>
+              <div class="grupo"><div class="fuentes" role="radiogroup" aria-label="Tipografía" id="fuentes"></div>
+                <span class="sub" style="display:block;margin-top:10px">Son fuentes seguras: se ven igual en todos los correos.</span>
+              </div>
+              <div class="nav-pasos"><button type="button" class="btn-atr" data-ir="3"><i aria-hidden="true">←</i> Atrás</button><button type="button" class="btn-sig" data-ir="5">Siguiente <i aria-hidden="true">→</i></button></div>
+            </section>
+
             <section class="paso-panel pegar" data-titulo="Listo" aria-labelledby="pf4">
-              <h2 id="pf4"><span class="num">5</span>Cópiala y pégala</h2>
+              <h2 id="pf4"><span class="num">6</span>Cópiala y pégala</h2>
               <p style="color:var(--vino);margin-bottom:14px">Toca <b>Copiar firma</b> en la vista previa y sigue estos pasos.</p>
               <details open><summary>En Gmail</summary>
                 <ol><li>Abre Gmail, toca la rueda de <b>Configuración</b> y elige <b>Ver toda la configuración</b>.</li><li>Baja hasta <b>Firma</b>, crea una nueva y pega con Ctrl+V (o Cmd+V en Mac).</li><li>Baja al final y toca <b>Guardar cambios</b>.</li></ol>
@@ -835,7 +910,7 @@ body.interna footer{background:transparent;position:relative;z-index:1}
                   <input type="file" id="f-resp" accept="application/json,.json" hidden>
                 </div>
               </div>
-              <div class="nav-pasos"><button type="button" class="btn-atr" data-ir="3"><i aria-hidden="true">←</i> Atrás</button><span></span></div>
+              <div class="nav-pasos"><button type="button" class="btn-atr" data-ir="4"><i aria-hidden="true">←</i> Atrás</button><span></span></div>
             </section>
           </div>
         </div>
@@ -902,7 +977,7 @@ body.interna footer{background:transparent;position:relative;z-index:1}
               </div>
               <div class="grupo"><div class="fila-titulo"><span class="etq">Redes sociales</span>
                 <div class="seg mini" id="q-logo-color" role="radiogroup" aria-label="Color del logo"><label><input type="radio" name="q-logocol" value="original"><span>Color original</span></label><label><input type="radio" name="q-logocol" value="qr" checked><span>Color del QR</span></label></div></div>
-                <div class="redes-mini" role="radiogroup" aria-label="Redes sociales"><label title="Instagram"><input type="radio" name="q-logo" value="instagram"><span aria-label="Instagram"><svg viewBox="0 0 24 24" class="marca-ico"><path d="M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077" fill="currentColor" stroke="none"/></svg></span></label><label title="LinkedIn"><input type="radio" name="q-logo" value="linkedin"><span aria-label="LinkedIn"><svg viewBox="0 0 16 16" class="marca-ico"><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z" fill="currentColor" stroke="none"/></svg></span></label><label title="YouTube"><input type="radio" name="q-logo" value="youtube"><span aria-label="YouTube"><svg viewBox="0 0 24 24" class="marca-ico"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" fill="currentColor" stroke="none"/></svg></span></label><label title="WhatsApp"><input type="radio" name="q-logo" value="whatsapp"><span aria-label="WhatsApp"><svg viewBox="0 0 24 24" class="marca-ico"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" fill="currentColor" stroke="none"/></svg></span></label><label title="TikTok"><input type="radio" name="q-logo" value="tiktok"><span aria-label="TikTok"><svg viewBox="0 0 24 24" class="marca-ico"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z" fill="currentColor" stroke="none"/></svg></span></label><label title="Facebook"><input type="radio" name="q-logo" value="facebook"><span aria-label="Facebook"><svg viewBox="0 0 24 24" class="marca-ico"><path d="M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036 26.805 26.805 0 0 0-.733-.009c-.707 0-1.259.096-1.675.309a1.686 1.686 0 0 0-.679.622c-.258.42-.374.995-.374 1.752v1.297h3.919l-.386 2.103-.287 1.564h-3.246v8.245C19.396 23.238 24 18.179 24 12.044c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.628 3.874 10.35 9.101 11.647Z" fill="currentColor" stroke="none"/></svg></span></label><label title="X"><input type="radio" name="q-logo" value="x"><span aria-label="X"><svg viewBox="0 0 24 24" class="marca-ico"><path d="M14.234 10.162 22.977 0h-2.072l-7.591 8.824L7.251 0H.258l9.168 13.343L.258 24H2.33l8.016-9.318L16.749 24h6.993zm-2.837 3.299-.929-1.329L3.076 1.56h3.182l5.965 8.532.929 1.329 7.754 11.09h-3.182z" fill="currentColor" stroke="none"/></svg></span></label><label title="Behance"><input type="radio" name="q-logo" value="behance"><span aria-label="Behance"><svg viewBox="0 0 24 24" class="marca-ico"><path d="M16.969 16.927a2.561 2.561 0 0 0 1.901.677 2.501 2.501 0 0 0 1.531-.475c.362-.235.636-.584.779-.99h2.585a5.091 5.091 0 0 1-1.9 2.896 5.292 5.292 0 0 1-3.091.88 5.839 5.839 0 0 1-2.284-.433 4.871 4.871 0 0 1-1.723-1.211 5.657 5.657 0 0 1-1.08-1.874 7.057 7.057 0 0 1-.383-2.393c-.005-.8.129-1.595.396-2.349a5.313 5.313 0 0 1 5.088-3.604 4.87 4.87 0 0 1 2.376.563c.661.362 1.231.87 1.668 1.485a6.2 6.2 0 0 1 .943 2.133c.194.821.263 1.666.205 2.508h-7.699c-.063.79.184 1.574.688 2.187ZM6.947 4.084a8.065 8.065 0 0 1 1.928.198 4.29 4.29 0 0 1 1.49.638c.418.303.748.711.958 1.182.241.579.357 1.203.341 1.83a3.506 3.506 0 0 1-.506 1.961 3.726 3.726 0 0 1-1.503 1.287 3.588 3.588 0 0 1 2.027 1.437c.464.747.697 1.615.67 2.494a4.593 4.593 0 0 1-.423 2.032 3.945 3.945 0 0 1-1.163 1.413 5.114 5.114 0 0 1-1.683.807 7.135 7.135 0 0 1-1.928.259H0V4.084h6.947Zm-.235 12.9c.308.004.616-.029.916-.099a2.18 2.18 0 0 0 .766-.332c.228-.158.411-.371.534-.619.142-.317.208-.663.191-1.009a2.08 2.08 0 0 0-.642-1.715 2.618 2.618 0 0 0-1.696-.505h-3.54v4.279h3.471Zm13.635-5.967a2.13 2.13 0 0 0-1.654-.619 2.336 2.336 0 0 0-1.163.259 2.474 2.474 0 0 0-.738.62 2.359 2.359 0 0 0-.396.792c-.074.239-.12.485-.137.734h4.769a3.239 3.239 0 0 0-.679-1.785l-.002-.001Zm-13.813-.648a2.254 2.254 0 0 0 1.423-.433c.399-.355.607-.88.56-1.413a1.916 1.916 0 0 0-.178-.891 1.298 1.298 0 0 0-.495-.533 1.851 1.851 0 0 0-.711-.274 3.966 3.966 0 0 0-.835-.073H3.241v3.631h3.293v-.014ZM21.62 5.122h-5.976v1.527h5.976V5.122Z" fill="currentColor" stroke="none"/></svg></span></label></div>
+                <div class="redes-mini" role="radiogroup" aria-label="Redes sociales"><label title="Instagram"><input type="radio" name="q-logo" value="instagram"><span aria-label="Instagram"><svg viewBox="0 0 24 24" class="marca-ico"><path d="M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077" fill="currentColor" stroke="none"/></svg></span></label><label title="LinkedIn"><input type="radio" name="q-logo" value="linkedin"><span aria-label="LinkedIn"><svg viewBox="0 0 16 16" class="marca-ico"><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z" fill="currentColor" stroke="none"/></svg></span></label><label title="YouTube"><input type="radio" name="q-logo" value="youtube"><span aria-label="YouTube"><svg viewBox="0 0 24 24" class="marca-ico"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" fill="currentColor" stroke="none"/></svg></span></label><label title="WhatsApp"><input type="radio" name="q-logo" value="whatsapp"><span aria-label="WhatsApp"><svg viewBox="0 0 24 24" class="marca-ico"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" fill="currentColor" stroke="none"/></svg></span></label><label title="TikTok"><input type="radio" name="q-logo" value="tiktok"><span aria-label="TikTok"><svg viewBox="0 0 24 24" class="marca-ico"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z" fill="currentColor" stroke="none"/></svg></span></label><label title="Facebook"><input type="radio" name="q-logo" value="facebook"><span aria-label="Facebook"><svg viewBox="0 0 24 24" class="marca-ico"><path d="M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036 26.805 26.805 0 0 0-.733-.009c-.707 0-1.259.096-1.675.309a1.686 1.686 0 0 0-.679.622c-.258.42-.374.995-.374 1.752v1.297h3.919l-.386 2.103-.287 1.564h-3.246v8.245C19.396 23.238 24 18.179 24 12.044c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.628 3.874 10.35 9.101 11.647Z" fill="currentColor" stroke="none"/></svg></span></label><label title="X"><input type="radio" name="q-logo" value="x"><span aria-label="X"><svg viewBox="0 0 24 24" class="marca-ico"><path d="M14.234 10.162 22.977 0h-2.072l-7.591 8.824L7.251 0H.258l9.168 13.343L.258 24H2.33l8.016-9.318L16.749 24h6.993zm-2.837 3.299-.929-1.329L3.076 1.56h3.182l5.965 8.532.929 1.329 7.754 11.09h-3.182z" fill="currentColor" stroke="none"/></svg></span></label><label title="Behance"><input type="radio" name="q-logo" value="behance"><span aria-label="Behance"><svg viewBox="0 0 24 24" class="marca-ico"><path d="M16.969 16.927a2.561 2.561 0 0 0 1.901.677 2.501 2.501 0 0 0 1.531-.475c.362-.235.636-.584.779-.99h2.585a5.091 5.091 0 0 1-1.9 2.896 5.292 5.292 0 0 1-3.091.88 5.839 5.839 0 0 1-2.284-.433 4.871 4.871 0 0 1-1.723-1.211 5.657 5.657 0 0 1-1.08-1.874 7.057 7.057 0 0 1-.383-2.393c-.005-.8.129-1.595.396-2.349a5.313 5.313 0 0 1 5.088-3.604 4.87 4.87 0 0 1 2.376.563c.661.362 1.231.87 1.668 1.485a6.2 6.2 0 0 1 .943 2.133c.194.821.263 1.666.205 2.508h-7.699c-.063.79.184 1.574.688 2.187ZM6.947 4.084a8.065 8.065 0 0 1 1.928.198 4.29 4.29 0 0 1 1.49.638c.418.303.748.711.958 1.182.241.579.357 1.203.341 1.83a3.506 3.506 0 0 1-.506 1.961 3.726 3.726 0 0 1-1.503 1.287 3.588 3.588 0 0 1 2.027 1.437c.464.747.697 1.615.67 2.494a4.593 4.593 0 0 1-.423 2.032 3.945 3.945 0 0 1-1.163 1.413 5.114 5.114 0 0 1-1.683.807 7.135 7.135 0 0 1-1.928.259H0V4.084h6.947Zm-.235 12.9c.308.004.616-.029.916-.099a2.18 2.18 0 0 0 .766-.332c.228-.158.411-.371.534-.619.142-.317.208-.663.191-1.009a2.08 2.08 0 0 0-.642-1.715 2.618 2.618 0 0 0-1.696-.505h-3.54v4.279h3.471Zm13.635-5.967a2.13 2.13 0 0 0-1.654-.619 2.336 2.336 0 0 0-1.163.259 2.474 2.474 0 0 0-.738.62 2.359 2.359 0 0 0-.396.792c-.074.239-.12.485-.137.734h4.769a3.239 3.239 0 0 0-.679-1.785l-.002-.001Zm-13.813-.648a2.254 2.254 0 0 0 1.423-.433c.399-.355.607-.88.56-1.413a1.916 1.916 0 0 0-.178-.891 1.298 1.298 0 0 0-.495-.533 1.851 1.851 0 0 0-.711-.274 3.966 3.966 0 0 0-.835-.073H3.241v3.631h3.293v-.014ZM21.62 5.122h-5.976v1.527h5.976V5.122Z" fill="currentColor" stroke="none"/></svg></span></label><label title="Pinterest"><input type="radio" name="q-logo" value="pinterest"><span aria-label="Pinterest"><svg viewBox="0 0 24 24" class="marca-ico"><path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.162-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.401.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.354-.629-2.758-1.379l-.749 2.848c-.269 1.045-1.004 2.352-1.498 3.146 1.123.345 2.306.535 3.55.535 6.607 0 11.985-5.365 11.985-11.987C23.97 5.39 18.592.026 11.985.026L12.017 0z" fill="currentColor" stroke="none"/></svg></span></label><label title="Telegram"><input type="radio" name="q-logo" value="telegram"><span aria-label="Telegram"><svg viewBox="0 0 24 24" class="marca-ico"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z" fill="currentColor" stroke="none"/></svg></span></label></div>
                 <div class="rango" id="q-tam-fila" hidden><span class="etq">Tamaño del logo</span><input type="range" id="q-tam" min="10" max="25" value="20" aria-label="Tamaño del logo"><b id="q-tam-v">20%</b></div>
                 <div class="aviso" id="q-logo-nota" hidden>Con logo, el QR sube solo su nivel de corrección de errores para que se pueda leer aunque el centro esté tapado. El logo no puede pasar de un cuarto del QR.</div>
               </div>
@@ -1015,7 +1090,7 @@ body.interna footer{background:transparent;position:relative;z-index:1}
 <script>
 (function(){
   var GLIFOS = {"mail": "<rect x=\"3\" y=\"5\" width=\"18\" height=\"14\" rx=\"3\"/><path d=\"m4 8 8 6 8-6\"/>", "phone": "<path d=\"M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z\"/>", "web": "<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18\"/>", "whatsapp": "<path d=\"M4 20l1.2-4.1A8.5 8.5 0 1 1 8.2 18.8z\"/><path d=\"M9.2 8.8c.2 2.8 2.4 5 5.2 5.2l1.1-1.4-1.9-.9-.8.7a3 3 0 0 1-1.6-1.6l.7-.8-.9-1.9z\"/>", "instagram": "<rect x=\"3.5\" y=\"3.5\" width=\"17\" height=\"17\" rx=\"5\"/><circle cx=\"12\" cy=\"12\" r=\"4\"/><path d=\"M17.3 6.7v.01\"/>", "linkedin": "<path d=\"M7 10.5V17M7 7v.01M11 17v-6.5M11 13.5c0-2 1.3-3 3-3s3 1 3 3V17\"/>", "youtube": "<rect x=\"2.5\" y=\"6\" width=\"19\" height=\"12\" rx=\"4\"/><path d=\"M10.2 9.6v4.8l4.2-2.4z\"/>", "tiktok": "<path d=\"M14 4v10a3.5 3.5 0 1 1-3.5-3.5M14 4c.3 2.4 2 3.9 4.5 4.1\"/>", "facebook": "<path d=\"M14.5 21v-8h2.6l.4-3h-3V8.4c0-.9.4-1.4 1.5-1.4h1.7V4.3C17 4.2 16.2 4 15.2 4 12.9 4 11.5 5.3 11.5 7.7V10H9v3h2.5v8z\"/>", "x": "<path d=\"M5 5l14 14M19 5L5 19\"/>", "behance": "<path d=\"M3.5 7h5a2.4 2.4 0 0 1 0 4.8h-5zM3.5 11.8h5.6a2.6 2.6 0 0 1 0 5.2H3.5zM14 8h6M14.5 14.5h6c0-2-1.2-3.3-3-3.3s-3 1.4-3 3.3 1.3 3.2 3 3.2c1.2 0 2.1-.5 2.6-1.4\"/>"};
-  var MARCAS = {"instagram": {"d": "M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077", "s": 24, "hex": "#FF0069"}, "youtube": {"d": "M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z", "s": 24, "hex": "#FF0000"}, "whatsapp": {"d": "M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z", "s": 24, "hex": "#25D366"}, "tiktok": {"d": "M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z", "s": 24, "hex": "#000000"}, "facebook": {"d": "M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036 26.805 26.805 0 0 0-.733-.009c-.707 0-1.259.096-1.675.309a1.686 1.686 0 0 0-.679.622c-.258.42-.374.995-.374 1.752v1.297h3.919l-.386 2.103-.287 1.564h-3.246v8.245C19.396 23.238 24 18.179 24 12.044c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.628 3.874 10.35 9.101 11.647Z", "s": 24, "hex": "#0866FF"}, "x": {"d": "M14.234 10.162 22.977 0h-2.072l-7.591 8.824L7.251 0H.258l9.168 13.343L.258 24H2.33l8.016-9.318L16.749 24h6.993zm-2.837 3.299-.929-1.329L3.076 1.56h3.182l5.965 8.532.929 1.329 7.754 11.09h-3.182z", "s": 24, "hex": "#000000"}, "behance": {"d": "M16.969 16.927a2.561 2.561 0 0 0 1.901.677 2.501 2.501 0 0 0 1.531-.475c.362-.235.636-.584.779-.99h2.585a5.091 5.091 0 0 1-1.9 2.896 5.292 5.292 0 0 1-3.091.88 5.839 5.839 0 0 1-2.284-.433 4.871 4.871 0 0 1-1.723-1.211 5.657 5.657 0 0 1-1.08-1.874 7.057 7.057 0 0 1-.383-2.393c-.005-.8.129-1.595.396-2.349a5.313 5.313 0 0 1 5.088-3.604 4.87 4.87 0 0 1 2.376.563c.661.362 1.231.87 1.668 1.485a6.2 6.2 0 0 1 .943 2.133c.194.821.263 1.666.205 2.508h-7.699c-.063.79.184 1.574.688 2.187ZM6.947 4.084a8.065 8.065 0 0 1 1.928.198 4.29 4.29 0 0 1 1.49.638c.418.303.748.711.958 1.182.241.579.357 1.203.341 1.83a3.506 3.506 0 0 1-.506 1.961 3.726 3.726 0 0 1-1.503 1.287 3.588 3.588 0 0 1 2.027 1.437c.464.747.697 1.615.67 2.494a4.593 4.593 0 0 1-.423 2.032 3.945 3.945 0 0 1-1.163 1.413 5.114 5.114 0 0 1-1.683.807 7.135 7.135 0 0 1-1.928.259H0V4.084h6.947Zm-.235 12.9c.308.004.616-.029.916-.099a2.18 2.18 0 0 0 .766-.332c.228-.158.411-.371.534-.619.142-.317.208-.663.191-1.009a2.08 2.08 0 0 0-.642-1.715 2.618 2.618 0 0 0-1.696-.505h-3.54v4.279h3.471Zm13.635-5.967a2.13 2.13 0 0 0-1.654-.619 2.336 2.336 0 0 0-1.163.259 2.474 2.474 0 0 0-.738.62 2.359 2.359 0 0 0-.396.792c-.074.239-.12.485-.137.734h4.769a3.239 3.239 0 0 0-.679-1.785l-.002-.001Zm-13.813-.648a2.254 2.254 0 0 0 1.423-.433c.399-.355.607-.88.56-1.413a1.916 1.916 0 0 0-.178-.891 1.298 1.298 0 0 0-.495-.533 1.851 1.851 0 0 0-.711-.274 3.966 3.966 0 0 0-.835-.073H3.241v3.631h3.293v-.014ZM21.62 5.122h-5.976v1.527h5.976V5.122Z", "s": 24, "hex": "#1769FF"}, "linkedin": {"d": "M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z", "s": 16, "hex": "#0A66C2"}, "mail": {"d": "M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414zM0 4.697v7.104l5.803-3.558zM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586zm3.436-.586L16 11.801V4.697z", "s": 16, "hex": "#000000"}, "phone": {"d": "M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.68.68 0 0 0 .178.643l2.457 2.457a.68.68 0 0 0 .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.6 18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877z", "s": 16, "hex": "#000000"}, "web": {"d": "M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m7.5-6.923c-.67.204-1.335.82-1.887 1.855q-.215.403-.395.872c.705.157 1.472.257 2.282.287zM4.249 3.539q.214-.577.481-1.078a7 7 0 0 1 .597-.933A7 7 0 0 0 3.051 3.05q.544.277 1.198.49zM3.509 7.5c.036-1.07.188-2.087.436-3.008a9 9 0 0 1-1.565-.667A6.96 6.96 0 0 0 1.018 7.5zm1.4-2.741a12.3 12.3 0 0 0-.4 2.741H7.5V5.091c-.91-.03-1.783-.145-2.591-.332M8.5 5.09V7.5h2.99a12.3 12.3 0 0 0-.399-2.741c-.808.187-1.681.301-2.591.332zM4.51 8.5c.035.987.176 1.914.399 2.741A13.6 13.6 0 0 1 7.5 10.91V8.5zm3.99 0v2.409c.91.03 1.783.145 2.591.332.223-.827.364-1.754.4-2.741zm-3.282 3.696q.18.469.395.872c.552 1.035 1.218 1.65 1.887 1.855V11.91c-.81.03-1.577.13-2.282.287zm.11 2.276a7 7 0 0 1-.598-.933 9 9 0 0 1-.481-1.079 8.4 8.4 0 0 0-1.198.49 7 7 0 0 0 2.276 1.522zm-1.383-2.964A13.4 13.4 0 0 1 3.508 8.5h-2.49a6.96 6.96 0 0 0 1.362 3.675c.47-.258.995-.482 1.565-.667m6.728 2.964a7 7 0 0 0 2.275-1.521 8.4 8.4 0 0 0-1.197-.49 9 9 0 0 1-.481 1.078 7 7 0 0 1-.597.933M8.5 11.909v3.014c.67-.204 1.335-.82 1.887-1.855q.216-.403.395-.872A12.6 12.6 0 0 0 8.5 11.91zm3.555-.401c.57.185 1.095.409 1.565.667A6.96 6.96 0 0 0 14.982 8.5h-2.49a13.4 13.4 0 0 1-.437 3.008M14.982 7.5a6.96 6.96 0 0 0-1.362-3.675c-.47.258-.995.482-1.565.667.248.92.4 1.938.437 3.008zM11.27 2.461q.266.502.482 1.078a8.4 8.4 0 0 0 1.196-.49 7 7 0 0 0-2.275-1.52c.218.283.418.597.597.932m-.488 1.343a8 8 0 0 0-.395-.872C9.835 1.897 9.17 1.282 8.5 1.077V4.09c.81-.03 1.577-.13 2.282-.287z", "s": 16, "hex": "#000000"}};
+  var MARCAS = {"instagram": {"d": "M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077", "s": 24, "hex": "#FF0069"}, "youtube": {"d": "M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z", "s": 24, "hex": "#FF0000"}, "whatsapp": {"d": "M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z", "s": 24, "hex": "#25D366"}, "tiktok": {"d": "M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z", "s": 24, "hex": "#000000"}, "facebook": {"d": "M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036 26.805 26.805 0 0 0-.733-.009c-.707 0-1.259.096-1.675.309a1.686 1.686 0 0 0-.679.622c-.258.42-.374.995-.374 1.752v1.297h3.919l-.386 2.103-.287 1.564h-3.246v8.245C19.396 23.238 24 18.179 24 12.044c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.628 3.874 10.35 9.101 11.647Z", "s": 24, "hex": "#0866FF"}, "x": {"d": "M14.234 10.162 22.977 0h-2.072l-7.591 8.824L7.251 0H.258l9.168 13.343L.258 24H2.33l8.016-9.318L16.749 24h6.993zm-2.837 3.299-.929-1.329L3.076 1.56h3.182l5.965 8.532.929 1.329 7.754 11.09h-3.182z", "s": 24, "hex": "#000000"}, "behance": {"d": "M16.969 16.927a2.561 2.561 0 0 0 1.901.677 2.501 2.501 0 0 0 1.531-.475c.362-.235.636-.584.779-.99h2.585a5.091 5.091 0 0 1-1.9 2.896 5.292 5.292 0 0 1-3.091.88 5.839 5.839 0 0 1-2.284-.433 4.871 4.871 0 0 1-1.723-1.211 5.657 5.657 0 0 1-1.08-1.874 7.057 7.057 0 0 1-.383-2.393c-.005-.8.129-1.595.396-2.349a5.313 5.313 0 0 1 5.088-3.604 4.87 4.87 0 0 1 2.376.563c.661.362 1.231.87 1.668 1.485a6.2 6.2 0 0 1 .943 2.133c.194.821.263 1.666.205 2.508h-7.699c-.063.79.184 1.574.688 2.187ZM6.947 4.084a8.065 8.065 0 0 1 1.928.198 4.29 4.29 0 0 1 1.49.638c.418.303.748.711.958 1.182.241.579.357 1.203.341 1.83a3.506 3.506 0 0 1-.506 1.961 3.726 3.726 0 0 1-1.503 1.287 3.588 3.588 0 0 1 2.027 1.437c.464.747.697 1.615.67 2.494a4.593 4.593 0 0 1-.423 2.032 3.945 3.945 0 0 1-1.163 1.413 5.114 5.114 0 0 1-1.683.807 7.135 7.135 0 0 1-1.928.259H0V4.084h6.947Zm-.235 12.9c.308.004.616-.029.916-.099a2.18 2.18 0 0 0 .766-.332c.228-.158.411-.371.534-.619.142-.317.208-.663.191-1.009a2.08 2.08 0 0 0-.642-1.715 2.618 2.618 0 0 0-1.696-.505h-3.54v4.279h3.471Zm13.635-5.967a2.13 2.13 0 0 0-1.654-.619 2.336 2.336 0 0 0-1.163.259 2.474 2.474 0 0 0-.738.62 2.359 2.359 0 0 0-.396.792c-.074.239-.12.485-.137.734h4.769a3.239 3.239 0 0 0-.679-1.785l-.002-.001Zm-13.813-.648a2.254 2.254 0 0 0 1.423-.433c.399-.355.607-.88.56-1.413a1.916 1.916 0 0 0-.178-.891 1.298 1.298 0 0 0-.495-.533 1.851 1.851 0 0 0-.711-.274 3.966 3.966 0 0 0-.835-.073H3.241v3.631h3.293v-.014ZM21.62 5.122h-5.976v1.527h5.976V5.122Z", "s": 24, "hex": "#1769FF"}, "linkedin": {"d": "M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z", "s": 16, "hex": "#0A66C2"}, "mail": {"d": "M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414zM0 4.697v7.104l5.803-3.558zM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586zm3.436-.586L16 11.801V4.697z", "s": 16, "hex": "#000000"}, "phone": {"d": "M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.68.68 0 0 0 .178.643l2.457 2.457a.68.68 0 0 0 .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.6 18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877z", "s": 16, "hex": "#000000"}, "web": {"d": "M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m7.5-6.923c-.67.204-1.335.82-1.887 1.855q-.215.403-.395.872c.705.157 1.472.257 2.282.287zM4.249 3.539q.214-.577.481-1.078a7 7 0 0 1 .597-.933A7 7 0 0 0 3.051 3.05q.544.277 1.198.49zM3.509 7.5c.036-1.07.188-2.087.436-3.008a9 9 0 0 1-1.565-.667A6.96 6.96 0 0 0 1.018 7.5zm1.4-2.741a12.3 12.3 0 0 0-.4 2.741H7.5V5.091c-.91-.03-1.783-.145-2.591-.332M8.5 5.09V7.5h2.99a12.3 12.3 0 0 0-.399-2.741c-.808.187-1.681.301-2.591.332zM4.51 8.5c.035.987.176 1.914.399 2.741A13.6 13.6 0 0 1 7.5 10.91V8.5zm3.99 0v2.409c.91.03 1.783.145 2.591.332.223-.827.364-1.754.4-2.741zm-3.282 3.696q.18.469.395.872c.552 1.035 1.218 1.65 1.887 1.855V11.91c-.81.03-1.577.13-2.282.287zm.11 2.276a7 7 0 0 1-.598-.933 9 9 0 0 1-.481-1.079 8.4 8.4 0 0 0-1.198.49 7 7 0 0 0 2.276 1.522zm-1.383-2.964A13.4 13.4 0 0 1 3.508 8.5h-2.49a6.96 6.96 0 0 0 1.362 3.675c.47-.258.995-.482 1.565-.667m6.728 2.964a7 7 0 0 0 2.275-1.521 8.4 8.4 0 0 0-1.197-.49 9 9 0 0 1-.481 1.078 7 7 0 0 1-.597.933M8.5 11.909v3.014c.67-.204 1.335-.82 1.887-1.855q.216-.403.395-.872A12.6 12.6 0 0 0 8.5 11.91zm3.555-.401c.57.185 1.095.409 1.565.667A6.96 6.96 0 0 0 14.982 8.5h-2.49a13.4 13.4 0 0 1-.437 3.008M14.982 7.5a6.96 6.96 0 0 0-1.362-3.675c-.47.258-.995.482-1.565.667.248.92.4 1.938.437 3.008zM11.27 2.461q.266.502.482 1.078a8.4 8.4 0 0 0 1.196-.49 7 7 0 0 0-2.275-1.52c.218.283.418.597.597.932m-.488 1.343a8 8 0 0 0-.395-.872C9.835 1.897 9.17 1.282 8.5 1.077V4.09c.81-.03 1.577-.13 2.282-.287z", "s": 16, "hex": "#000000"}, "pinterest": {"d": "M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.162-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.401.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.354-.629-2.758-1.379l-.749 2.848c-.269 1.045-1.004 2.352-1.498 3.146 1.123.345 2.306.535 3.55.535 6.607 0 11.985-5.365 11.985-11.987C23.97 5.39 18.592.026 11.985.026L12.017 0z", "s": 24, "hex": "#BD081C"}, "telegram": {"d": "M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z", "s": 24, "hex": "#26A5E4"}};
   var BASE_ICONOS = 'https://linarevalo29.github.io/crea-lab/iconos/';
   var reducido = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var $ = function(id){return document.getElementById(id)};
@@ -1049,16 +1124,33 @@ body.interna footer{background:transparent;position:relative;z-index:1}
     function f(n){var k=(n+h/30)%12,c=l-a*Math.max(Math.min(k-3,9-k,1),-1);return ('0'+Math.round(255*c).toString(16)).slice(-2)}
     return '#'+f(0)+f(8)+f(4);
   }
-  function selectorColor(cont,colores,inicial,cambio){
+  function selectorColor(cont,colores,inicial,cambio,sinMas){
     cont.innerHTML='';var hsl=hexAHsl(inicial);
-    function marcar(c){cont.querySelectorAll('.sw[data-c]').forEach(function(b){b.classList.toggle('on',b.dataset.c.toLowerCase()===c.toLowerCase())})}
-    colores.forEach(function(c){
-      var b=document.createElement('button');b.type='button';b.className='sw';b.style.background=c;b.dataset.c=c;b.setAttribute('aria-label','Color '+c);
-      b.addEventListener('click',function(){poner(c,true)});cont.appendChild(b);
-    });
+    var ext=null,ult=null;
+    function marcar(c){
+      var enP=colores.some(function(p){return p.toLowerCase()===c.toLowerCase()});
+      if(ext){ext.style.display=enP?'none':'';ext.style.background=c;ext.dataset.c=c;ext.setAttribute('aria-label','Color '+c)}
+      if(ult)ult.style.display=enP?'':'none';
+      cont.querySelectorAll('.sw[data-c]').forEach(function(b){b.classList.toggle('on',b.dataset.c.toLowerCase()===c.toLowerCase())});
+    }
+    var swEls=[];
+    function armar(lista){
+      swEls.forEach(function(b){b.remove()});if(ext)ext.remove();swEls=[];colores=lista;
+      var ancla=cont.querySelector('.sw.mas');
+      lista.forEach(function(c){
+        var b=document.createElement('button');b.type='button';b.className='sw';b.style.background=c;b.dataset.c=c;b.setAttribute('aria-label','Color '+c);
+        b.addEventListener('click',function(){if(sinMas){marcar(c);cambio(c)}else poner(c,true)});cont.insertBefore(b,ancla);swEls.push(b);
+      });
+      ult=swEls[swEls.length-1];
+      ext=document.createElement('button');ext.type='button';ext.className='sw';ext.style.display='none';ext.dataset.c='#000000';
+      ext.addEventListener('click',function(){var c=ext.dataset.c;if(sinMas){marcar(c);cambio(c)}else poner(c,true)});cont.insertBefore(ext,ancla);
+    }
+    armar(colores);
+    cont._paleta=function(lista,actual){armar(lista);marcar(actual);if(!sinMas){hsl=hexAHsl(actual);pintarPop(actual)}};
+    if(sinMas){cont._set=function(c){marcar(c)};marcar(inicial);return}
     var mas=document.createElement('button');mas.type='button';mas.className='sw mas';mas.setAttribute('aria-label','Crear otro color');mas.setAttribute('aria-expanded','false');cont.appendChild(mas);
     var pop=document.createElement('div');pop.className='pop-color';pop.hidden=true;
-    pop.innerHTML='<div class="pop-prev"><i></i><input type="text" maxlength="7" aria-label="Código del color" spellcheck="false"></div>'
+    pop.innerHTML='<div class="pop-prev"><i></i><input type="text" maxlength="7" aria-label="Pegar código hexadecimal" placeholder="#63404D" spellcheck="false"></div>'
       +'<div class="pop-fila">Matiz<input type="range" min="0" max="360" data-k="0" aria-label="Matiz"></div>'
       +'<div class="pop-fila">Intensidad<input type="range" min="0" max="100" data-k="1" aria-label="Intensidad"></div>'
       +'<div class="pop-fila">Brillo<input type="range" min="5" max="95" data-k="2" aria-label="Brillo"></div>';
@@ -1073,14 +1165,20 @@ body.interna footer{background:transparent;position:relative;z-index:1}
     }
     function poner(hex,avisar){hsl=hexAHsl(hex);marcar(hex);pintarPop(hex);if(avisar)cambio(hex)}
     rs.forEach(function(r){r.addEventListener('input',function(){hsl[+r.dataset.k]=+r.value;var h=hslAHex(hsl[0],hsl[1],hsl[2]);marcar(h);pintarPop(h);cambio(h)})});
-    txt.addEventListener('input',function(){var v=txt.value.trim();if(v[0]!=='#')v='#'+v;if(/^#[0-9a-f]{6}$/i.test(v)){hsl=hexAHsl(v);marcar(v);vista.style.background=v;rs[0].value=hsl[0];rs[1].value=hsl[1];rs[2].value=hsl[2];cambio(v)}});
-    mas.addEventListener('click',function(e){e.stopPropagation();pop.hidden=!pop.hidden;mas.setAttribute('aria-expanded',String(!pop.hidden))});
+    txt.addEventListener('input',function(){var v=txt.value.trim();if(v[0]!=='#')v='#'+v;if(/^#[0-9a-f]{3}$/i.test(v))v='#'+v[1]+v[1]+v[2]+v[2]+v[3]+v[3];if(/^#[0-9a-f]{6}$/i.test(v)){hsl=hexAHsl(v);marcar(v);vista.style.background=v;rs[0].value=hsl[0];rs[1].value=hsl[1];rs[2].value=hsl[2];cambio(v)}});
+    mas.addEventListener('click',function(e){e.stopPropagation();pop.hidden=!pop.hidden;if(!pop.hidden)setTimeout(function(){txt.focus();txt.select()},30);mas.setAttribute('aria-expanded',String(!pop.hidden))});
     document.addEventListener('click',function(e){if(!pop.hidden&&!pop.contains(e.target)){pop.hidden=true;mas.setAttribute('aria-expanded','false')}});
     document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!pop.hidden){pop.hidden=true;mas.setAttribute('aria-expanded','false');mas.focus()}});
     poner(inicial,false);
     cont._set=function(c){poner(c,false)};
   }
 
+  function agregarLimpiar(wiz,fn,etiquetas){
+    wiz.querySelectorAll('.paso-panel').forEach(function(p,i){
+      var b=document.createElement('button');b.type='button';b.className='limpiar';b.textContent=(etiquetas&&etiquetas[i])||'Limpiar';
+      b.addEventListener('click',function(){fn(i)});p.insertBefore(b,p.firstChild);
+    });
+  }
   /* ---------- asistente por pasos ---------- */
   function asistente(wiz,bar){
     var paneles=[].slice.call(wiz.querySelectorAll('.paso-panel')),btns=[],idx=0;
@@ -1115,19 +1213,46 @@ body.interna footer{background:transparent;position:relative;z-index:1}
   /* =============== FIRMA =============== */
   var FUENTES={arial:"Arial,Helvetica,sans-serif",georgia:"Georgia,'Times New Roman',serif",verdana:"Verdana,Geneva,sans-serif",trebuchet:"'Trebuchet MS',Helvetica,sans-serif",tahoma:"Tahoma,Geneva,sans-serif"};
   var NOMBRES_F={arial:'Arial',georgia:'Georgia',verdana:'Verdana',trebuchet:'Trebuchet',tahoma:'Tahoma'};
+  var EJRED={wa:'+00 000 000 0000',ig:'@usuario',li:'usuario',yt:'@canal'};
   var MUESTRA={nombre:'Nombre Apellido',cargo:'Cargo de prueba',empresa:'Empresa de prueba',correo:'correo@ejemplo.com',tel:'+00 000 000 0000',wa:'+00 000 000 0000',web:'www.ejemplo.com',ig:'@usuario',li:'usuario',yt:'@canal'};
-  var S=Object.assign({nombre:'',cargo:'',empresa:'',correo:'',tel:'',wa:'',web:'',ig:'',li:'',yt:'',plantilla:'minimalista',forma:'redonda',sinfoto:'inicial',color:'#6B3FA0',texto:'#2B1721',fuente:'arial',fuenteN:'georgia',foto:'',orient:'horizontal',colorEtq:'',colorIco:''},leer('crealab.firma')||{});
-  S.color=hexOk(S.color,'#6B3FA0');S.texto=hexOk(S.texto,'#2B1721');S.foto=imgOk(S.foto);
+  var S=Object.assign({nombre:'',cargo:'',empresa:'',correo:'',tel:'',web:'',plantilla:'minimalista',forma:'redonda',sinfoto:'inicial',fotoModo:'inicial',fase:0,color:'#63404D',texto:'#2B1721',fuente:'arial',fuenteN:'georgia',foto:'',orient:'horizontal',colorEtq:'',colorIco:'',color2:'#926974',cx:{},pal:0,redesSel:[],rd:{}},leer('crealab.firma')||{});
+  S.color=hexOk(S.color,'#63404D');if(S.color.toLowerCase()==='#6b3fa0')S.color='#63404D';S.texto=hexOk(S.texto,'#2B1721');S.foto=imgOk(S.foto);
   if(!FUENTES[S.fuente])S.fuente='arial';if(!FUENTES[S.fuenteN])S.fuenteN='georgia';
   if(['minimalista','perfil','destacada','portada','lineas','editorial'].indexOf(S.plantilla)<0)S.plantilla='minimalista';
-  if(S.sinfoto!=='nada')S.sinfoto='inicial';if(S.forma!=='cuadrada')S.forma='redonda';if(S.orient!=='vertical')S.orient='horizontal';S.colorEtq=S.colorEtq?hexOk(S.colorEtq,''):'';S.colorIco=S.colorIco?hexOk(S.colorIco,''):'';
+  if(['subir','inicial','nada'].indexOf(S.fotoModo)<0)S.fotoModo='inicial';S.sinfoto=S.fotoModo==='nada'?'nada':'inicial';S.fase=(typeof S.fase==='number'&&S.fase>=0&&S.fase<=3)?S.fase:0;if(S.forma!=='cuadrada')S.forma='redonda';if(S.orient!=='vertical')S.orient='horizontal';sanitizarCx();
   if(S.plantilla==='clasica')S.plantilla='minimalista';if(S.plantilla==='moderna')S.plantilla='perfil';
-  S.vars=Object.assign({minimalista:0,perfil:0,destacada:0,portada:0,lineas:0,editorial:0},(S.vars&&typeof S.vars==='object')?S.vars:{});['minimalista','perfil','destacada','portada','lineas','editorial'].forEach(function(k){S.vars[k]=S.vars[k]===1?1:0});
-  var campos=['nombre','cargo','empresa','correo','tel','wa','web','ig','li','yt'];
+  S.vars=Object.assign({minimalista:0,perfil:0,destacada:0,portada:0,lineas:0,editorial:0},(S.vars&&typeof S.vars==='object')?S.vars:{});['minimalista','perfil','destacada','portada','lineas','editorial'].forEach(function(k){S.vars[k]=([0,1,2,3].indexOf(S.vars[k])>=0?S.vars[k]:0)});
+  var REDES=[['wa','WhatsApp','número o link'],['ig','Instagram','usuario o link'],['li','LinkedIn','usuario o link'],['yt','YouTube','usuario o link'],['tiktok','TikTok','usuario o link'],['facebook','Facebook','usuario o link'],['x','X','usuario o link'],['behance','Behance','usuario o link'],['pinterest','Pinterest','usuario o link'],['telegram','Telegram','usuario o link']];
+  var ICO={wa:'whatsapp',ig:'instagram',li:'linkedin',yt:'youtube'};function ik(k){return ICO[k]||k}
+  var REDK={};REDES.forEach(function(r){REDK[r[0]]=r});
+  (function(){
+    var old=leer('crealab.firma')||{};
+    if(!Array.isArray(S.redesSel))S.redesSel=[];if(!S.rd||typeof S.rd!=='object'||Array.isArray(S.rd))S.rd={};
+    if(old.redesOn&&typeof old.redesOn==='object')['wa','ig','li','yt'].forEach(function(k){if(old.redesOn[k]===1&&typeof old[k]==='string'&&old[k].trim()&&S.redesSel.indexOf(k)<0){S.redesSel.push(k);S.rd[k]=old[k]}});
+    S.redesSel=S.redesSel.filter(function(k,i,a){return REDK[k]&&a.indexOf(k)===i});
+    Object.keys(S.rd).forEach(function(k){if(!REDK[k]||typeof S.rd[k]!=='string')delete S.rd[k]});
+    delete S.redesOn;['wa','ig','li','yt'].forEach(function(k){delete S[k]});
+  })();
+  function sanitizarCx(){
+    S.color2=hexOk(S.color2,'#926974');
+    var o={};if(S.cx&&typeof S.cx==='object')['nombre','cargo','linea','avatar','circulo','icono','etiqueta'].forEach(function(k){var v=hexOk(S.cx[k],'');if(v)o[k]=v});
+    if(S.colorEtq&&!o.etiqueta){var e=hexOk(S.colorEtq,'');if(e)o.etiqueta=e}
+    if(S.colorIco&&!o.circulo){var i=hexOk(S.colorIco,'');if(i)o.circulo=i}
+    S.cx=o;delete S.colorEtq;delete S.colorIco;
+  }
+  sanitizarCx();
+  var campos=['nombre','cargo','empresa','correo','tel','web'];
   campos.forEach(function(k){if(typeof S[k]!=='string')S[k]=''});
 
   function solo(n){return String(n).replace(/[^\d+]/g,'')}
   function url(v){v=v.trim();return /^https?:\/\//i.test(v)?v:'https://'+v}
+  var BASES={ig:'https://instagram.com/',li:'https://www.linkedin.com/in/',yt:'https://youtube.com/@',tiktok:'https://www.tiktok.com/@',facebook:'https://facebook.com/',x:'https://x.com/',behance:'https://www.behance.net/',pinterest:'https://www.pinterest.com/',telegram:'https://t.me/',threads:'https://www.threads.net/@',github:'https://github.com/',dribbble:'https://dribbble.com/',twitch:'https://www.twitch.tv/',snapchat:'https://www.snapchat.com/add/',medium:'https://medium.com/@'};
+  function linkRed(k,v){
+    v=v.trim();if(/^https?:\/\//i.test(v))return v;
+    if(k==='wa')return 'https://wa.me/'+solo(v).replace('+','');
+    if(k==='spotify'||k==='discord'||/^www\./i.test(v))return url(v);
+    return BASES[k]+encodeURIComponent(v.replace(/^@/,''));
+  }
   function enlace(t,v){
     v=v.trim().replace(/^@/,'');
     if(/^https?:\/\//i.test(v))return v;
@@ -1149,13 +1274,16 @@ body.interna footer{background:transparent;position:relative;z-index:1}
   };
   function mezcla(hex,k){return '#'+[1,3,5].map(function(i){return ('0'+Math.round(parseInt(hex.substr(i,2),16)*k+255*(1-k)).toString(16)).slice(-2)}).join('')}
   function construir(copiar,Pov){
-    var c=S.color,tx=S.texto,f=FUENTES[S.fuente],P=Pov||S.plantilla,V=(S.vars&&S.vars[P])?1:0,suave=mezcla(tx,.7),fino=mezcla(c,.28),SOFT=S.colorIco?hexOk(S.colorIco,mezcla(c,.16)):mezcla(c,.16),SOFTOSC=lumHex(SOFT)<.3;
-    var tint=S.colorEtq?hexOk(S.colorEtq,mezcla(c,.12)):mezcla(c,.12),txChip=lumHex(tint)>.35?tx:'#FFFFFF';
+    var c=S.color,c2=S.color2,X=S.cx||{},tx=S.texto,f=FUENTES[S.fuente],P=Pov||S.plantilla,V=(S.vars&&S.vars[P]|0),suave=mezcla(tx,.7);
+    function K(k,d){return X[k]?hexOk(X[k],d):d}
+    var fino=K('linea',mezcla(c2,.5)),LIN=K('linea',c),SOFT=K('circulo',mezcla(c2,.3)),SOFTOSC=lumHex(SOFT)<.3,GL=X.icono?hexOk(X.icono,''):'';
+    var tint=K('etiqueta',mezcla(c2,.28)),txChip=lumHex(tint)>.35?tx:'#FFFFFF';
     var VERT=S.orient==='vertical',SP=SPEC[P]||SPEC.minimalista;
-    function val(k){var v=S[k].trim();return v?S[k]:(copiar?'':MUESTRA[k])}
+    var ejemplo=!copiar&&campos.every(function(k){return !S[k].trim()})&&S.redesSel.length===0;
+    function val(k){var v=S[k].trim();return v?S[k]:(ejemplo?MUESTRA[k]:'')}
     var nombre=val('nombre'),cargo=val('cargo'),empresa=val('empresa');
     var sobreC=lumHex(c)>.5?'#2B1721':'#FFFFFF';
-    var correo=val('correo'),tel=val('tel'),wa=val('wa'),web=val('web'),ig=val('ig'),li=val('li'),yt=val('yt');
+    var correo=val('correo'),tel=val('tel'),web=val('web');
     var T='role="presentation" cellpadding="0" cellspacing="0" border="0"';
     var cs='font-family:'+f+';font-size:13px;line-height:19px;white-space:nowrap;color:'+tx;
     function AL(a){return a==='center'?' align="center"':''}
@@ -1165,20 +1293,29 @@ body.interna footer{background:transparent;position:relative;z-index:1}
     if(tel)datos.push({i:'phone',h:'tel:'+solo(tel),t:tel.trim()});
     if(web)datos.push({i:'web',h:url(web),t:web.trim().replace(/^https?:\/\//i,'')});
     var redes=[];
-    if(wa)redes.push({i:'whatsapp',h:'https://wa.me/'+solo(wa).replace('+',''),t:'WhatsApp'});
-    if(ig)redes.push({i:'instagram',h:enlace('ig',ig),t:'Instagram'});
-    if(li)redes.push({i:'linkedin',h:enlace('li',li),t:'LinkedIn'});
-    if(yt)redes.push({i:'youtube',h:enlace('yt',yt),t:'YouTube'});
+    (ejemplo?['wa','ig','li','yt']:S.redesSel).forEach(function(k){
+      var v=ejemplo?EJRED[k]:(S.rd[k]||'').trim();
+      if(v)redes.push({i:ik(k),h:linkRed(k,v),t:REDK[k][1]});
+    });
 
     /* iconos sutiles: glifo oscuro, solo o sobre un circulo muy suave */
-    function glifo(i,px,claro){
-      var src=copiar?BASE_ICONOS+i+(claro?'':'-d')+'.png':dataSvg(glifoSvg(i,claro?'#FFFFFF':'#2B1721','none',58));
+    var HOST=['2B1721','FFFFFF','3D232F','63404D','926974','B4949C','E6D3DA','1F5C46','1F3A8A','C0562C','5B3A8C','C2185B','374151','2F8F5B','143D2E','142A66','2F6F8F','7A3216','E08A5B','3B2362','8E6BC2','6B5420','A67C1E','D4A94F','7A0E38','E05C92','111827','6B7280'];
+    function snapIco(hex){
+      var r=parseInt(hex.substr(1,2),16),g=parseInt(hex.substr(3,2),16),b=parseInt(hex.substr(5,2),16),mejor=HOST[0],d0=1e9;
+      HOST.forEach(function(h){var dr=r-parseInt(h.substr(0,2),16),dg=g-parseInt(h.substr(2,2),16),db=b-parseInt(h.substr(4,2),16),d=dr*dr+dg*dg+db*db;if(d<d0){d0=d;mejor=h}});
+      return '#'+mejor;
+    }
+    function glifo(i,px,col){
+      col=snapIco(col||'#2B1721');var u=col.replace('#','').toUpperCase();
+      
+      var arch=u==='2B1721'?'-d':(u==='FFFFFF'?'':'-'+u);
+      var src=copiar?BASE_ICONOS+i+arch+'.png':dataSvg(glifoSvg(i,col,'none',58));
       return '<img src="'+src+'" width="'+px+'" height="'+px+'" alt="" style="display:block;border:0;width:'+px+'px;height:'+px+'px;margin:0 auto">';
     }
     function icoSoft(d,tam,px){
-      return '<td width="'+tam+'" height="'+tam+'" align="center" valign="middle" bgcolor="'+SOFT+'" style="width:'+tam+'px;height:'+tam+'px;background-color:'+SOFT+';border-radius:50%"><a href="'+esc(d.h)+'" style="text-decoration:none;display:block">'+glifo(d.i,px,SOFTOSC)+'</a></td>';
+      return '<td width="'+tam+'" height="'+tam+'" align="center" valign="middle" bgcolor="'+SOFT+'" style="width:'+tam+'px;height:'+tam+'px;background-color:'+SOFT+';border-radius:50%"><a href="'+esc(d.h)+'" style="text-decoration:none;display:block">'+glifo(d.i,px,GL||(SOFTOSC?'#FFFFFF':'#2B1721'))+'</a></td>';
     }
-    function icoBare(d,px){return '<td valign="middle"><a href="'+esc(d.h)+'" style="text-decoration:none;display:block">'+glifo(d.i,px)+'</a></td>'}
+    function icoBare(d,px){return '<td valign="middle"><a href="'+esc(d.h)+'" style="text-decoration:none;display:block">'+glifo(d.i,px,GL||'#2B1721')+'</a></td>'}
     function filaRedes(alin,px){
       if(!redes.length)return '';
       var soft=SP.red==='soft';
@@ -1212,7 +1349,7 @@ body.interna footer{background:transparent;position:relative;z-index:1}
       }).join('')+'</table>';
     }
     /* foto o circulo con inicial */
-    var srcFoto=copiar?'':imgOk(S.foto);
+    var srcFoto=(copiar||S.fotoModo!=='subir')?'':imgOk(S.foto);
     function foto(tam,o){
       o=o||{};var alin=o.alin||'left';
       var sq=S.forma==='cuadrada',r=o.suave?Math.round(tam*.34):(sq?Math.round(tam*.12):Math.round(tam/2));
@@ -1220,7 +1357,7 @@ body.interna footer{background:transparent;position:relative;z-index:1}
       if(srcFoto)inner='<img src="'+srcFoto+'" width="'+tam+'" height="'+tam+'" alt="" style="display:block;width:'+tam+'px;height:'+tam+'px;border-radius:'+r+'px;border:0">';
       else if(S.sinfoto==='nada')return '';
       else{
-        var letra=((S.nombre.trim()||MUESTRA.nombre).charAt(0)||'N').toUpperCase(),bg=o.inv?sobreC:c,fg=o.inv?c:sobreC;
+        var letra=((S.nombre.trim()||(ejemplo?MUESTRA.nombre:'•')).charAt(0)||'•').toUpperCase(),bg=o.inv?sobreC:K('avatar',c),fg=o.inv?c:(lumHex(bg)>.5?'#2B1721':'#FFFFFF');
         inner='<table '+T+'><tr><td width="'+tam+'" height="'+tam+'" align="center" valign="middle" bgcolor="'+bg+'" style="width:'+tam+'px;min-width:'+tam+'px;height:'+tam+'px;background-color:'+bg+';border-radius:'+r+'px;font-family:'+f+';font-size:'+Math.round(tam*.4)+'px;line-height:'+tam+'px;font-weight:bold;color:'+fg+'">'+esc(letra)+'</td></tr></table>';
       }
       if(o.ring)inner='<table '+T+'><tr><td style="padding:'+o.ring+'px;background-color:'+(o.ringColor||c)+';border-radius:'+(r+o.ring)+'px">'+inner+'</td></tr></table>';
@@ -1228,17 +1365,18 @@ body.interna footer{background:transparent;position:relative;z-index:1}
     }
     /* nombre y cargo segun el diseno */
     var NOM={minimalista:[tx,26],perfil:[tx,22],destacada:[sobreC,21],portada:[(VERT?sobreC:c),26],lineas:[tx,21],editorial:[tx,32]}[P];
+    NOM[0]=K('nombre',NOM[0]);
     function nTd(alin){return '<tr><td align="'+alin+'" style="font-family:'+f+';font-size:'+NOM[1]+'px;line-height:'+Math.round(NOM[1]*1.22)+'px;font-weight:bold;color:'+NOM[0]+(P==='lineas'?';text-transform:uppercase;letter-spacing:1.2px':'')+'">'+esc(nombre)+'</td></tr>'}
     function cTd(alin){
-      var e=empresa,k=cargo;
-      if(P==='lineas')return (k?'<tr><td align="'+alin+'" style="font-family:'+f+';font-size:10.5px;line-height:16px;letter-spacing:2.2px;text-transform:uppercase;font-weight:bold;color:'+tx+'">'+esc(k)+'</td></tr>':'')+(e?'<tr><td align="'+alin+'" style="font-family:'+f+';font-size:10.5px;line-height:16px;letter-spacing:1.6px;text-transform:uppercase;color:'+suave+'">'+esc(e)+'</td></tr>':'');
-      if(P==='editorial')return (k?'<tr><td align="'+alin+'" style="padding-top:2px;font-family:'+f+';font-size:13px;line-height:19px;letter-spacing:1.2px;text-transform:uppercase;font-weight:bold;color:'+tx+'">'+esc(k)+'</td></tr>':'')+(e?'<tr><td align="'+alin+'" style="font-family:'+f+';font-size:12px;line-height:18px;letter-spacing:1px;text-transform:uppercase;font-weight:bold;color:'+suave+'">'+esc(e)+'</td></tr>':'');
+      var e=empresa,k=cargo,cc=X.cargo?hexOk(X.cargo,''):'';
+      if(P==='lineas')return (k?'<tr><td align="'+alin+'" style="font-family:'+f+';font-size:10.5px;line-height:16px;letter-spacing:2.2px;text-transform:uppercase;font-weight:bold;color:'+(cc||tx)+'">'+esc(k)+'</td></tr>':'')+(e?'<tr><td align="'+alin+'" style="font-family:'+f+';font-size:10.5px;line-height:16px;letter-spacing:1.6px;text-transform:uppercase;color:'+suave+'">'+esc(e)+'</td></tr>':'');
+      if(P==='editorial')return (k?'<tr><td align="'+alin+'" style="padding-top:2px;font-family:'+f+';font-size:13px;line-height:19px;letter-spacing:1.2px;text-transform:uppercase;font-weight:bold;color:'+(cc||tx)+'">'+esc(k)+'</td></tr>':'')+(e?'<tr><td align="'+alin+'" style="font-family:'+f+';font-size:12px;line-height:18px;letter-spacing:1px;text-transform:uppercase;font-weight:bold;color:'+suave+'">'+esc(e)+'</td></tr>':'');
       var enBloque=(P==='destacada'||(P==='portada'&&VERT)),col=enBloque?sobreC:c,ec=enBloque?sobreC:suave;
       var t=k?esc(k)+(e?'<span style="color:'+ec+'">&nbsp;&nbsp;·&nbsp;&nbsp;'+esc(e)+'</span>':''):esc(e);
-      return t?'<tr><td align="'+alin+'" style="font-family:'+f+';font-size:13px;line-height:19px;color:'+col+'">'+t+'</td></tr>':'';
+      return t?'<tr><td align="'+alin+'" style="font-family:'+f+';font-size:13px;line-height:19px;color:'+(cc||col)+'">'+t+'</td></tr>':'';
     }
     var base='<table '+T+' style="font-family:'+f+'">';
-    function sepV(){return '<td width="1" bgcolor="'+(P==='lineas'||P==='editorial'?tx:fino)+'" style="width:1px;font-size:1px;line-height:1px;background-color:'+(P==='lineas'||P==='editorial'?tx:fino)+'"></td>'}
+    function sepV(){var q=(P==='lineas'||P==='editorial')?K('linea',tx):fino;return '<td width="1" bgcolor="'+q+'" style="width:1px;font-size:1px;line-height:1px;background-color:'+q+'"></td>'}
     function hr(){return '<tr><td style="padding:10px 0"><table '+T+' width="100%"><tr><td height="1" bgcolor="'+fino+'" style="height:1px;line-height:1px;font-size:1px;background-color:'+fino+'"></td></tr></table></td></tr>'}
     function fila(h,pad,alin){return h?'<tr><td align="'+(alin||'left')+'" style="padding-top:'+pad+'px">'+h+'</td></tr>':''}
     var bannerP=(P==='destacada'||P==='portada');
@@ -1258,29 +1396,36 @@ body.interna footer{background:transparent;position:relative;z-index:1}
       if(bannerP){
         var bgB=(P==='portada')?c:c;
         return base+'<tr><td width="300" align="'+alin+'" bgcolor="'+bgB+'" style="width:300px;background-color:'+bgB+';padding:18px 22px;border-radius:14px 14px 0 0">'+enc+'</td></tr>'
-          +'<tr><td align="'+alin+'" style="padding:16px 22px 16px 22px;border:1px solid '+c+';border-top:0;border-radius:0 0 14px 14px;background-color:'+(P==='portada'?mezcla(c,.08):'#FFFFFF')+'"><table '+T+AL(alin)+'>'+cuerpo+'</table></td></tr></table>';
+          +'<tr><td align="'+alin+'" style="padding:16px 22px 16px 22px;border:1px solid '+c+';border-top:0;border-radius:0 0 14px 14px;background-color:'+(P==='portada'?mezcla(c2,.12):'#FFFFFF')+'"><table '+T+AL(alin)+'>'+cuerpo+'</table></td></tr></table>';
       }
-      var top=(P==='minimalista')?'border-top:2px solid '+c+';padding-top:14px':'';
-      var linVert=(P==='lineas'||P==='editorial')?'border-top:1px solid '+tx+';padding-top:14px':'';
+      var top=(P==='minimalista')?'border-top:2px solid '+LIN+';padding-top:14px':'';
+      var linVert=(P==='lineas'||P==='editorial')?'border-top:1px solid '+K('linea',tx)+';padding-top:14px':'';
       return base+'<tr><td align="'+alin+'" style="'+top+linVert+'">'+enc+'<table '+T+AL(alin)+(P==='lineas'?' width="100%"':'')+'>'+cuerpo+'</table></td></tr></table>';
     }
 
     /* ================= HORIZONTAL ================= */
+    var lineaFuerte='<tr><td style="padding:10px 0 12px 0"><table '+T+' width="100%"><tr><td height="2" bgcolor="'+LIN+'" style="height:2px;line-height:2px;font-size:1px;background-color:'+LIN+'"></td></tr></table></td></tr>';
+    var lineaTx=K('linea',tx);
+    function lineaFinaTx(){return '<tr><td style="padding:12px 0"><table '+T+' width="100%"><tr><td height="1" bgcolor="'+lineaTx+'" style="height:1px;line-height:1px;font-size:1px;background-color:'+lineaTx+'"></td></tr></table></td></tr>'}
     if(P==='perfil'){
       var fp=foto(84,{alin:'center'}),ri=filaRedes('center');
       var colFoto=(fp||ri)?'<table '+T+'>'+(fp?'<tr><td align="center">'+fp+'</td></tr>':'')+(ri?'<tr><td align="center" style="padding-top:'+(fp?12:0)+'px">'+ri+'</td></tr>':'')+'</table>':'';
       var info='<table '+T+'>'+nTd('left')+cTd('left')+(datos.length?hr():'')+(datos.length?'<tr><td>'+contactos('columna','left')+'</td></tr>':'')+'</table>';
       if(V===0)return base+'<tr><td valign="top" style="padding-right:26px">'+info+'</td>'+(colFoto?sepV()+'<td valign="top" align="center" style="padding-left:26px">'+colFoto+'</td>':'')+'</tr></table>';
+      if(V===2)return base+'<tr><td><table '+T+'>'+nTd('left')+cTd('left')+'</table></td></tr>'+(datos.length?hr():'')+'<tr><td><table '+T+' width="100%"><tr><td valign="top">'+contactos('columna','left')+'</td>'+(colFoto?'<td valign="top" align="right" style="padding-left:28px">'+colFoto+'</td>':'')+'</tr></table></td></tr></table>';
       return base+'<tr>'+(colFoto?'<td valign="top" align="center" style="padding-right:26px">'+colFoto+'</td>'+sepV()+'<td valign="top" style="padding-left:26px">':'<td valign="top">')+info+'</td></tr></table>';
     }
 
     if(P==='destacada'){
       var fd=foto(54,{inv:true});
-      var nomT='<table '+T+'><tr>'+(fd?'<td valign="middle" width="70" style="padding-right:16px;width:70px">'+fd+'</td>':'')+'<td valign="middle"><table '+T+'>'+nTd('left')+cTd('left')+'</table></td></tr></table>';
-      var cab=(V===1&&redes.length)?'<table '+T+' width="100%"><tr><td valign="middle">'+nomT+'</td><td valign="middle" align="right" style="padding-left:20px">'+filaRedes('right')+'</td></tr></table>':nomT;
+      var nombreBloque='<table '+T+'>'+nTd('left')+cTd('left')+'</table>';
+      var nomT='<table '+T+'><tr>'+(fd?'<td valign="middle" width="70" style="padding-right:16px;width:70px">'+fd+'</td>':'')+'<td valign="middle">'+nombreBloque+'</td></tr></table>';
+      var cab=nomT;
+      if(V===1&&redes.length)cab='<table '+T+' width="100%"><tr><td valign="middle">'+nomT+'</td><td valign="middle" align="right" style="padding-left:20px">'+filaRedes('right')+'</td></tr></table>';
+      if(V===2)cab='<table '+T+' width="100%"><tr><td valign="middle">'+nombreBloque+'</td>'+(fd?'<td valign="middle" align="right" style="padding-left:16px">'+fd+'</td>':'')+'</tr></table>';
       var por={};datos.forEach(function(d){por[d.i]=d});
       var cel=function(d,pad){return '<td valign="middle" style="padding:0 '+pad+'px 10px 0">'+(d?item(d):'')+'</td>'};
-      var grid=(datos.length||redes.length)?'<table '+T+'><tr>'+cel(por.mail,28)+cel(por.phone,0)+'</tr><tr>'+cel(por.web,28)+(V===0?'<td valign="middle" style="padding:0 0 10px 0">'+filaRedes('left')+'</td>':'<td></td>')+'</tr></table>':'';
+      var grid=(datos.length||redes.length)?'<table '+T+'><tr>'+cel(por.mail,28)+cel(por.phone,0)+'</tr><tr>'+cel(por.web,28)+(V!==1?'<td valign="middle" style="padding:0 0 10px 0">'+filaRedes('left')+'</td>':'<td></td>')+'</tr></table>':'';
       return base+'<tr><td bgcolor="'+c+'" style="background-color:'+c+';padding:16px 22px;border-radius:14px 14px 0 0">'+cab+'</td></tr>'+(grid?'<tr><td style="padding:16px 22px 6px 22px;border:1px solid '+c+';border-top:0;border-radius:0 0 14px 14px">'+grid+'</td></tr>':'')+'</table>';
     }
 
@@ -1288,56 +1433,96 @@ body.interna footer{background:transparent;position:relative;z-index:1}
       var fo=foto(78,{ring:4,ringColor:'#FFFFFF'});
       var emB=empresa?'<td valign="middle" style="font-family:'+f+';font-size:18px;font-weight:bold;color:'+sobreC+'">'+esc(empresa)+'</td>':'<td></td>';
       var band='<tr><td bgcolor="'+c+'" style="background-color:'+c+';padding:16px 26px;border-radius:14px 14px 0 0"><table '+T+' width="100%"><tr>'+(V===0?'<td></td>':emB)+'<td valign="middle" align="right">'+(fo||'')+'</td></tr></table></td></tr>';
-      var cuerpoP='<tr><td style="padding:16px 26px 18px 26px;background-color:'+mezcla(c,.08)+';border-radius:0 0 14px 14px"><table '+T+'>'+nTd('left')+cTd('left')+'</table>'+(datos.length?'<table '+T+' style="margin-top:12px"><tr><td>'+contactos('fila','left')+'</td></tr></table>':'')+(redes.length?'<table '+T+' style="margin-top:10px"><tr><td>'+filaRedes('left')+'</td></tr></table>':'')+'</td></tr>';
+      var cuerpoP='<tr><td style="padding:16px 26px 18px 26px;background-color:'+mezcla(c2,.12)+';border-radius:0 0 14px 14px"><table '+T+'>'+nTd('left')+cTd('left')+'</table>'+(datos.length?'<table '+T+' style="margin-top:12px"><tr><td>'+contactos('fila','left')+'</td></tr></table>':'')+(redes.length?'<table '+T+' style="margin-top:10px"><tr><td>'+filaRedes('left')+'</td></tr></table>':'')+'</td></tr>';
       return base+band+cuerpoP+'</table>';
     }
 
     if(P==='lineas'){
       var fl=foto(104,{ring:4,ringColor:tx,alin:'center'});
-      var txtL='<table '+T+' width="260">'+nTd('center')+cTd('center')+(datos.length?'<tr><td style="padding-top:12px">'+contactos('columna','left')+'</td></tr>':'')+fila(filaRedes('left'),10,'left')+'</table>';
-      var cFl=fl?'<td valign="middle" align="center" style="padding-'+(V===0?'right':'left')+':28px">'+fl+'</td>':'';
-      return base+'<tr>'+(V===0?cFl+sepV():'')+'<td valign="middle" style="padding-'+(V===0?'left':'right')+':28px">'+txtL+'</td>'+(V===1?sepV()+cFl:'')+'</tr></table>';
+      var datosL=(datos.length?'<tr><td style="padding-top:12px">'+contactos('columna','left')+'</td></tr>':'')+fila(filaRedes('left'),10,'left');
+      var cFl=function(lado,pad){return fl?'<td valign="middle" align="center" style="padding-'+lado+':'+pad+'px">'+fl+'</td>':''};
+      if(V===2){
+        return base+'<tr><td align="center"><table '+T+'>'+nTd('center')+cTd('center')+'</table></td></tr>'+lineaFinaTx()
+          +'<tr><td><table '+T+'><tr>'+cFl('right',28)+sepV()+'<td valign="middle" style="padding-left:28px"><table '+T+' width="240">'+datosL+'</table></td></tr></table></td></tr></table>';
+      }
+      var txtL='<table '+T+' width="260">'+nTd('center')+cTd('center')+datosL+'</table>';
+      return base+'<tr>'+(V===0?cFl('right',28)+sepV():'')+'<td valign="middle" style="padding-'+(V===0?'left':'right')+':28px">'+txtL+'</td>'+(V===1?sepV()+cFl('left',28):'')+'</tr></table>';
     }
 
     if(P==='editorial'){
       var fe2=foto(110,{alin:'center'});
-      var txtE='<table '+T+'>'+nTd('left')+cTd('left')+(datos.length?'<tr><td style="padding-top:12px">'+contactos('columna','left')+'</td></tr>':'')+fila(filaRedes('left'),12,'left')+'</table>';
-      var cFe=fe2?'<td valign="middle" style="padding-'+(V===0?'right':'left')+':28px">'+fe2+'</td>':'';
-      return base+'<tr>'+(V===0?cFe+sepV():'')+'<td valign="middle" style="padding-'+(V===0?'left':'right')+':28px">'+txtE+'</td>'+(V===1?sepV()+cFe:'')+'</tr></table>';
+      var datosE=(datos.length?'<tr><td style="padding-top:12px">'+contactos('columna','left')+'</td></tr>':'')+fila(filaRedes('left'),12,'left');
+      var cFe=function(lado,pad){return fe2?'<td valign="middle" style="padding-'+lado+':'+pad+'px">'+fe2+'</td>':''};
+      if(V===2){
+        return base+'<tr><td><table '+T+'>'+nTd('left')+cTd('left')+'</table></td></tr>'+lineaFinaTx()
+          +'<tr><td><table '+T+' width="100%"><tr><td valign="top"><table '+T+'>'+datosE.replace('padding-top:12px','padding-top:0')+'</table></td>'+(fe2?'<td valign="middle" align="right" style="padding-left:28px">'+fe2+'</td>':'')+'</tr></table></td></tr></table>';
+      }
+      var txtE='<table '+T+'>'+nTd('left')+cTd('left')+datosE+'</table>';
+      return base+'<tr>'+(V===0?cFe('right',28)+sepV():'')+'<td valign="middle" style="padding-'+(V===0?'left':'right')+':28px">'+txtE+'</td>'+(V===1?sepV()+cFe('left',28):'')+'</tr></table>';
     }
 
     /* MINIMALISTA */
-    var fm=foto(V===0?64:56);
+    var fm=foto(V===3?56:64);
     var rs=filaRedes('left',16),bloqueC=chips(72,'left');
+    var pieMin=(bloqueC?'<tr><td>'+bloqueC+'</td></tr>':'')+(rs?'<tr><td style="padding-top:'+(bloqueC?10:0)+'px">'+rs+'</td></tr>':'');
     if(V===0){
-      var te='<table '+T+'>'+nTd('left')+cTd('left')+(bloqueC||rs?'<tr><td style="font-size:1px;line-height:10px">&nbsp;</td></tr>':'')+(bloqueC?'<tr><td>'+bloqueC+'</td></tr>':'')+(rs?'<tr><td style="padding-top:'+(bloqueC?10:0)+'px">'+rs+'</td></tr>':'')+'</table>';
-      return base+'<tr><td style="border-top:2px solid '+c+';padding-top:14px"><table '+T+'><tr>'+(fm?'<td valign="top" width="80" style="padding-right:16px;width:80px">'+fm+'</td>':'')+'<td valign="top">'+te+'</td></tr></table></td></tr></table>';
+      var te='<table '+T+'>'+nTd('left')+cTd('left')+(bloqueC||rs?'<tr><td style="font-size:1px;line-height:10px">&nbsp;</td></tr>':'')+pieMin+'</table>';
+      return base+'<tr><td style="border-top:2px solid '+LIN+';padding-top:14px"><table '+T+'><tr>'+(fm?'<td valign="top" width="80" style="padding-right:16px;width:80px">'+fm+'</td>':'')+'<td valign="top">'+te+'</td></tr></table></td></tr></table>';
+    }
+    if(V===1||V===2){
+      var te1='<table '+T+'>'+nTd('left')+cTd('left')+((bloqueC||rs)?lineaFuerte:'')+pieMin+'</table>';
+      return base+'<tr>'+(fm?'<td valign="'+(V===1?'middle':'top')+'" width="80" style="padding-right:16px;width:80px">'+fm+'</td>':'')+'<td valign="middle">'+te1+'</td></tr></table>';
     }
     var cab2='<table '+T+'><tr>'+(fm?'<td valign="middle" width="72" style="padding-right:16px;width:72px">'+fm+'</td>':'')+'<td valign="middle"><table '+T+'>'+nTd('left')+cTd('left')+'</table></td></tr></table>';
     var pie=(bloqueC||rs)?'<tr><td style="padding-top:12px"><table '+T+' width="100%"><tr><td valign="middle">'+bloqueC+'</td>'+(rs?'<td valign="middle" align="right" style="padding-left:18px">'+rs+'</td>':'')+'</tr></table></td></tr>':'';
-    return base+'<tr><td style="border-top:2px solid '+c+';padding-top:14px">'+cab2+'</td></tr>'+pie+'</table>';
+    return base+'<tr><td style="border-top:2px solid '+LIN+';padding-top:14px">'+cab2+'</td></tr>'+pie+'</table>';
   }
 
   /* diagramas esquematicos */
   function diagrama(P,V,O){
     var o='<svg viewBox="0 0 80 56" aria-hidden="true">',cr=function(x,y,w,h,k){return '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="'+Math.min(h/2,3)+'" class="'+k+'"/>'},ci=function(x,y,r,k){return '<circle cx="'+x+'" cy="'+y+'" r="'+r+'" class="'+k+'"/>'},d3=function(x,y,dx){var s='';for(var i=0;i<3;i++)s+=ci(x+i*dx,y,2,'a');return s};
-    var mir=(V===1&&O!=='vertical');
-    var g='';
+    var g='',L1=function(x,y,w){return '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="1.4" class="c"/>'};
     if(O==='vertical'){
       if(P==='destacada'||P==='portada')g='<rect x="22" y="3" width="36" height="21" rx="4" class="a"/>'+ci(40,11,5,'w')+cr(29,18,22,3,'w')+cr(26,29,28,3,'c')+cr(26,35,24,3,'c')+cr(26,41,26,3,'c')+d3(30,50,6);
       else if(P==='lineas')g=ci(40,11,8,'b')+ci(40,11,6.4,'w')+ci(40,11,5,'a')+cr(28,22,24,3.6,'b')+cr(31,27,18,2.4,'c')+'<rect x="24" y="32" width="32" height="1" class="c"/>'+cr(28,35,24,3,'c')+'<rect x="24" y="40" width="32" height="1" class="c"/>'+cr(28,43,24,3,'c')+d3(34,52,6);
       else if(P==='editorial')g=ci(40,11,8,'a')+cr(24,22,32,5,'b')+cr(28,29,24,2.6,'c')+cr(26,35,28,2.6,'c')+cr(28,40,24,2.6,'c')+d3(34,50,6);
+      else if(P==='tarjeta')g='<rect x="31" y="3" width="18" height="21" rx="8" class="a"/>'+cr(24,28,32,5,'b')+cr(30,35,20,4,'b')+cr(24,43,10,3,'c')+cr(36,43,10,3,'c')+cr(48,43,10,3,'c')+d3(34,51,6);
       else if(P==='perfil')g=ci(40,10,7,'a')+cr(26,21,28,4,'b')+cr(30,27,20,3,'c')+'<rect x="24" y="32" width="32" height="1.2" class="c"/>'+ci(28,38,2.6,'a')+cr(33,36.5,20,3,'c')+ci(28,44,2.6,'a')+cr(33,42.5,16,3,'c')+d3(34,51,6);
       else g='<rect x="24" y="3" width="32" height="1.6" class="a"/>'+ci(40,13,6,'a')+cr(26,22,28,4.6,'b')+cr(30,28,20,3,'c')+cr(28,34,24,4.4,'c')+cr(28,40,24,4.4,'c')+d3(34,51,6);
       return o+g+'</svg>';
     }
-    if(P==='perfil')g=cr(8,10,30,4,'b')+cr(8,17,22,3,'c')+'<rect x="8" y="24" width="34" height="1.4" class="c"/>'+ci(11,33,3,'a')+cr(17,31.5,22,3,'c')+ci(11,42,3,'a')+cr(17,40.5,18,3,'c')+'<rect x="46" y="8" width="1.4" height="40" class="c"/>'+ci(62,22,10,'a')+d3(55,42,7);
-    else if(P==='destacada')g='<rect x="6" y="5" width="68" height="18" rx="4" class="a"/>'+ci(18,14,5,'w')+cr(28,9.5,30,4,'w')+cr(28,16,22,3,'w')+'<rect x="6" y="23" width="68" height="28" rx="4" class="c" opacity=".5"/>'+cr(12,29,24,3,'c')+cr(44,29,24,3,'c')+cr(12,37,20,3,'c')+d3(46,38.5,7);
-    else if(P==='portada')g='<rect x="6" y="5" width="68" height="22" rx="4" class="a"/>'+ci(62,16,8,'w')+ci(62,16,6,'b')+'<rect x="6" y="27" width="68" height="24" rx="4" class="c" opacity=".5"/>'+cr(12,31,28,4.6,'b')+cr(12,38,20,3,'c')+d3(14,46,6)+cr(30,45,10,3,'c')+cr(44,45,10,3,'c');
-    else if(P==='lineas')g=ci(18,28,13,'b')+ci(18,28,11,'w')+ci(18,28,9.4,'a')+'<rect x="38" y="6" width="1.6" height="44" class="b"/>'+cr(46,10,26,4.4,'b')+cr(50,17,18,2.4,'c')+'<rect x="46" y="24" width="28" height="1" class="c"/>'+cr(50,27,22,3,'c')+'<rect x="46" y="33" width="28" height="1" class="c"/>'+cr(50,36,22,3,'c')+d3(48,46,7);
-    else if(P==='editorial')g=ci(17,28,12,'a')+'<rect x="35" y="6" width="1.6" height="44" class="b"/>'+cr(42,10,32,6,'b')+cr(42,19,24,3,'c')+cr(42,28,26,2.6,'c')+cr(42,33,28,2.6,'c')+cr(42,38,20,2.6,'c')+d3(44,46,6);
-    else g='<rect x="6" y="5" width="68" height="1.6" class="a"/>'+ci(17,25,8,'a')+cr(30,15,32,5.5,'b')+cr(30,23,22,3,'c')+cr(30,31,13,5,'c')+cr(45,31,13,5,'c')+cr(60,31,13,5,'c')+d3(34,45,7);
-    if(mir)g='<g transform="translate(80 0) scale(-1 1)">'+g+'</g>';
+    if(P==='perfil'){
+      var izq=cr(8,10,30,4,'b')+cr(8,17,22,3,'c')+L1(8,24,34)+ci(11,33,3,'a')+cr(17,31.5,22,3,'c')+ci(11,42,3,'a')+cr(17,40.5,18,3,'c');
+      var der=ci(62,22,10,'a')+d3(55,42,7);
+      if(V===0)g=izq+'<rect x="46" y="8" width="1.4" height="40" class="c"/>'+der;
+      else if(V===1)g='<g transform="translate(80 0) scale(-1 1)">'+izq+'<rect x="46" y="8" width="1.4" height="40" class="c"/>'+der+'</g>';
+      else g=cr(8,8,32,4,'b')+cr(8,15,22,3,'c')+L1(8,23,64)+ci(11,32,3,'a')+cr(17,30.5,22,3,'c')+ci(11,41,3,'a')+cr(17,39.5,18,3,'c')+ci(62,34,9,'a')+d3(55,50,7);
+    }else if(P==='destacada'){
+      g='<rect x="6" y="5" width="68" height="18" rx="4" class="a"/>'+'<rect x="6" y="23" width="68" height="28" rx="4" class="c" opacity=".5"/>'+cr(12,29,24,3,'c')+cr(44,29,24,3,'c')+cr(12,37,20,3,'c');
+      if(V===0)g+=ci(18,14,5,'w')+cr(28,9.5,30,4,'w')+cr(28,16,22,3,'w')+d3(46,38.5,7);
+      else if(V===1)g+=ci(18,14,5,'w')+cr(28,9.5,30,4,'w')+cr(28,16,22,3,'w')+d3(54,14,6);
+      else g+=cr(12,9.5,30,4,'w')+cr(12,16,22,3,'w')+ci(62,14,5,'w')+d3(46,38.5,7);
+    }else if(P==='portada'){
+      g='<rect x="6" y="5" width="68" height="22" rx="4" class="a"/>'+ci(62,16,8,'w')+ci(62,16,6,'b')+'<rect x="6" y="27" width="68" height="24" rx="4" class="c" opacity=".5"/>'+cr(12,31,28,4.6,'b')+cr(12,38,20,3,'c')+d3(14,46,6)+cr(30,45,10,3,'c')+cr(44,45,10,3,'c');
+      if(V===1)g+=cr(12,13,22,4,'w');
+    }else if(P==='lineas'){
+      if(V===2)g=cr(26,5,28,4.4,'b')+cr(31,11,18,2.4,'c')+L1(8,17,64)+ci(18,34,10,'b')+ci(18,34,8.4,'w')+ci(18,34,7,'a')+'<rect x="36" y="20" width="1.6" height="32" class="b"/>'+cr(46,23,26,3,'c')+cr(46,30,22,3,'c')+cr(46,37,24,3,'c')+d3(48,47,7);
+      else{
+        var ln=ci(18,28,13,'b')+ci(18,28,11,'w')+ci(18,28,9.4,'a')+'<rect x="38" y="6" width="1.6" height="44" class="b"/>'+cr(46,10,26,4.4,'b')+cr(50,17,18,2.4,'c')+L1(46,24,28)+cr(50,27,22,3,'c')+L1(46,33,28)+cr(50,36,22,3,'c')+d3(48,46,7);
+        g=V===1?'<g transform="translate(80 0) scale(-1 1)">'+ln+'</g>':ln;
+      }
+    }else if(P==='editorial'){
+      if(V===2)g=cr(8,6,40,6,'b')+cr(8,15,28,3,'c')+L1(8,22,64)+cr(8,30,30,2.6,'c')+cr(8,35,34,2.6,'c')+cr(8,40,24,2.6,'c')+d3(10,48,6)+ci(58,38,11,'a');
+      else{
+        var ed=ci(17,28,12,'a')+'<rect x="35" y="6" width="1.6" height="44" class="b"/>'+cr(42,10,32,6,'b')+cr(42,19,24,3,'c')+cr(42,28,26,2.6,'c')+cr(42,33,28,2.6,'c')+cr(42,38,20,2.6,'c')+d3(44,46,6);
+        g=V===1?'<g transform="translate(80 0) scale(-1 1)">'+ed+'</g>':ed;
+      }
+    }else{
+      if(V===0)g='<rect x="6" y="5" width="68" height="1.6" class="a"/>'+ci(17,25,8,'a')+cr(30,15,32,5.5,'b')+cr(30,23,22,3,'c')+cr(30,31,13,5,'c')+cr(45,31,13,5,'c')+cr(60,31,13,5,'c')+d3(34,45,7);
+      else if(V===1)g=ci(17,28,8,'a')+cr(30,12,32,5.5,'b')+cr(30,20,22,3,'c')+'<rect x="30" y="26" width="42" height="2" class="a"/>'+cr(30,32,13,5,'c')+cr(45,32,13,5,'c')+cr(60,32,13,5,'c')+d3(33,46,7);
+      else if(V===2)g=ci(17,17,8,'a')+cr(30,12,32,5.5,'b')+cr(30,20,22,3,'c')+'<rect x="30" y="26" width="42" height="2" class="a"/>'+cr(30,32,13,5,'c')+cr(45,32,13,5,'c')+cr(60,32,13,5,'c')+d3(33,46,7);
+      else g='<rect x="6" y="5" width="68" height="1.6" class="a"/>'+ci(15,18,6,'a')+cr(25,12,32,5.5,'b')+cr(25,20,22,3,'c')+cr(8,34,14,5,'c')+cr(24,34,14,5,'c')+cr(40,34,14,5,'c')+d3(56,36.5,6);
+    }
     return o+g+'</svg>';
   }
   function ajustarZoom(){
@@ -1353,7 +1538,6 @@ body.interna footer{background:transparent;position:relative;z-index:1}
     ajustarZoom();
     document.querySelectorAll('#w-firma [data-d]').forEach(function(g){g.hidden=g.dataset.d.split(' ').indexOf(S.plantilla)<0});
     document.querySelectorAll('#diag .dg').forEach(function(el){el.innerHTML=diagrama(el.dataset.p,S.vars[el.dataset.p],S.orient)});
-    $('txt-diag').textContent=(S.orient==='vertical'?'Alineación ':'Diagramación ')+(S.vars[S.plantilla]+1)+' de 2';
     guardar('crealab.firma',S);
   }
   campos.forEach(function(k){var el=$('f-'+k);el.value=S[k]||'';el.addEventListener('input',function(){S[k]=el.value;pintarFirma()})});
@@ -1373,19 +1557,73 @@ body.interna footer{background:transparent;position:relative;z-index:1}
     l.innerHTML='<input type="radio" name="plantilla" value="'+p[0]+'"><span class="dgs"><span class="dg" data-p="'+p[0]+'"></span><b>'+p[1]+'</b></span>';
     $('diag').appendChild(l);
   });
-  $('btn-diag').addEventListener('click',function(){S.vars[S.plantilla]=S.vars[S.plantilla]?0:1;pintarFirma()});
-  radiosS('plantilla','plantilla');radiosS('orient','orient');radiosS('forma','forma');radiosS('sinfoto','sinfoto');radiosS('fuente','fuente');
-  selectorColor($('col-principal'),['#6B3FA0','#3D232F','#63404D','#C2185B','#B91C1C','#EA580C','#0F766E','#1D4ED8'],S.color,function(c){S.color=c;if(!S.colorEtq)$('col-etq')._set(mezcla(c,.12));if(!S.colorIco)$('col-ico')._set(mezcla(c,.16));pintarFirma()});
-  selectorColor($('col-etq'),['#F0E4E9','#E6D3DA','#EFECEC','#DCEBF3','#DDEFE5','#F7E6DA','#3D232F'],S.colorEtq||mezcla(S.color,.12),function(c){S.colorEtq=c;pintarFirma()});
-  $('btn-etq-auto').addEventListener('click',function(){S.colorEtq='';$('col-etq')._set(mezcla(S.color,.12));pintarFirma()});
-  selectorColor($('col-ico'),['#F0E4E9','#E6D3DA','#EFECEC','#DCEBF3','#DDEFE5','#F7E6DA','#3D232F'],S.colorIco||mezcla(S.color,.16),function(c){S.colorIco=c;pintarFirma()});
-  $('btn-ico-auto').addEventListener('click',function(){S.colorIco='';$('col-ico')._set(mezcla(S.color,.16));pintarFirma()});
-  selectorColor($('col-texto'),['#2B1721','#3D232F','#4A4A4A','#000000'],S.texto,function(c){S.texto=c;pintarFirma()});
+  radiosS('forma','forma');radiosS('fuente','fuente');
+  function marcarRadios(){
+    [['plantilla','plantilla',1],['orient','orient',2],['fotoModo','fotoModo',3]].forEach(function(p){
+      document.querySelectorAll('input[name="'+p[0]+'"]').forEach(function(r){r.checked=(S.fase>=p[2]&&r.value===S[p[1]])});
+    });
+  }
+  function revelar(){
+    $('g-orient').hidden=S.fase<1;$('g-foto').hidden=S.fase<2;
+    $('foto-subir').hidden=!(S.fase>=3&&S.fotoModo==='subir');
+  }
+  function enlazar(nombre,clave,fase){
+    document.querySelectorAll('input[name="'+nombre+'"]').forEach(function(r){
+      r.addEventListener('click',function(){
+        S[clave]=r.value;if(S.fase<fase)S.fase=fase;
+        if(clave==='fotoModo')S.sinfoto=S.fotoModo==='nada'?'nada':'inicial';
+        revelar();estadoFoto();pintarFirma();
+      });
+    });
+  }
+  enlazar('plantilla','plantilla',1);enlazar('orient','orient',2);enlazar('fotoModo','fotoModo',3);
+  $('btn-diag').addEventListener('click',function(){var n=(S.orient==='vertical')?2:({minimalista:4,perfil:3,destacada:3,portada:2,lineas:3,editorial:3}[S.plantilla]||2);S.vars[S.plantilla]=((S.vars[S.plantilla]|0)+1)%n;pintarFirma();this.classList.remove('gira');void this.offsetWidth;this.classList.add('gira')});
+  var COMBOS=[
+    {n:'Vino y rosa',pal:['#3D232F','#63404D','#926974','#B4949C','#E6D3DA'],claros:['#F0E4E9','#EFE3E8','#E6D3DA','#F6EEF1','#EFECEC'],ico:['#2B1721','#FFFFFF','#3D232F','#63404D','#926974'],c:'#63404D',c2:'#926974',t:'#2B1721',cx:{nombre:'#3D232F',cargo:'#926974',linea:'#926974',avatar:'#63404D',circulo:'#E6D3DA',icono:'#63404D',etiqueta:'#EFE3E8'}},
+    {n:'Verde',pal:['#143D2E','#1F5C46','#2F8F5B','#8FC7A9','#CFE8DC'],claros:['#E6F3EC','#DDEFE5','#CFE8DC','#EEF7F2','#F3F8F5'],ico:['#2B1721','#FFFFFF','#143D2E','#1F5C46','#2F8F5B'],c:'#1F5C46',c2:'#CFE8DC',t:'#1B2B24',cx:{nombre:'#143D2E',cargo:'#2F8F5B',linea:'#2F8F5B',avatar:'#1F5C46',circulo:'#DDEFE5',icono:'#1F5C46',etiqueta:'#E6F3EC'}},
+    {n:'Azul',pal:['#142A66','#1F3A8A','#2F6F8F','#8DB4D6','#DCEBF3'],claros:['#E6F0F7','#DCEBF3','#EEF4FA','#E4ECF7','#F3F6FA'],ico:['#2B1721','#FFFFFF','#142A66','#1F3A8A','#2F6F8F'],c:'#1F3A8A',c2:'#DCEBF3',t:'#1B2233',cx:{nombre:'#142A66',cargo:'#2F6F8F',linea:'#2F6F8F',avatar:'#1F3A8A',circulo:'#DCEBF3',icono:'#1F3A8A',etiqueta:'#E6F0F7'}},
+    {n:'Terracota',pal:['#7A3216','#C0562C','#E08A5B','#F0C3A5','#F7E6DA'],claros:['#FBEFE6','#F7E6DA','#FDF3EC','#F5DDCB','#FAF1EA'],ico:['#2B1721','#FFFFFF','#7A3216','#C0562C','#E08A5B'],c:'#C0562C',c2:'#F7E6DA',t:'#2B1721',cx:{nombre:'#7A3216',cargo:'#C0562C',linea:'#C0562C',avatar:'#C0562C',circulo:'#F7E6DA',icono:'#C0562C',etiqueta:'#FBEFE6'}},
+    {n:'Morado',pal:['#3B2362','#5B3A8C','#8E6BC2','#C2AEE3','#E4D9F2'],claros:['#EEE7F7','#E4D9F2','#F4F0FA','#DCCFF0','#F7F4FB'],ico:['#2B1721','#FFFFFF','#3B2362','#5B3A8C','#8E6BC2'],c:'#5B3A8C',c2:'#E4D9F2',t:'#231A33',cx:{nombre:'#3B2362',cargo:'#5B3A8C',linea:'#8E6BC2',avatar:'#5B3A8C',circulo:'#E4D9F2',icono:'#5B3A8C',etiqueta:'#EEE7F7'}},
+    {n:'Noche y oro',pal:['#2B1721','#6B5420','#A67C1E','#D4A94F','#F3E7C8'],claros:['#F8F0DA','#F3E7C8','#FBF6E8','#EFE0B5','#FDFAF0'],ico:['#2B1721','#FFFFFF','#6B5420','#A67C1E','#D4A94F'],c:'#2B1721',c2:'#D4A94F',t:'#2B1721',cx:{nombre:'#2B1721',cargo:'#A67C1E',linea:'#D4A94F',avatar:'#2B1721',circulo:'#F3E7C8',icono:'#2B1721',etiqueta:'#F8F0DA'}},
+    {n:'Grafito',pal:['#111827','#374151','#6B7280','#9CA3AF','#E5E7EB'],claros:['#EEF0F3','#E5E7EB','#F3F4F6','#D9DCE1','#F8F9FA'],ico:['#2B1721','#FFFFFF','#111827','#374151','#6B7280'],c:'#374151',c2:'#E5E7EB',t:'#111827',cx:{nombre:'#111827',cargo:'#4B5563',linea:'#9CA3AF',avatar:'#374151',circulo:'#E5E7EB',icono:'#374151',etiqueta:'#EEF0F3'}},
+    {n:'Fucsia',pal:['#7A0E38','#C2185B','#E05C92','#F2A3C3','#FBD9E6'],claros:['#FDE9F1','#FBD9E6','#FEF1F6','#F8C6DA','#FEF6F9'],ico:['#2B1721','#FFFFFF','#7A0E38','#C2185B','#E05C92'],c:'#C2185B',c2:'#FBD9E6',t:'#2B1721',cx:{nombre:'#7A0E38',cargo:'#C2185B',linea:'#C2185B',avatar:'#C2185B',circulo:'#FBD9E6',icono:'#C2185B',etiqueta:'#FDE9F1'}}
+  ];
+
+  if(!Object.keys(S.cx).length&&S.color.toLowerCase()===COMBOS[0].c.toLowerCase()&&S.color2.toLowerCase()===COMBOS[0].c2.toLowerCase()){S.cx=Object.assign({},COMBOS[0].cx);sanitizarCx()}
+  var PAL5=['#3D232F','#63404D','#926974','#B4949C','#E6D3DA'],PAL_CLARA=['#F0E4E9','#E6D3DA','#EFECEC','#DDEFE5','#DCEBF3'],PAL_ICO=['#2B1721','#FFFFFF','#63404D','#926974','#B4949C'];
+  var ADV=[['nombre','Color del nombre','',PAL5],['cargo','Color del cargo','',PAL5],['linea','Color de la línea','minimalista perfil lineas editorial',PAL5],['avatar','Color de la foto o inicial','',PAL5],['circulo','Color de los círculos','perfil destacada portada',PAL_CLARA],['icono','Color de los íconos','',PAL_ICO],['etiqueta','Color de las etiquetas','minimalista',PAL_CLARA],['texto','Color del texto de los datos','',PAL5]];
+  function autoColor(k){return {nombre:S.texto,cargo:S.color,linea:S.color,avatar:S.color,circulo:mezcla(S.color2,.3),icono:'#2B1721',etiqueta:mezcla(S.color2,.28),texto:S.texto}[k]}
+  function valorCx(k){return k==='texto'?S.texto:(S.cx[k]||autoColor(k))}
+  function refrescarTodo(){
+    var cb=COMBOS[S.pal]||COMBOS[0];
+    $('col-principal')._paleta(cb.pal,S.color);$('col-secundario')._paleta(cb.pal,S.color2);
+    ADV.forEach(function(a){var k=a[0],l=(k==='circulo'||k==='etiqueta')?cb.claros:(k==='icono'?cb.ico:cb.pal);$('col-'+k)._paleta(l,valorCx(k))});
+    marcarCombo();
+  }
+  function marcarCombo(){document.querySelectorAll('#combos-col button').forEach(function(b){b.classList.toggle('on',b.dataset.a.toLowerCase()===S.color.toLowerCase()&&b.dataset.b.toLowerCase()===S.color2.toLowerCase())})}
+  selectorColor($('col-principal'),PAL5,S.color,function(c){S.color=c;S.cx={};refrescarTodo();pintarFirma()});
+  selectorColor($('col-secundario'),PAL5,S.color2,function(c){S.color2=c;S.cx={};refrescarTodo();pintarFirma()});
+  COMBOS.forEach(function(p,ci){
+    var b=document.createElement('button');b.type='button';b.dataset.a=p.c;b.dataset.b=p.c2;b.title=p.n;b.setAttribute('aria-label','Combinación '+p.n);
+    b.innerHTML='<i style="background:'+p.c+'"></i><i style="background:'+p.c2+'"></i>';
+    b.addEventListener('click',function(){S.pal=ci;S.color=p.c;S.color2=p.c2;S.texto=p.t;S.cx=Object.assign({},p.cx);sanitizarCx();refrescarTodo();pintarFirma()});
+    $('combos-col').appendChild(b);
+  });
+  ADV.forEach(function(a,idx){
+    var k=a[0],g=document.createElement('div');g.className='grupo';if(a[2])g.dataset.d=a[2];
+    g.innerHTML='<span class="etq">'+a[1]+'</span><div class="colores compacto'+(idx%2?' der':'')+'" id="col-'+k+'"></div>';
+    $('col-avanzado').appendChild(g);
+    selectorColor($('col-'+k),a[3],valorCx(k),function(c){if(k==='texto')S.texto=c;else S.cx[k]=c;pintarFirma()});
+    if(k==='icono')g.insertAdjacentHTML('beforeend','<span class="sub" style="display:block;margin-top:4px">Usa el color más parecido de los íconos disponibles.</span>');
+  });
+  refrescarTodo();
+  $('btn-personalizar').addEventListener('click',function(){var ab=$('col-avanzado').hidden;$('col-avanzado').hidden=!ab;this.setAttribute('aria-expanded',String(ab));this.textContent=ab?'Ocultar personalización':'Personalizar colores'});
+  marcarCombo();
 
   function estadoFoto(){
     var m=$('mini-foto');
     if(S.foto){m.src=S.foto;m.style.display='block'}else{m.style.display='none'}
-    $('btn-quitar-foto').hidden=!S.foto;$('aviso-foto').hidden=!S.foto;$('fila-sinfoto').hidden=!!S.foto;
+    $('btn-quitar-foto').hidden=!S.foto;$('aviso-foto').hidden=!S.foto;$('fila-forma').hidden=!S.foto;revelar();
     $('btn-foto').textContent=S.foto?'Cambiar foto':'Elegir foto';
   }
   $('btn-foto').addEventListener('click',function(){$('f-foto').click()});
@@ -1397,7 +1635,7 @@ body.interna footer{background:transparent;position:relative;z-index:1}
     img.onload=function(){
       var l=Math.min(img.width,img.height),cv=document.createElement('canvas');cv.width=cv.height=400;
       cv.getContext('2d').drawImage(img,(img.width-l)/2,(img.height-l)/2,l,l,0,0,400,400);
-      S.foto=cv.toDataURL('image/jpeg',.85);URL.revokeObjectURL(u);estadoFoto();pintarFirma();
+      S.foto=cv.toDataURL('image/jpeg',.85);URL.revokeObjectURL(u);S.fotoModo='subir';if(S.fase<3)S.fase=3;marcarRadios();estadoFoto();pintarFirma();
     };
     img.onerror=function(){aviso('No pude leer esa imagen. Prueba con otra.')};
     img.src=u;
@@ -1426,21 +1664,67 @@ body.interna footer{background:transparent;position:relative;z-index:1}
       try{
         var d=JSON.parse(r.result);if(typeof d!=='object'||!d)throw 0;
         Object.keys(S).forEach(function(k){if(typeof d[k]==='string')S[k]=d[k]});
-        S.color=hexOk(S.color,'#6B3FA0');S.texto=hexOk(S.texto,'#2B1721');S.foto=imgOk(S.foto);
+        S.color=hexOk(S.color,'#63404D');S.texto=hexOk(S.texto,'#2B1721');S.foto=imgOk(S.foto);
         if(!FUENTES[S.fuente])S.fuente='arial';if(!FUENTES[S.fuenteN])S.fuenteN='georgia';
         if(['minimalista','perfil','destacada','portada','lineas','editorial'].indexOf(S.plantilla)<0)S.plantilla='minimalista';
-        if(S.sinfoto!=='nada')S.sinfoto='inicial';if(S.forma!=='cuadrada')S.forma='redonda';if(S.orient!=='vertical')S.orient='horizontal';S.colorEtq=S.colorEtq?hexOk(S.colorEtq,''):'';S.colorIco=S.colorIco?hexOk(S.colorIco,''):'';
-        if(d.vars&&typeof d.vars==='object')['minimalista','perfil','destacada','portada','lineas','editorial'].forEach(function(k){S.vars[k]=d.vars[k]===1?1:0});
+        if(['subir','inicial','nada'].indexOf(S.fotoModo)<0)S.fotoModo='inicial';S.sinfoto=S.fotoModo==='nada'?'nada':'inicial';S.fase=(typeof S.fase==='number'&&S.fase>=0&&S.fase<=3)?S.fase:0;if(S.forma!=='cuadrada')S.forma='redonda';if(S.orient!=='vertical')S.orient='horizontal';sanitizarCx();
+        if(d.vars&&typeof d.vars==='object')['minimalista','perfil','destacada','portada','lineas','editorial'].forEach(function(k){S.vars[k]=([0,1,2,3].indexOf(d.vars[k])>=0?d.vars[k]:0)});
+        if(Array.isArray(d.redesSel))S.redesSel=d.redesSel.filter(function(k,i,a){return REDK[k]&&a.indexOf(k)===i});
+        if(d.rd&&typeof d.rd==='object')S.rd=Object.keys(d.rd).reduce(function(o,k){if(REDK[k]&&typeof d.rd[k]==='string')o[k]=d.rd[k];return o},{});
         campos.forEach(function(k){$('f-'+k).value=S[k]});
-        ['plantilla','forma','sinfoto','fuente','fuenteN','orient'].forEach(function(n){document.querySelectorAll('input[name="'+n+'"]').forEach(function(x){x.checked=(x.value===S[n])})});
-        $('col-principal')._set(S.color);$('col-texto')._set(S.texto);$('col-etq')._set(S.colorEtq||mezcla(S.color,.12));$('col-ico')._set(S.colorIco||mezcla(S.color,.16));
-        estadoFoto();pintarFirma();aviso('Respaldo cargado');
+        ['forma','fuente','fuenteN'].forEach(function(n){document.querySelectorAll('input[name="'+n+'"]').forEach(function(x){x.checked=(x.value===S[n])})});S.fase=3;S.fotoModo=(S.fotoModo==='subir'&&!S.foto)?'inicial':S.fotoModo;S.sinfoto=S.fotoModo==='nada'?'nada':'inicial';marcarRadios();
+        if(d.cx&&typeof d.cx==='object')S.cx=d.cx;S.pal=(typeof d.pal==='number'&&d.pal>=0&&d.pal<COMBOS.length)?d.pal:0;sanitizarCx();refrescarTodo();
+        sincRedes();estadoFoto();pintarFirma();aviso('Respaldo cargado');
       }catch(e){aviso('Ese archivo no es un respaldo válido.')}
     };
     r.readAsText(f);this.value='';
   });
+  function icoRed(k){var m=MARCAS[ik(k)];return '<svg viewBox="0 0 '+m.s+' '+m.s+'" class="marca-ico" aria-hidden="true"><path d="'+m.d+'" fill="currentColor"/></svg>'}
+  function sincRedes(){
+    var grid=$('red-grid'),cont=$('red-campos');grid.innerHTML='';cont.innerHTML='';
+    REDES.forEach(function(r){
+      var l=document.createElement('label');l.title=r[1];
+      l.innerHTML='<input type="checkbox" value="'+r[0]+'"'+(S.redesSel.indexOf(r[0])>=0?' checked':'')+'><span aria-label="'+esc(r[1])+'">'+icoRed(r[0])+'</span>';
+      l.querySelector('input').addEventListener('change',function(){
+        var k=r[0],i=S.redesSel.indexOf(k);
+        if(this.checked&&i<0)S.redesSel.push(k);if(!this.checked&&i>=0)S.redesSel.splice(i,1);
+        sincRedes();pintarFirma();
+        if(this.checked){var inp=document.getElementById('f-red-'+k);if(inp)inp.focus()}
+      });
+      grid.appendChild(l);
+    });
+    S.redesSel.forEach(function(k){
+      var r=REDK[k],fila=document.createElement('div');fila.className='red-fila';
+      fila.innerHTML='<span class="red-ico">'+icoRed(k)+'</span><div class="campo red-campo"><input type="'+(k==='wa'?'tel':'text')+'" id="f-red-'+k+'" aria-label="'+esc(r[1])+'" placeholder="'+esc(r[2])+'"></div>';
+      var inp=fila.querySelector('input');inp.value=S.rd[k]||'';
+      inp.addEventListener('input',function(){S.rd[k]=inp.value;pintarFirma()});
+      cont.appendChild(fila);
+    });
+  }
+  sincRedes();
   asistente($('w-firma'),$('pb-firma'));
-  estadoFoto();pintarFirma();
+  function limpiarFirma(i){
+    var todo=(i===5);
+    if(todo&&!window.confirm('¿Borrar todo lo de tu firma y empezar de cero?'))return;
+    if(i===0||todo){campos.forEach(function(k){S[k]='';$('f-'+k).value=''})}
+    if(i===1||todo){S.redesSel=[];S.rd={};sincRedes()}
+    if(i===2||todo){
+      S.fase=0;S.plantilla='minimalista';S.orient='horizontal';S.fotoModo='inicial';S.sinfoto='inicial';S.foto='';S.forma='redonda';
+      S.vars={minimalista:0,perfil:0,destacada:0,portada:0,lineas:0,editorial:0};$('f-foto').value='';
+      document.querySelectorAll('input[name="forma"]').forEach(function(x){x.checked=(x.value==='redonda')});
+      marcarRadios();estadoFoto();
+    }
+    if(i===3||todo){
+      S.color='#63404D';S.color2='#926974';S.cx=Object.assign({},COMBOS[0].cx);S.texto='#2B1721';S.pal=0;
+      refrescarTodo();
+    }
+    if(i===4||todo){
+      S.fuente='arial';document.querySelectorAll('input[name="fuente"]').forEach(function(x){x.checked=(x.value==='arial')});
+    }
+    pintarFirma();aviso(todo?'Empezaste de cero':'Listo, limpiado');
+  }
+  agregarLimpiar($('w-firma'),limpiarFirma,['Limpiar','Limpiar','Limpiar','Limpiar','Limpiar','Limpiar todo']);
+  marcarRadios();estadoFoto();pintarFirma();
 
   /* =============== QR =============== */
   var Q={link:'',puntos:'circle',esq:'leaf',cen:'leaf',hoja:'adentro',fg:'#3D232F',esqcol:'igual',cesq:'#3D232F',bg:'#FFFFFF',logo:'none',logoColor:'qr',logoFondo:'con',logoImg:'',tam:20};
