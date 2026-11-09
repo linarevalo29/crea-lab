@@ -1444,15 +1444,20 @@ body.interna footer{background:transparent;position:relative;z-index:1}
           var cab='<table '+T+AL(alin)+'><tr>'+(fh?'<td valign="middle" style="padding-right:16px">'+fh+'</td>':'')+'<td valign="middle"><table '+T+'>'+nTd('left')+cTd('left')+'</table></td></tr></table>';
           filas=Rv(cab,0)+(datos.length?lineaV():'')+Rv(datosV,0)+Rv(redesV,12);
         }else{
-          var f2=fotoV(false);
-          filas=Rv(ncV,0)+(datos.length?lineaV():'')+'<tr><td><table '+T+' width="100%"><tr><td valign="top" align="left">'+datosV+'</td>'+(f2?'<td valign="top" align="right" style="padding-left:16px">'+f2+'</td>':'')+'</tr></table></td></tr>'+Rv(redesV,12);
+          var f2=fotoV(false),rd2=filaRedes('center');
+          var colD=(f2||rd2)?'<table '+T+'>'+(f2?'<tr><td align="center">'+f2+'</td></tr>':'')+(rd2?'<tr><td align="center" style="padding-top:'+(f2?10:0)+'px">'+rd2+'</td></tr>':'')+'</table>':'';
+          filas=Rv(ncV,0)+(datos.length?lineaV():'')+'<tr><td><table '+T+' width="100%"><tr><td valign="top" align="left">'+datosV+'</td>'+(colD?'<td valign="top" align="right" style="padding-left:16px">'+colD+'</td>':'')+'</tr></table></td></tr>';
         }
         return base+filas+'</table>';
       }
       var cabB,cuerpoB;
       if(V===0){cabB='<table '+T+AL(alin)+'>'+(fotoV(true)?'<tr><td align="'+alin+'" style="padding-bottom:10px">'+fotoV(true)+'</td></tr>':'')+nTd(alin)+cTd(alin)+'</table>';cuerpoB=Rv(datosV,0)+Rv(redesV,datos.length?12:0)}
       else if(V===1){var fb=fotoV(true);cabB='<table '+T+AL(alin)+'><tr>'+(fb?'<td valign="middle" style="padding-right:16px">'+fb+'</td>':'')+'<td valign="middle"><table '+T+'>'+nTd('left')+cTd('left')+'</table></td></tr></table>';cuerpoB=Rv(datosV,0)+Rv(redesV,datos.length?12:0)}
-      else{cabB=ncV;var fc=fotoV(false);cuerpoB='<tr><td><table '+T+' width="100%"><tr><td valign="top" align="left">'+datosV+'</td>'+(fc?'<td valign="top" align="right" style="padding-left:16px">'+fc+'</td>':'')+'</tr></table></td></tr>'+Rv(redesV,datos.length?12:0)}
+      else{
+        cabB=ncV;var fc=fotoV(false),rd3=filaRedes('center');
+        var colB=(fc||rd3)?'<table '+T+'>'+(fc?'<tr><td align="center">'+fc+'</td></tr>':'')+(rd3?'<tr><td align="center" style="padding-top:'+(fc?10:0)+'px">'+rd3+'</td></tr>':'')+'</table>':'';
+        cuerpoB='<tr><td><table '+T+' width="100%"><tr><td valign="top" align="left">'+datosV+'</td>'+(colB?'<td valign="top" align="right" style="padding-left:16px">'+colB+'</td>':'')+'</tr></table></td></tr>';
+      }
       return base+'<tr><td width="300" align="'+alin+'" bgcolor="'+c+'" style="width:300px;background-color:'+c+';padding:18px 22px;border-radius:14px 14px 0 0">'+cabB+'</td></tr>'
         +'<tr><td align="'+alin+'" style="padding:16px 22px;border:1px solid '+c+';border-top:0;border-radius:0 0 14px 14px;background-color:'+(P==='portada'?mezcla(c2,.12):'#FFFFFF')+'"><table '+T+(centrar?' align="center"':'')+' width="100%">'+cuerpoB+'</table></td></tr></table>';
     }
