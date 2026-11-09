@@ -869,7 +869,7 @@ body.interna footer{background:transparent;position:relative;z-index:1}
                     <label><input type="radio" name="forma" value="redonda" checked><span>Redonda</span></label>
                     <label><input type="radio" name="forma" value="cuadrada"><span>Cuadrada</span></label>
                   </div>
-                  <div class="aviso" id="aviso-foto" hidden>Tu foto se ve en la vista previa. Al copiar la firma se sube y queda con un link público, algo normal en una firma. Por ahora esa subida todavía no está activa, así que la firma se copia sin foto.</div>
+                  <div class="aviso" id="aviso-foto" hidden>Tu foto se reduce sola y se sube a internet únicamente cuando das "Copiar firma". Queda con un link público, algo normal en una firma.</div>
                 </div>
               </div>
               <div class="nav-pasos"><button type="button" class="btn-atr" data-ir="1"><i aria-hidden="true">←</i> Atrás</button><button type="button" class="btn-sig" data-ir="3">Siguiente <i aria-hidden="true">→</i></button></div>
@@ -1246,6 +1246,7 @@ body.interna footer{background:transparent;position:relative;z-index:1}
   }
   sanitizarCx();
   if(S.alinear!=='centro')S.alinear='izq';
+  if(typeof S.fotoUrl!=='string'||!RE_CLOUD.test(S.fotoUrl)){S.fotoUrl='';S.fotoHash=''}
   var campos=['nombre','cargo','empresa','correo','tel','web'];
   campos.forEach(function(k){if(typeof S[k]!=='string')S[k]=''});
 
@@ -1278,6 +1279,20 @@ body.interna footer{background:transparent;position:relative;z-index:1}
     portada:{con:'soft',red:'soft'},lineas:{con:'bare',red:'bare',lineas:1},editorial:{con:'texto',red:'bare'}
   };
   var ajusteLegible=false;
+  /* subida de la foto a Cloudinary (solo al copiar la firma) */
+  var NUBE='crealab',PRESET='crealab_firmas',RE_CLOUD=/^https:\/\/res\.cloudinary\.com\/crealab\//,urlFotoCopia='';
+  function huellaFoto(){return S.foto.length+':'+S.foto.slice(60,100)+S.foto.slice(-40)}
+  function subirFoto(){
+    var h=huellaFoto();
+    if(S.fotoUrl&&S.fotoHash===h&&RE_CLOUD.test(S.fotoUrl))return Promise.resolve(S.fotoUrl);
+    return fetch(S.foto).then(function(r){return r.blob()}).then(function(b){
+      var fd=new FormData();fd.append('file',b,'foto.jpg');fd.append('upload_preset',PRESET);
+      return fetch('https://api.cloudinary.com/v1_1/'+NUBE+'/image/upload',{method:'POST',body:fd});
+    }).then(function(r){return r.json()}).then(function(j){
+      if(!j||!RE_CLOUD.test(j.secure_url||''))throw new Error((j&&j.error&&j.error.message)||'sin respuesta');
+      S.fotoUrl=j.secure_url;S.fotoHash=h;guardar('crealab.firma',S);return j.secure_url;
+    });
+  }
   function mezclaHex(a,b,k){return '#'+[1,3,5].map(function(i){var x=parseInt(a.substr(i,2),16),y=parseInt(b.substr(i,2),16);return ('0'+Math.round(x*(1-k)+y*k).toString(16)).slice(-2)}).join('')}
   /* regla de legibilidad: si el texto casi no se distingue de su fondo, se ajusta solo (conserva el tono) */
   function legible(fg,bg,min){
@@ -1369,7 +1384,7 @@ body.interna footer{background:transparent;position:relative;z-index:1}
       }).join('')+'</table>';
     }
     /* foto o circulo con inicial */
-    var srcFoto=(copiar||S.fotoModo!=='subir')?'':imgOk(S.foto);
+    var srcFoto=S.fotoModo!=='subir'?'':(copiar?(RE_CLOUD.test(urlFotoCopia)?urlFotoCopia:''):imgOk(S.foto));
     function foto(tam,o){
       o=o||{};var alin=o.alin||'left';
       var sq=S.forma==='cuadrada',r=o.suave?Math.round(tam*.34):(sq?Math.round(tam*.12):Math.round(tam/2));
@@ -1687,17 +1702,22 @@ body.interna footer{background:transparent;position:relative;z-index:1}
 
   $('btn-copiar').addEventListener('click',function(){
     if(!S.nombre.trim()&&!S.correo.trim()){aviso('Escribe al menos tu nombre o tu correo en el paso 1.');return}
-    var html=construir(true),btn=this,txt=$('txt-copiar');
+    var btn=this,txt=$('txt-copiar');
     function listo(){btn.classList.add('ok');txt.textContent='¡Copiada!';aviso('Lista para pegar en tu correo');setTimeout(function(){btn.classList.remove('ok');txt.textContent='Copiar firma'},2400)}
-    function respaldo(){
+    function respaldo(html){
       var d=document.createElement('div');d.contentEditable='true';d.style.cssText='position:fixed;left:-9999px;top:0';d.innerHTML=html;document.body.appendChild(d);
       var r=document.createRange();r.selectNodeContents(d);var s=window.getSelection();s.removeAllRanges();s.addRange(r);
       var ok=false;try{ok=document.execCommand('copy')}catch(e){}
-      s.removeAllRanges();d.remove();ok?listo():aviso('No pude copiar. Intenta de nuevo.');
+      s.removeAllRanges();d.remove();if(ok)listo();else{txt.textContent='Copiar firma';aviso('No pude copiar. Intenta de nuevo.')}
     }
+    var conFoto=(S.fotoModo==='subir'&&!!S.foto),htmlP;
+    if(conFoto){
+      txt.textContent='Subiendo foto…';
+      htmlP=subirFoto().then(function(u){urlFotoCopia=u;return construir(true)},function(){urlFotoCopia='';aviso('No pude subir la foto, así que copié la firma sin ella.');return construir(true)});
+    }else{urlFotoCopia='';htmlP=Promise.resolve(construir(true))}
     if(navigator.clipboard&&window.ClipboardItem){
-      navigator.clipboard.write([new ClipboardItem({'text/html':new Blob([html],{type:'text/html'}),'text/plain':new Blob([(S.nombre+' '+S.cargo).trim()],{type:'text/plain'})})]).then(listo,respaldo);
-    }else respaldo();
+      navigator.clipboard.write([new ClipboardItem({'text/html':htmlP.then(function(h){return new Blob([h],{type:'text/html'})}),'text/plain':new Blob([(S.nombre+' '+S.cargo).trim()],{type:'text/plain'})})]).then(listo,function(){htmlP.then(respaldo)});
+    }else htmlP.then(respaldo);
   });
 
   $('btn-resp-bajar').addEventListener('click',function(){bajar(new Blob([JSON.stringify(S)],{type:'application/json'}),'mi-firma-crea-lab.json');aviso('Respaldo descargado')});
