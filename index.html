@@ -1288,7 +1288,7 @@ function crealab(){
     var img='<img src="'+src+'" width="'+ico+'" height="'+ico+'" alt="" style="display:block;border:0;width:'+ico+'px;height:'+ico+'px;margin:0 auto">';
     return '<td width="'+tam+'" height="'+tam+'" align="center" valign="middle" bgcolor="'+color+'" style="width:'+tam+'px;height:'+tam+'px;background-color:'+color+';border-radius:50%">'+(href?'<a href="'+esc(href)+'" style="text-decoration:none;display:block">'+img+'</a>':img)+'</td>';
   }
-  var NVH={minimalista:4,perfil:2,destacada:3,portada:3,lineas:4};
+  var NVH={minimalista:3,perfil:2,destacada:3,portada:3,lineas:4};
   var DISENOS=[['minimalista','Minimalista'],['perfil','Perfil'],['destacada','Destacada'],['portada','Portada'],['lineas','Líneas']];
   var SPEC={
     minimalista:{con:'chip',red:'bare'},perfil:{con:'soft',red:'soft'},destacada:{con:'soft',red:'soft'},
@@ -1528,19 +1528,16 @@ function crealab(){
     }
 
     /* MINIMALISTA */
-    var fm=foto(V===3?56:64);
+    var Vm=V+1,fm=foto(Vm===3?56:64);
     var rs=filaRedes(aT,16),bloqueC=chips(72,aT);
-    var pieMin=(bloqueC?'<tr><td>'+bloqueC+'</td></tr>':'')+(rs?'<tr><td style="padding-top:'+(bloqueC?10:0)+'px">'+rs+'</td></tr>':'');
-    if(V===0){
-      var te='<table '+T+'>'+nTd(aT)+cTd(aT)+(bloqueC||rs?'<tr><td style="font-size:1px;line-height:10px">&nbsp;</td></tr>':'')+pieMin+'</table>';
-      return base+'<tr><td style="border-top:2px solid '+LIN+';padding-top:14px"><table '+T+'><tr>'+(fm?'<td valign="top" width="80" style="padding-right:16px;width:80px">'+fm+'</td>':'')+'<td valign="top">'+te+'</td></tr></table></td></tr></table>';
-    }
-    if(V===1||V===2){
+    var juntas=redes.length<=2;
+    var pieMin=(bloqueC||rs)?(juntas?'<tr><td><table '+T+'><tr>'+(bloqueC?'<td valign="middle">'+bloqueC+'</td>':'')+(rs?'<td valign="middle" style="padding-left:'+(bloqueC?14:0)+'px">'+rs+'</td>':'')+'</tr></table></td></tr>':(bloqueC?'<tr><td>'+bloqueC+'</td></tr>':'')+(rs?'<tr><td style="padding-top:'+(bloqueC?10:0)+'px">'+rs+'</td></tr>':'')):'';
+    if(Vm===1||Vm===2){
       var te1='<table '+T+'>'+nTd(aT)+cTd(aT)+((bloqueC||rs)?lineaFuerte:'')+pieMin+'</table>';
-      return base+'<tr>'+(fm?'<td valign="'+(V===1?'middle':'top')+'" width="80" style="padding-right:16px;width:80px">'+fm+'</td>':'')+'<td valign="middle">'+te1+'</td></tr></table>';
+      return base+'<tr>'+(fm?'<td valign="'+(Vm===1?'middle':'top')+'" width="80" style="padding-right:16px;width:80px">'+fm+'</td>':'')+'<td valign="middle">'+te1+'</td></tr></table>';
     }
     var cab2='<table '+T+'><tr>'+(fm?'<td valign="middle" width="72" style="padding-right:16px;width:72px">'+fm+'</td>':'')+'<td valign="middle"><table '+T+'>'+nTd(aT)+cTd(aT)+'</table></td></tr></table>';
-    var pie=(bloqueC||rs)?'<tr><td style="padding-top:12px"><table '+T+'><tr><td valign="middle">'+bloqueC+'</td>'+(rs?'<td valign="middle" style="padding-left:14px">'+rs+'</td>':'')+'</tr></table></td></tr>':'';
+    var pie=(bloqueC||rs)?(juntas?'<tr><td style="padding-top:12px"><table '+T+'><tr><td valign="middle">'+bloqueC+'</td>'+(rs?'<td valign="middle" style="padding-left:14px">'+rs+'</td>':'')+'</tr></table></td></tr>':'<tr><td style="padding-top:12px">'+bloqueC+'</td></tr>'+(rs?'<tr><td style="padding-top:10px">'+rs+'</td></tr>':'')):'';
     return base+'<tr><td style="border-top:2px solid '+LIN+';padding-top:14px">'+cab2+'</td></tr>'+pie+'</table>';
   }
 
@@ -1578,9 +1575,8 @@ function crealab(){
       else if(V===2)g=cr(8,5,30,4.4,'b')+cr(8,11,22,2.4,'c')+L1(8,17,64)+ci(18,34,10,'b')+ci(18,34,8.4,'w')+ci(18,34,7,'a')+'<rect x="36" y="20" width="1.6" height="32" class="b"/>'+cr(46,23,26,3,'c')+cr(46,30,22,3,'c')+cr(46,37,24,3,'c')+d3(48,47,7);
       else g=cr(8,10,34,4.4,'b')+cr(8,17,22,2.4,'c')+L1(8,24,34)+cr(8,27,28,3,'c')+L1(8,33,34)+cr(8,36,28,3,'c')+'<rect x="46" y="6" width="1.6" height="44" class="b"/>'+ci(62,24,10,'b')+ci(62,24,8.4,'w')+ci(62,24,7,'a')+d3(55,42,7);
     }else{
-      if(V===0)g='<rect x="6" y="5" width="68" height="1.6" class="a"/>'+ci(17,25,8,'a')+cr(30,15,32,5.5,'b')+cr(30,23,22,3,'c')+cr(30,31,13,5,'c')+cr(45,31,13,5,'c')+cr(60,31,13,5,'c')+d3(34,45,7);
-      else if(V===1)g=ci(17,28,8,'a')+cr(30,12,32,5.5,'b')+cr(30,20,22,3,'c')+'<rect x="30" y="26" width="42" height="2" class="a"/>'+cr(30,32,13,5,'c')+cr(45,32,13,5,'c')+cr(60,32,13,5,'c')+d3(33,46,7);
-      else if(V===2)g=ci(17,17,8,'a')+cr(30,12,32,5.5,'b')+cr(30,20,22,3,'c')+'<rect x="30" y="26" width="42" height="2" class="a"/>'+cr(30,32,13,5,'c')+cr(45,32,13,5,'c')+cr(60,32,13,5,'c')+d3(33,46,7);
+      if(V===0)g=ci(17,28,8,'a')+cr(30,12,32,5.5,'b')+cr(30,20,22,3,'c')+'<rect x="30" y="26" width="42" height="2" class="a"/>'+cr(30,33,10,5,'c')+cr(42,33,10,5,'c')+cr(54,33,10,5,'c')+d3(67,35.5,4);
+      else if(V===1)g=ci(17,17,8,'a')+cr(30,12,32,5.5,'b')+cr(30,20,22,3,'c')+'<rect x="30" y="26" width="42" height="2" class="a"/>'+cr(30,33,10,5,'c')+cr(42,33,10,5,'c')+cr(54,33,10,5,'c')+d3(67,35.5,4);
       else g='<rect x="6" y="5" width="68" height="1.6" class="a"/>'+ci(15,18,6,'a')+cr(25,12,32,5.5,'b')+cr(25,20,22,3,'c')+cr(8,34,14,5,'c')+cr(24,34,14,5,'c')+cr(40,34,14,5,'c')+d3(60,36.5,5);
     }
     return o+g+'</svg>';
