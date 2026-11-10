@@ -1993,8 +1993,17 @@ function crealab(){
       if(typeof jsQR==='undefined'){res(null);return}
       var img=new Image();
       img.onload=function(){
-        try{var cv=document.createElement('canvas');cv.width=cv.height=560;var x=cv.getContext('2d');x.drawImage(img,0,0,560,560);
-          var d=x.getImageData(0,0,560,560),r=jsQR(d.data,560,560,{inversionAttempts:'attemptBoth'});res(r?r.data:'')}catch(e){res(null)}
+        /* jsQR a veces falla según el tamaño de la imagen: se prueban varios y basta que uno lea */
+        try{
+          var tams=[300,240,360,200,420,280,330,560],pads=[0,24];
+          for(var a=0;a<tams.length;a++)for(var b=0;b<pads.length;b++){
+            var px=tams[a],T=px+2*pads[b],cv=document.createElement('canvas');cv.width=cv.height=T;
+            var x=cv.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,T,T);x.drawImage(img,pads[b],pads[b],px,px);
+            var d=x.getImageData(0,0,T,T),r=jsQR(d.data,T,T,{inversionAttempts:'attemptBoth'});
+            if(r&&r.data){res(r.data);return}
+          }
+          res('');
+        }catch(e){res(null)}
       };
       img.onerror=function(){res(null)};
       img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
@@ -2011,7 +2020,7 @@ function crealab(){
       var fg=hexOk(Q.fg,'#3D232F'),bg=hexOk(Q.bg,'#FFFFFF'),co=Q.esqcol==='otro'?hexOk(Q.cesq,fg):fg;
       if(d===v&&Math.min(contraste(fg,bg),contraste(co,bg))<4.5){e.className='qr-estado mal';e.textContent='Se lee, pero con poco contraste. Mejor un color más oscuro.'}
       else if(d===v){e.className='qr-estado ok';e.textContent='✓ Se lee bien'}
-      else{e.className='qr-estado mal';e.textContent='No logré leer este QR. Prueba con colores más contrastados o un logo más pequeño.'}
+      else{e.className='qr-estado mal';e.textContent='No pude leer este QR desde aquí. Pruébalo con tu celular: si lo lee, está bien. Si no, usa colores más contrastados o un logo más pequeño.'}
     })},450);
   }
   function conVerificacion(accion){
