@@ -942,6 +942,7 @@ body.interna footer{background:transparent;position:relative;z-index:1}
 
             <section class="paso-panel pegar" data-titulo="Listo" aria-labelledby="pf4">
               <h2 id="pf4"><span class="num">6</span>Cópiala y pégala</h2>
+              <div class="grupo" style="margin-bottom:18px"><span class="etq">Tamaño de la firma completa <b id="esc-v">100%</b></span><div class="rango"><input type="range" id="esc-firma" min="70" max="130" step="5" value="100" aria-label="Tamaño de la firma completa"></div><span class="sub" style="display:block;margin-top:6px">Si se ve muy grande o muy pequeña, ajústala aquí antes de copiarla.</span></div>
               <p style="color:var(--vino);margin-bottom:14px">Toca <b>Copiar firma</b> en la vista previa y sigue estos pasos.</p>
               <details open><summary>En Gmail</summary>
                 <ol><li>Abre Gmail, toca la rueda de <b>Configuración</b> y elige <b>Ver toda la configuración</b>.</li><li>Baja hasta <b>Firma</b>, crea una nueva y pega con Ctrl+V (o Cmd+V en Mac).</li><li>Baja al final y toca <b>Guardar cambios</b>.</li></ol>
@@ -1279,10 +1280,10 @@ function crealab(){
   var NOMBRES_F={arial:'Arial',georgia:'Georgia',verdana:'Verdana',trebuchet:'Trebuchet',tahoma:'Tahoma'};
   var EJRED={wa:'+00 000 000 0000',ig:'@usuario',li:'usuario',yt:'@canal'};
   var MUESTRA={nombre:'Nombre Apellido',cargo:'Cargo de prueba',empresa:'Empresa de prueba',correo:'correo@ejemplo.com',tel:'+00 000 000 0000',wa:'+00 000 000 0000',web:'www.ejemplo.com',ubic:'Ciudad, País',ig:'@usuario',li:'usuario',yt:'@canal'};
-  var S=Object.assign({nombre:'',cargo:'',empresa:'',correo:'',tel:'',web:'',ubic:'',plantilla:'minimalista',forma:'redonda',sinfoto:'inicial',fotoModo:'inicial',fase:0,color:'#63404D',texto:'#2B1721',fuente:'arial',fuenteNombre:'',caseNombre:'auto',caseCargo:'auto',tamNombre:0,tamCargo:0,tamFoto:100,fuenteN:'georgia',foto:'',orient:'horizontal',colorEtq:'',colorIco:'',color2:'#926974',cx:{},pal:0,redesSel:[],rd:{}},leer('crealab.firma')||{});
+  var S=Object.assign({nombre:'',cargo:'',empresa:'',correo:'',tel:'',web:'',ubic:'',plantilla:'minimalista',forma:'redonda',sinfoto:'inicial',fotoModo:'inicial',fase:0,color:'#63404D',texto:'#2B1721',fuente:'arial',fuenteNombre:'',caseNombre:'auto',caseCargo:'auto',tamNombre:0,tamCargo:0,tamFoto:100,escala:100,fuenteN:'georgia',foto:'',orient:'horizontal',colorEtq:'',colorIco:'',color2:'#926974',cx:{},pal:0,redesSel:[],rd:{}},leer('crealab.firma')||{});
   S.color=hexOk(S.color,'#63404D');if(S.color.toLowerCase()==='#6b3fa0')S.color='#63404D';S.texto=hexOk(S.texto,'#2B1721');S.foto=imgOk(S.foto);
   if(!FUENTES[S.fuente])S.fuente='arial';if(!FUENTES[S.fuenteN])S.fuenteN='georgia';
-  function sanitizarTipo(){if(S.fuenteNombre&&!FUENTES[S.fuenteNombre])S.fuenteNombre='';['caseNombre','caseCargo'].forEach(function(k){if(S[k]==='minus')S[k]='normal';if(['auto','mayus','normal'].indexOf(S[k])<0)S[k]='auto'});S.tamNombre=Math.max(-3,Math.min(6,parseInt(S.tamNombre,10)||0));S.tamCargo=Math.max(-2,Math.min(4,parseInt(S.tamCargo,10)||0));S.tamFoto=Math.max(70,Math.min(140,parseInt(S.tamFoto,10)||100))}
+  function sanitizarTipo(){if(S.fuenteNombre&&!FUENTES[S.fuenteNombre])S.fuenteNombre='';['caseNombre','caseCargo'].forEach(function(k){if(S[k]==='minus')S[k]='normal';if(['auto','mayus','normal'].indexOf(S[k])<0)S[k]='auto'});S.tamNombre=Math.max(-3,Math.min(6,parseInt(S.tamNombre,10)||0));S.tamCargo=Math.max(-2,Math.min(4,parseInt(S.tamCargo,10)||0));S.tamFoto=Math.max(70,Math.min(140,parseInt(S.tamFoto,10)||100));S.escala=Math.max(70,Math.min(130,parseInt(S.escala,10)||100))}
   sanitizarTipo();
   if(S.plantilla==='editorial'||S.plantilla==='tarjeta')S.plantilla='lineas';
   if(['minimalista','perfil','destacada','portada','lineas'].indexOf(S.plantilla)<0)S.plantilla='minimalista';
@@ -1368,7 +1369,17 @@ function crealab(){
     return objetivo;
   }
   function mezcla(hex,k){return '#'+[1,3,5].map(function(i){return ('0'+Math.round(parseInt(hex.substr(i,2),16)*k+255*(1-k)).toString(16)).slice(-2)}).join('')}
-  function construir(copiar,Pov){
+  /* tamaño general de la firma: escala textos, fotos, iconos y espacios en proporción */
+  function escalarFirma(h){
+    var k=(parseInt(S.escala,10)||100)/100;if(k===1)return h;
+    function px(v){var n=parseFloat(v);if(!n)return v;var r=n*k;return n<=2?Math.max(1,Math.round(r)):(n<10?Math.round(r*10)/10:Math.round(r))}
+    return h.replace(/<[^>]+>/g,function(tag){
+      tag=tag.replace(/style="([^"]*)"/g,function(m,s){return 'style="'+s.replace(/(-?\d*\.?\d+)px/g,function(m2,v){return px(v)+'px'})+'"'});
+      return tag.replace(/\s(width|height)="(\d+(?:\.\d+)?)"/g,function(m,a,v){return ' '+a+'="'+Math.max(1,Math.round(parseFloat(v)*k))+'"'});
+    });
+  }
+  function construir(copiar,Pov){return escalarFirma(construirBase(copiar,Pov))}
+  function construirBase(copiar,Pov){
     if(!copiar&&!Pov)ajusteLegible=false;
     var c=S.color,c2=S.color2,X=S.cx||{},tx=S.texto,f=FUENTES[S.fuente],P=Pov||S.plantilla,V=(S.vars&&S.vars[P]|0);V=(V<(S.orient==='vertical'?3:(NVH[P]||2)))?V:0,suave=mezcla(tx,.7);
     function K(k,d){return X[k]?hexOk(X[k],d):d}
@@ -1703,6 +1714,8 @@ function crealab(){
   $('btn-tipo-pers').addEventListener('click',function(){var ab=$('tipo-avanzado').hidden;$('tipo-avanzado').hidden=!ab;this.setAttribute('aria-expanded',String(ab));this.textContent=ab?'Ocultar personalización':'Personalizar tipografía'});
   (function(){var el=$('tam-foto');el.value=S.tamFoto;$('tam-foto-v').textContent=S.tamFoto+'%';
     el.addEventListener('input',function(){S.tamFoto=parseInt(el.value,10)||100;$('tam-foto-v').textContent=S.tamFoto+'%';pintarFirma()})})();
+  (function(){var el=$('esc-firma');el.value=S.escala;$('esc-v').textContent=S.escala+'%';
+    el.addEventListener('input',function(){S.escala=parseInt(el.value,10)||100;$('esc-v').textContent=S.escala+'%';pintarFirma()})})();
   function marcarRadios(){
     [['plantilla','plantilla',1],['orient','orient',0],['fotoModo','fotoModo',0],['alinear','alinear',0]].forEach(function(p){
       document.querySelectorAll('input[name="'+p[0]+'"]').forEach(function(r){r.checked=(S.fase>=p[2]&&r.value===S[p[1]])});
@@ -1901,7 +1914,7 @@ function crealab(){
     if(i===0||todo){campos.forEach(function(k){S[k]='';$('f-'+k).value=''})}
     if(i===1||todo){S.redesSel=[];S.rd={};sincRedes()}
     if(i===2||todo){
-      S.fase=0;S.tamFoto=100;$('tam-foto').value=100;$('tam-foto-v').textContent='100%';S.alinear='izq';S.plantilla='minimalista';S.orient='horizontal';S.fotoModo='inicial';S.sinfoto='inicial';S.foto='';S.forma='redonda';
+      S.fase=0;S.escala=100;$('esc-firma').value=100;$('esc-v').textContent='100%';S.tamFoto=100;$('tam-foto').value=100;$('tam-foto-v').textContent='100%';S.alinear='izq';S.plantilla='minimalista';S.orient='horizontal';S.fotoModo='inicial';S.sinfoto='inicial';S.foto='';S.forma='redonda';
       S.vars={minimalista:0,perfil:0,destacada:0,portada:0,lineas:0};$('f-foto').value='';
       document.querySelectorAll('input[name="forma"]').forEach(function(x){x.checked=(x.value==='redonda')});
       marcarRadios();estadoFoto();
