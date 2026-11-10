@@ -1301,7 +1301,7 @@ function crealab(){
   }
   function circulo(href,icono,color,paraCopiar,tam,ico){
     tam=tam||28;ico=ico||16;
-    var src=paraCopiar?BASE_ICONOS+icono+'.png':dataSvg(glifoSvg(icono,'#fff','none',54));
+    var src=paraCopiar?BASE_ICONOS+icono+'.png?v=2':dataSvg(glifoSvg(icono,'#fff','none',54));
     var img='<img src="'+src+'" width="'+ico+'" height="'+ico+'" alt="" style="display:block;border:0;width:'+ico+'px;height:'+ico+'px;margin:0 auto">';
     return '<td width="'+tam+'" height="'+tam+'" align="center" valign="middle" bgcolor="'+color+'" style="width:'+tam+'px;height:'+tam+'px;background-color:'+color+';border-radius:50%">'+(href?'<a href="'+esc(href)+'" style="text-decoration:none;display:block">'+img+'</a>':img)+'</td>';
   }
@@ -1380,7 +1380,7 @@ function crealab(){
       col=snapIco(col||'#2B1721');var u=col.replace('#','').toUpperCase();
       
       var arch=u==='2B1721'?'-d':(u==='FFFFFF'?'':'-'+u);
-      var src=copiar?BASE_ICONOS+i+arch+'.png':dataSvg(glifoSvg(i,col,'none',58));
+      var src=copiar?BASE_ICONOS+i+arch+'.png?v=2':dataSvg(glifoSvg(i,col,'none',58));
       return '<img src="'+src+'" width="'+px+'" height="'+px+'" alt="" style="display:block;border:0;width:'+px+'px;min-width:'+px+'px;height:'+px+'px;margin:0 auto">';
     }
     function icoSoft(d,tam,px){
