@@ -686,6 +686,13 @@ body.interna footer{background:transparent;position:relative;z-index:1}
 .rec-stage img{position:absolute;left:0;top:0;max-width:none;user-select:none;-webkit-user-drag:none;pointer-events:none}
 .rec-mask{position:absolute;inset:0;box-shadow:0 0 0 999px rgba(43,23,33,.5);border:2px solid #fff;pointer-events:none}
 .rec-btns{display:flex;justify-content:center;gap:10px;margin-top:16px}
+.seg.sut{display:flex;width:fit-content;flex-wrap:wrap;gap:2px;padding:3px;background:var(--lila);border-radius:12px;margin-top:8px;max-width:100%}
+.seg.sut[hidden]{display:none}
+.seg.sut span{display:flex;align-items:center;gap:6px;padding:7px 11px;border:0;border-radius:9px;background:transparent;box-shadow:none;font-size:.82rem;font-weight:600;color:var(--vino);transform:none}
+.seg.sut label:hover span{background:rgba(255,255,255,.6);transform:none}
+.seg.sut input:checked+span,.seg.sut input:checked+span:hover{background:#fff;color:var(--ciruela);border:0;box-shadow:0 1px 4px rgba(61,35,47,.16)}
+.seg.sut svg{width:16px;height:16px;flex:none;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.seg.sut .gl{font-size:.78rem;font-weight:700;letter-spacing:-.02em;min-width:16px}
 </style>
 </head>
 <body>
@@ -868,17 +875,17 @@ body.interna footer{background:transparent;position:relative;z-index:1}
               </div>
               <div class="par-colores">
               <div class="grupo rev-paso" id="g-orient"><span class="etq">Orientación</span>
-                <div class="seg" role="radiogroup" aria-label="Orientación"><label><input type="radio" name="orient" value="horizontal"><span>Horizontal</span></label><label><input type="radio" name="orient" value="vertical"><span>Vertical</span></label></div>
+                <div class="seg sut" role="radiogroup" aria-label="Orientación"><label><input type="radio" name="orient" value="horizontal"><span><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="10" rx="2"/></svg>Horizontal</span></label><label><input type="radio" name="orient" value="vertical"><span><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="3" width="10" height="18" rx="2"/></svg>Vertical</span></label></div>
               </div>
               <div class="grupo rev-paso" id="g-alin"><span class="etq">Alineación de los textos</span>
-                <div class="seg" role="radiogroup" aria-label="Alineación de los textos"><label><input type="radio" name="alinear" value="izq" checked><span>Izquierda</span></label><label><input type="radio" name="alinear" value="centro"><span>Centrada</span></label></div>
+                <div class="seg sut" role="radiogroup" aria-label="Alineación de los textos"><label><input type="radio" name="alinear" value="izq" checked><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 10h10M4 14h16M4 18h10"/></svg>Izquierda</span></label><label><input type="radio" name="alinear" value="centro"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M7 10h10M4 14h16M7 18h10"/></svg>Centrada</span></label></div>
               </div>
               </div>
               <div class="grupo rev-paso" id="g-foto"><span class="etq">Foto o perfil</span>
-                <div class="seg" role="radiogroup" aria-label="Foto de la firma">
-                  <label><input type="radio" name="fotoModo" value="subir"><span>Subir foto</span></label>
-                  <label><input type="radio" name="fotoModo" value="inicial"><span>Mi inicial</span></label>
-                  <label><input type="radio" name="fotoModo" value="nada"><span>Sin foto</span></label>
+                <div class="seg sut" role="radiogroup" aria-label="Foto de la firma">
+                  <label><input type="radio" name="fotoModo" value="subir"><span><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="1.6"/><path d="m21 16-5-5-8 9"/></svg>Subir foto</span></label>
+                  <label><input type="radio" name="fotoModo" value="inicial"><span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m9 16 3-8 3 8M10 13.5h4"/></svg>Mi inicial</span></label>
+                  <label><input type="radio" name="fotoModo" value="nada"><span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m5.7 5.7 12.6 12.6"/></svg>Sin foto</span></label>
                 </div>
                 <div id="foto-subir" class="rev-paso" hidden>
                   <div class="foto-fila" style="margin-top:12px">
@@ -887,9 +894,9 @@ body.interna footer{background:transparent;position:relative;z-index:1}
                     <button class="btn-mini claro" type="button" id="btn-quitar-foto" hidden>Quitar</button>
                     <input type="file" id="f-foto" accept="image/png,image/jpeg,image/webp" hidden>
                   </div>
-                  <div class="seg" id="fila-forma" role="radiogroup" aria-label="Forma de la foto" hidden>
-                    <label><input type="radio" name="forma" value="redonda" checked><span>Redonda</span></label>
-                    <label><input type="radio" name="forma" value="cuadrada"><span>Cuadrada</span></label>
+                  <div class="seg sut" id="fila-forma" role="radiogroup" aria-label="Forma de la foto" hidden>
+                    <label><input type="radio" name="forma" value="redonda" checked><span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/></svg>Redonda</span></label>
+                    <label><input type="radio" name="forma" value="cuadrada"><span><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="3"/></svg>Cuadrada</span></label>
                   </div>
                   <div class="aviso" id="aviso-foto" hidden>Tu foto se reduce sola y se sube a internet únicamente cuando das "Copiar firma". Queda con un link público, algo normal en una firma.</div>
                 </div>
@@ -920,9 +927,9 @@ body.interna footer{background:transparent;position:relative;z-index:1}
                 <div class="grupo"><span class="etq">Mezclar: tipografía del nombre</span><div class="fuentes" role="radiogroup" aria-label="Tipografía del nombre" id="fuentes-nombre"></div></div>
                 <div class="par-colores">
                   <div class="grupo"><span class="etq">Nombre</span>
-                    <div class="seg" role="radiogroup" aria-label="Mayúsculas del nombre"><label><input type="radio" name="caseNombre" value="normal" checked><span>Normal</span></label><label><input type="radio" name="caseNombre" value="mayus"><span>MAYÚSCULAS</span></label></div></div>
+                    <div class="seg sut" role="radiogroup" aria-label="Mayúsculas del nombre"><label><input type="radio" name="caseNombre" value="normal" checked><span><b class="gl">Aa</b>Normal</span></label><label><input type="radio" name="caseNombre" value="mayus"><span><b class="gl">AA</b>MAYÚSCULAS</span></label></div></div>
                   <div class="grupo"><span class="etq">Cargo</span>
-                    <div class="seg" role="radiogroup" aria-label="Mayúsculas del cargo"><label><input type="radio" name="caseCargo" value="normal" checked><span>Normal</span></label><label><input type="radio" name="caseCargo" value="mayus"><span>MAYÚSCULAS</span></label></div></div>
+                    <div class="seg sut" role="radiogroup" aria-label="Mayúsculas del cargo"><label><input type="radio" name="caseCargo" value="normal" checked><span><b class="gl">Aa</b>Normal</span></label><label><input type="radio" name="caseCargo" value="mayus"><span><b class="gl">AA</b>MAYÚSCULAS</span></label></div></div>
                 </div>
                 <div class="par-colores">
                   <div class="grupo"><span class="etq">Tamaño del nombre <b id="tam-nombre-v">0</b></span><div class="rango"><input type="range" id="tam-nombre" min="-3" max="6" step="1" value="0" aria-label="Tamaño del nombre"></div></div>
