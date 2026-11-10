@@ -1452,8 +1452,8 @@ function crealab(){
       var e=empresa,k=cargo,cc=X.cargo?legible(hexOk(X.cargo,''),bgTxt):'';
       if(P==='lineas')return (k?'<tr><td align="'+alin+'" style="font-family:'+f+';font-size:'+Math.max(9,10.5+S.tamCargo)+'px;line-height:16px;letter-spacing:'+(cCar==='mayus'?'2.2px':'0')+';font-weight:bold;color:'+(cc||tx)+'">'+esc(tcase(k,cCar))+'</td></tr>':'')+(e?'<tr><td align="'+alin+'" style="font-family:'+f+';font-size:10.5px;line-height:16px;letter-spacing:1.6px;text-transform:uppercase;color:'+suave+'">'+esc(e)+'</td></tr>':'');
       var enBloque=(P==='destacada'||(P==='portada'&&VERT)),col=legible(enBloque?sobreC:c,bgTxt),ec=legible(enBloque?sobreC:suave,bgTxt);
-      var resto=[e,ubLinea?ubT:''].filter(Boolean),SEP='&nbsp;&nbsp;·&nbsp;&nbsp;';
-      var t=k?esc(tcase(k,cCar))+resto.map(function(x){return '<span style="color:'+ec+'">'+SEP+esc(x)+'</span>'}).join(''):resto.map(function(x,i){return (i?'<span style="color:'+ec+'">'+SEP+'</span>':'')+esc(x)}).join('');
+      var SEP='&nbsp;&nbsp;·&nbsp;&nbsp;',uU=ubLinea?esc(ubT):'';
+      var t=k?esc(tcase(k,cCar))+(e?'<span style="color:'+ec+'">'+SEP+esc(e)+'</span>':'')+(uU?SEP+uU:''):(e?esc(e)+(uU?SEP+uU:''):uU);
       var tamC=Math.max(10,Math.round((13+S.tamCargo)*(cCar==='mayus'?.88:1)));
       return t?'<tr><td align="'+alin+'" style="font-family:'+f+';font-size:'+tamC+'px;line-height:'+Math.round(tamC*1.45)+'px;'+(cCar==='mayus'?'letter-spacing:1px;':'')+'color:'+(cc||col)+'">'+t+'</td></tr>':'';
     }
