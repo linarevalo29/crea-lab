@@ -453,6 +453,14 @@ header.oscuro{background:rgba(43,23,33,.94);backdrop-filter:blur(12px);-webkit-b
 /* QR de ejemplo fuera del QR */
 .qr-marco.vacio::after{content:none}
 .qr-ejemplo{margin-top:12px;color:var(--rosa-claro);font-size:.82rem;text-align:center}
+.qr-badge{display:flex;align-items:center;gap:8px;margin:14px auto 0;padding:6px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.1);color:#fff;font:600 .8rem/1.2 inherit;font-family:inherit;cursor:default}
+.qr-badge.abre{cursor:pointer}
+.qr-badge .pt{width:8px;height:8px;border-radius:50%;background:#B4949C;flex:none}
+.qr-badge.ok .pt{background:#9be3b8}.qr-badge.alerta .pt{background:#f2b872}.qr-badge.error .pt{background:#ff9aa5}.qr-badge.pend{opacity:.75}
+.qr-badge.abre::after{content:"▾";font-size:.7rem;opacity:.7;transition:transform .2s}
+.qr-badge.abre[aria-expanded="true"]::after{transform:rotate(180deg)}
+.qr-badge-det{display:grid;gap:8px;margin-top:10px;text-align:left}
+.qr-badge-det .aviso{margin:0}
 .qr-marco{width:min(100%,330px)}
 .sub-combos{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
 .combo{font:inherit;font-size:.8rem;font-weight:600;padding:7px 14px;border-radius:999px;border:1.5px dashed var(--malva);background:transparent;color:var(--vino);cursor:pointer;transition:all .25s var(--ease)}
@@ -1025,8 +1033,10 @@ body.interna footer{background:transparent;position:relative;z-index:1}
         <aside class="col-prev" aria-label="Vista previa del QR">
           <div class="qr-escena">
             <div class="qr-marco vacio" id="q-marco"></div>
-            <p class="qr-estado" id="q-estado"></p><p class="qr-ejemplo" id="q-ejemplo">Vista de ejemplo. Pega tu link para ver el tuyo.</p>
-            <div class="qr-avisos" id="q-avisos"></div>
+            <p class="qr-estado" id="q-estado" hidden></p><p class="qr-ejemplo" id="q-ejemplo">Vista de ejemplo. Pega tu link para ver el tuyo.</p>
+            <div class="qr-avisos" id="q-avisos" hidden></div>
+            <button type="button" class="qr-badge" id="q-badge" aria-expanded="false" aria-controls="q-badge-det" hidden><i class="pt" aria-hidden="true"></i><span id="q-badge-t"></span></button>
+            <div class="qr-badge-det" id="q-badge-det" role="status" hidden></div>
           </div>
         </aside>
       </div>
@@ -1994,6 +2004,27 @@ function crealab(){
     $('q-tam-fila').hidden=Q.logo==='none';$('q-logo-nota').hidden=Q.logo==='none';
     $('q-col-esq').hidden=Q.esqcol!=='otro';
   }
+  /* badge único: junta el estado de lectura y los avisos del QR */
+  (function(){
+    var bd=$('q-badge'),bt=$('q-badge-t'),det=$('q-badge-det'),est=$('q-estado'),av=$('q-avisos'),abierto=false;
+    function pintar(){
+      var items=[].slice.call(av.children).map(function(d){return {n:/error/.test(d.className)?'error':'alerta',t:d.textContent}});
+      var cl=est.className,tx=est.textContent;
+      if(/\bmal\b/.test(cl)&&tx)items.push({n:'alerta',t:tx});
+      var nivel=items.some(function(x){return x.n==='error'})?'error':(items.length?'alerta':(/\bok\b/.test(cl)?'ok':(/\bpend\b/.test(cl)?'pend':'')));
+      if(!nivel){bd.hidden=true;det.hidden=true;return}
+      bd.hidden=false;bd.className='qr-badge '+nivel+(items.length?' abre':'');
+      bt.textContent=items.length?(items.length===1?'1 aviso':items.length+' avisos'):(nivel==='ok'?'Se lee bien':'Revisando…');
+      det.innerHTML=items.map(function(x){return '<div class="aviso '+x.n+'">'+esc(x.t)+'</div>'}).join('');
+      if(!items.length)abierto=false;
+      det.hidden=!(items.length&&abierto);bd.setAttribute('aria-expanded',String(!det.hidden));
+    }
+    bd.addEventListener('click',function(){if(!/abre/.test(bd.className))return;abierto=!abierto;pintar()});
+    var mo=new MutationObserver(pintar);
+    mo.observe(est,{childList:true,characterData:true,subtree:true,attributes:true,attributeFilter:['class']});
+    mo.observe(av,{childList:true,subtree:true});
+    pintar();
+  })();
   function leerQR(svg){
     return new Promise(function(res){
       if(typeof jsQR==='undefined'){res(null);return}
