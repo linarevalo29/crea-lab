@@ -856,13 +856,15 @@ body.interna footer{background:transparent;position:relative;z-index:1}
                 </div>
                 <div class="diag" id="diag" role="radiogroup" aria-label="Diseño de la firma"></div>
               </div>
-              <div class="grupo rev-paso" id="g-orient" hidden><span class="etq">Orientación</span>
+              <div class="par-colores">
+              <div class="grupo rev-paso" id="g-orient"><span class="etq">Orientación</span>
                 <div class="seg" role="radiogroup" aria-label="Orientación"><label><input type="radio" name="orient" value="horizontal"><span>Horizontal</span></label><label><input type="radio" name="orient" value="vertical"><span>Vertical</span></label></div>
               </div>
-              <div class="grupo rev-paso" id="g-alin" hidden><span class="etq">Alineación de los textos</span>
+              <div class="grupo rev-paso" id="g-alin"><span class="etq">Alineación de los textos</span>
                 <div class="seg" role="radiogroup" aria-label="Alineación de los textos"><label><input type="radio" name="alinear" value="izq" checked><span>Izquierda</span></label><label><input type="radio" name="alinear" value="centro"><span>Centrada</span></label></div>
               </div>
-              <div class="grupo rev-paso" id="g-foto" hidden><span class="etq">Foto</span>
+              </div>
+              <div class="grupo rev-paso" id="g-foto"><span class="etq">Foto o perfil</span>
                 <div class="seg" role="radiogroup" aria-label="Foto de la firma">
                   <label><input type="radio" name="fotoModo" value="subir"><span>Subir foto</span></label>
                   <label><input type="radio" name="fotoModo" value="inicial"><span>Mi inicial</span></label>
@@ -881,6 +883,7 @@ body.interna footer{background:transparent;position:relative;z-index:1}
                   </div>
                   <div class="aviso" id="aviso-foto" hidden>Tu foto se reduce sola y se sube a internet únicamente cuando das "Copiar firma". Queda con un link público, algo normal en una firma.</div>
                 </div>
+                <div id="foto-tam" style="margin-top:14px"><span class="etq">Tamaño de la foto <b id="tam-foto-v">100%</b></span><div class="rango"><input type="range" id="tam-foto" min="70" max="140" step="5" value="100" aria-label="Tamaño de la foto"></div></div>
               </div>
               <div class="nav-pasos"><button type="button" class="btn-atr" data-ir="1"><i aria-hidden="true">←</i> Atrás</button><button type="button" class="btn-sig" data-ir="3">Siguiente <i aria-hidden="true">→</i></button></div>
             </section>
@@ -1259,10 +1262,10 @@ function crealab(){
   var NOMBRES_F={arial:'Arial',georgia:'Georgia',verdana:'Verdana',trebuchet:'Trebuchet',tahoma:'Tahoma'};
   var EJRED={wa:'+00 000 000 0000',ig:'@usuario',li:'usuario',yt:'@canal'};
   var MUESTRA={nombre:'Nombre Apellido',cargo:'Cargo de prueba',empresa:'Empresa de prueba',correo:'correo@ejemplo.com',tel:'+00 000 000 0000',wa:'+00 000 000 0000',web:'www.ejemplo.com',ubic:'Ciudad, País',ig:'@usuario',li:'usuario',yt:'@canal'};
-  var S=Object.assign({nombre:'',cargo:'',empresa:'',correo:'',tel:'',web:'',ubic:'',plantilla:'minimalista',forma:'redonda',sinfoto:'inicial',fotoModo:'inicial',fase:0,color:'#63404D',texto:'#2B1721',fuente:'arial',fuenteNombre:'',caseNombre:'auto',caseCargo:'auto',tamNombre:0,tamCargo:0,fuenteN:'georgia',foto:'',orient:'horizontal',colorEtq:'',colorIco:'',color2:'#926974',cx:{},pal:0,redesSel:[],rd:{}},leer('crealab.firma')||{});
+  var S=Object.assign({nombre:'',cargo:'',empresa:'',correo:'',tel:'',web:'',ubic:'',plantilla:'minimalista',forma:'redonda',sinfoto:'inicial',fotoModo:'inicial',fase:0,color:'#63404D',texto:'#2B1721',fuente:'arial',fuenteNombre:'',caseNombre:'auto',caseCargo:'auto',tamNombre:0,tamCargo:0,tamFoto:100,fuenteN:'georgia',foto:'',orient:'horizontal',colorEtq:'',colorIco:'',color2:'#926974',cx:{},pal:0,redesSel:[],rd:{}},leer('crealab.firma')||{});
   S.color=hexOk(S.color,'#63404D');if(S.color.toLowerCase()==='#6b3fa0')S.color='#63404D';S.texto=hexOk(S.texto,'#2B1721');S.foto=imgOk(S.foto);
   if(!FUENTES[S.fuente])S.fuente='arial';if(!FUENTES[S.fuenteN])S.fuenteN='georgia';
-  function sanitizarTipo(){if(S.fuenteNombre&&!FUENTES[S.fuenteNombre])S.fuenteNombre='';['caseNombre','caseCargo'].forEach(function(k){if(S[k]==='minus')S[k]='normal';if(['auto','mayus','normal'].indexOf(S[k])<0)S[k]='auto'});S.tamNombre=Math.max(-3,Math.min(6,parseInt(S.tamNombre,10)||0));S.tamCargo=Math.max(-2,Math.min(4,parseInt(S.tamCargo,10)||0))}
+  function sanitizarTipo(){if(S.fuenteNombre&&!FUENTES[S.fuenteNombre])S.fuenteNombre='';['caseNombre','caseCargo'].forEach(function(k){if(S[k]==='minus')S[k]='normal';if(['auto','mayus','normal'].indexOf(S[k])<0)S[k]='auto'});S.tamNombre=Math.max(-3,Math.min(6,parseInt(S.tamNombre,10)||0));S.tamCargo=Math.max(-2,Math.min(4,parseInt(S.tamCargo,10)||0));S.tamFoto=Math.max(70,Math.min(140,parseInt(S.tamFoto,10)||100))}
   sanitizarTipo();
   if(S.plantilla==='editorial'||S.plantilla==='tarjeta')S.plantilla='lineas';
   if(['minimalista','perfil','destacada','portada','lineas'].indexOf(S.plantilla)<0)S.plantilla='minimalista';
@@ -1436,7 +1439,7 @@ function crealab(){
     /* foto o circulo con inicial */
     var srcFoto=S.fotoModo!=='subir'?'':(copiar?(RE_CLOUD.test(urlFotoCopia)?urlFotoCopia:''):imgOk(S.foto));
     function foto(tam,o){
-      o=o||{};var alin=o.alin||'left';
+      o=o||{};tam=Math.max(24,Math.round(tam*S.tamFoto/100));var alin=o.alin||'left';
       var sq=S.forma==='cuadrada',r=o.suave?Math.round(tam*.34):(sq?Math.round(tam*.12):Math.round(tam/2));
       var inner;
       if(srcFoto)inner='<img src="'+srcFoto+'" width="'+tam+'" height="'+tam+'" alt="" style="display:block;width:'+tam+'px;height:'+tam+'px;border-radius:'+r+'px;border:0">';
@@ -1531,7 +1534,7 @@ function crealab(){
     if(P==='destacada'){
       var fd=foto(48,{inv:true});
       var nombreBloque='<table '+T+'>'+nTd(aT)+cTd(aT)+'</table>';
-      var nomT='<table '+T+'><tr>'+(fd?'<td valign="middle" width="70" style="padding-right:16px;width:70px">'+fd+'</td>':'')+'<td valign="middle">'+nombreBloque+'</td></tr></table>';
+      var nomT='<table '+T+'><tr>'+(fd?'<td valign="middle" width="'+Math.max(24,Math.round(48*S.tamFoto/100))+'" style="padding-right:16px;width:'+Math.max(24,Math.round(48*S.tamFoto/100))+'px">'+fd+'</td>':'')+'<td valign="middle">'+nombreBloque+'</td></tr></table>';
       var cab=nomT;
       if(V===1&&redes.length)cab='<table '+T+' width="100%"><tr><td valign="middle">'+nomT+'</td><td valign="middle" align="right" style="padding-left:20px">'+filaRedes('right')+'</td></tr></table>';
       if(V===2)cab='<table '+T+' width="100%"><tr><td valign="middle">'+nombreBloque+'</td>'+(fd?'<td valign="middle" align="right" style="padding-left:16px">'+fd+'</td>':'')+'</tr></table>';
@@ -1571,7 +1574,7 @@ function crealab(){
     }
 
     /* MINIMALISTA */
-    var Vm=V+1,FT=(Vm===3?44:50),fm=foto(FT),lfM=lineaFuerte.replace('padding:10px 0 12px 0','padding:8px 0 10px 0');
+    var Vm=V+1,FT0=(Vm===3?44:50),FT=Math.max(24,Math.round(FT0*S.tamFoto/100)),fm=foto(FT0),lfM=lineaFuerte.replace('padding:10px 0 12px 0','padding:8px 0 10px 0');
     var rs=filaRedes(aT,20),bloqueC=chips(56,aT)+ubFila(aT);
     var juntas=redes.length<=2;
     var pieMin=(bloqueC||rs)?(juntas?'<tr><td><table '+T+'><tr>'+(bloqueC?'<td valign="middle">'+bloqueC+'</td>':'')+(rs?'<td valign="middle" style="padding-left:'+(bloqueC?14:0)+'px">'+rs+'</td>':'')+'</tr></table></td></tr>':(bloqueC?'<tr><td>'+bloqueC+'</td></tr>':'')+(rs?'<tr><td style="padding-top:'+(bloqueC?10:0)+'px">'+rs+'</td></tr>':'')):'';
@@ -1681,14 +1684,16 @@ function crealab(){
     el.addEventListener('input',function(){S[p[1]]=parseInt(el.value,10)||0;$(p[0]+'-v').textContent=(S[p[1]]>0?'+':'')+S[p[1]];pintarFirma()});
   });
   $('btn-tipo-pers').addEventListener('click',function(){var ab=$('tipo-avanzado').hidden;$('tipo-avanzado').hidden=!ab;this.setAttribute('aria-expanded',String(ab));this.textContent=ab?'Ocultar personalización':'Personalizar tipografía'});
+  (function(){var el=$('tam-foto');el.value=S.tamFoto;$('tam-foto-v').textContent=S.tamFoto+'%';
+    el.addEventListener('input',function(){S.tamFoto=parseInt(el.value,10)||100;$('tam-foto-v').textContent=S.tamFoto+'%';pintarFirma()})})();
   function marcarRadios(){
-    [['plantilla','plantilla',1],['orient','orient',2],['fotoModo','fotoModo',3],['alinear','alinear',0]].forEach(function(p){
+    [['plantilla','plantilla',1],['orient','orient',0],['fotoModo','fotoModo',0],['alinear','alinear',0]].forEach(function(p){
       document.querySelectorAll('input[name="'+p[0]+'"]').forEach(function(r){r.checked=(S.fase>=p[2]&&r.value===S[p[1]])});
     });
   }
   function revelar(){
-    $('g-orient').hidden=S.fase<1;$('g-foto').hidden=S.fase<2;$('g-alin').hidden=S.fase<1;
-    $('foto-subir').hidden=!(S.fase>=3&&S.fotoModo==='subir');
+    $('g-orient').hidden=false;$('g-foto').hidden=false;$('g-alin').hidden=false;
+    $('foto-subir').hidden=!(S.fotoModo==='subir');$('foto-tam').hidden=(S.fotoModo==='nada');
   }
   function enlazar(nombre,clave,fase){
     document.querySelectorAll('input[name="'+nombre+'"]').forEach(function(r){
@@ -1845,7 +1850,7 @@ function crealab(){
     if(i===0||todo){campos.forEach(function(k){S[k]='';$('f-'+k).value=''})}
     if(i===1||todo){S.redesSel=[];S.rd={};sincRedes()}
     if(i===2||todo){
-      S.fase=0;S.alinear='izq';S.plantilla='minimalista';S.orient='horizontal';S.fotoModo='inicial';S.sinfoto='inicial';S.foto='';S.forma='redonda';
+      S.fase=0;S.tamFoto=100;$('tam-foto').value=100;$('tam-foto-v').textContent='100%';S.alinear='izq';S.plantilla='minimalista';S.orient='horizontal';S.fotoModo='inicial';S.sinfoto='inicial';S.foto='';S.forma='redonda';
       S.vars={minimalista:0,perfil:0,destacada:0,portada:0,lineas:0};$('f-foto').value='';
       document.querySelectorAll('input[name="forma"]').forEach(function(x){x.checked=(x.value==='redonda')});
       marcarRadios();estadoFoto();
