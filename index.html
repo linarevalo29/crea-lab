@@ -1213,13 +1213,14 @@ function crealab(){
     });
   }
   /* ---------- asistente por pasos ---------- */
-  function asistente(wiz,bar){
+  function asistente(wiz,bar,puede,bloqueado){
     var paneles=[].slice.call(wiz.querySelectorAll('.paso-panel')),btns=[],idx=0;
     paneles.forEach(function(p,i){
       var b=document.createElement('button');b.type='button';b.title='Paso '+(i+1)+': '+p.dataset.titulo;b.setAttribute('aria-label','Paso '+(i+1)+': '+p.dataset.titulo);b.innerHTML='<b>'+(i+1)+'</b><span>'+esc(p.dataset.titulo)+'</span>';
       b.addEventListener('click',function(){ir(i)});bar.appendChild(b);btns.push(b);
     });
     function ir(n){
+      if(puede&&n>idx&&!puede()){if(bloqueado)bloqueado();return}
       var atras=n<idx;
       paneles.forEach(function(p,i){p.classList.toggle('on',i===n);p.classList.toggle('atras',atras)});
       btns.forEach(function(b,i){b.classList.toggle('on',i===n);b.classList.toggle('hecho',i<n);if(i===n)b.setAttribute('aria-current','step');else b.removeAttribute('aria-current')});
@@ -1860,8 +1861,12 @@ function crealab(){
 
   function linkValido(v){
     v=v.trim();if(!v)return '';
+    if(/\s/.test(v))return null;
     if(!/^https?:\/\//i.test(v))v='https://'+v;
-    try{var u=new URL(v);if(!/\./.test(u.hostname)&&u.hostname!=='localhost')return null;return u.href}catch(e){return null}
+    try{var u=new URL(v),h=u.hostname;
+      /* solo direcciones reales: dominio con punto y terminación válida, localhost o IP */
+      if(h!=='localhost'&&!/^(\d{1,3}\.){3}\d{1,3}$/.test(h)&&!/^([a-z0-9]([a-z0-9-]*[a-z0-9])?\.)+[a-z][a-z0-9-]+$/i.test(h))return null;
+      return u.href}catch(e){return null}
   }
   function logoMarca(k,modo,fg){
     var m=MARCAS[k],col=modo==='original'?m.hex:fg,e=20/m.s;
@@ -1971,6 +1976,7 @@ function crealab(){
   function avisosQR(){
     var a=[],v=linkValido(Q.link);
     $('q-err').hidden=!(Q.link.trim()&&v===null);
+    var bs=$('w-qr').querySelector('.paso-panel .btn-sig');if(bs){bs.disabled=!v;bs.style.opacity=v?'':'.5';bs.style.cursor=v?'':'not-allowed'}
     var fg=hexOk(Q.fg,'#3D232F'),bg=hexOk(Q.bg,'#FFFFFF'),co=Q.esqcol==='otro'?hexOk(Q.cesq,fg):fg;
     var cMin=Math.min(contraste(fg,bg),contraste(co,bg));
     if(lumHex(fg)>lumHex(bg)||lumHex(co)>lumHex(bg))a.push(['error','Los colores están invertidos: el QR es más claro que el fondo. Muchos lectores no lo leen. Usa un QR oscuro sobre fondo claro.']);
@@ -2120,7 +2126,9 @@ function crealab(){
     [['q-logo','logo'],['q-esqcol','esqcol'],['q-logocol','logoColor']].forEach(function(p){document.querySelectorAll('input[name="'+p[0]+'"]').forEach(function(r){r.checked=(r.value===Q[p[1]])})});
     $('q-col-fg')._set(Q.fg);$('q-col-esq')._set(Q.cesq);$('q-col-bg')._set(Q.bg);$('q-tam').value=Q.tam;$('q-tam-v').textContent=Q.tam+'%';pintarQR();
   }
-  asistente($('w-qr'),$('pb-qr'));
+  asistente($('w-qr'),$('pb-qr'),function(){return !!linkValido(Q.link)},function(){
+    var e=$('q-err');e.textContent=Q.link.trim()?'Ese link no parece válido. Revisa que empiece con https:// o escribe la dirección completa.':'Pega un link para continuar. Solo funciona con links.';e.hidden=false;$('q-link').focus();
+  });
   pintarHist();
 
   /* QR de ejemplo del inicio (usa el mismo dibujo real) */
