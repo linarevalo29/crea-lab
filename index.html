@@ -827,6 +827,7 @@ body.interna footer{background:transparent;position:relative;z-index:1}
                 <div class="campo"><label for="f-correo">Correo</label><input type="email" id="f-correo" autocomplete="email" placeholder="maria@correo.com"></div>
                 <div class="campo"><label for="f-tel">Teléfono</label><input type="tel" id="f-tel" autocomplete="tel" placeholder="+57 300 000 0000"></div>
                 <div class="campo"><label for="f-web">Sitio web (opcional)</label><input type="text" id="f-web" placeholder="www.misitio.com"></div>
+                <div class="campo"><label for="f-ubic">Ubicación (opcional)</label><input type="text" id="f-ubic" autocomplete="address-level2" placeholder="Ej: Bogotá, Colombia"></div>
               </div>
               <div class="nav-pasos"><span></span><button type="button" class="btn-sig" data-ir="1">Siguiente <i aria-hidden="true">→</i></button></div>
             </section>
@@ -1246,8 +1247,8 @@ function crealab(){
   var FUENTES={arial:"Arial,Helvetica,sans-serif",georgia:"Georgia,'Times New Roman',serif",verdana:"Verdana,Geneva,sans-serif",trebuchet:"'Trebuchet MS',Helvetica,sans-serif",tahoma:"Tahoma,Geneva,sans-serif"};
   var NOMBRES_F={arial:'Arial',georgia:'Georgia',verdana:'Verdana',trebuchet:'Trebuchet',tahoma:'Tahoma'};
   var EJRED={wa:'+00 000 000 0000',ig:'@usuario',li:'usuario',yt:'@canal'};
-  var MUESTRA={nombre:'Nombre Apellido',cargo:'Cargo de prueba',empresa:'Empresa de prueba',correo:'correo@ejemplo.com',tel:'+00 000 000 0000',wa:'+00 000 000 0000',web:'www.ejemplo.com',ig:'@usuario',li:'usuario',yt:'@canal'};
-  var S=Object.assign({nombre:'',cargo:'',empresa:'',correo:'',tel:'',web:'',plantilla:'minimalista',forma:'redonda',sinfoto:'inicial',fotoModo:'inicial',fase:0,color:'#63404D',texto:'#2B1721',fuente:'arial',fuenteNombre:'',caseNombre:'auto',caseCargo:'auto',tamNombre:0,tamCargo:0,fuenteN:'georgia',foto:'',orient:'horizontal',colorEtq:'',colorIco:'',color2:'#926974',cx:{},pal:0,redesSel:[],rd:{}},leer('crealab.firma')||{});
+  var MUESTRA={nombre:'Nombre Apellido',cargo:'Cargo de prueba',empresa:'Empresa de prueba',correo:'correo@ejemplo.com',tel:'+00 000 000 0000',wa:'+00 000 000 0000',web:'www.ejemplo.com',ubic:'Ciudad, País',ig:'@usuario',li:'usuario',yt:'@canal'};
+  var S=Object.assign({nombre:'',cargo:'',empresa:'',correo:'',tel:'',web:'',ubic:'',plantilla:'minimalista',forma:'redonda',sinfoto:'inicial',fotoModo:'inicial',fase:0,color:'#63404D',texto:'#2B1721',fuente:'arial',fuenteNombre:'',caseNombre:'auto',caseCargo:'auto',tamNombre:0,tamCargo:0,fuenteN:'georgia',foto:'',orient:'horizontal',colorEtq:'',colorIco:'',color2:'#926974',cx:{},pal:0,redesSel:[],rd:{}},leer('crealab.firma')||{});
   S.color=hexOk(S.color,'#63404D');if(S.color.toLowerCase()==='#6b3fa0')S.color='#63404D';S.texto=hexOk(S.texto,'#2B1721');S.foto=imgOk(S.foto);
   if(!FUENTES[S.fuente])S.fuente='arial';if(!FUENTES[S.fuenteN])S.fuenteN='georgia';
   function sanitizarTipo(){if(S.fuenteNombre&&!FUENTES[S.fuenteNombre])S.fuenteNombre='';['caseNombre','caseCargo'].forEach(function(k){if(S[k]==='minus')S[k]='normal';if(['auto','mayus','normal'].indexOf(S[k])<0)S[k]='auto'});S.tamNombre=Math.max(-3,Math.min(6,parseInt(S.tamNombre,10)||0));S.tamCargo=Math.max(-2,Math.min(4,parseInt(S.tamCargo,10)||0))}
@@ -1278,7 +1279,7 @@ function crealab(){
   sanitizarCx();
   if(S.alinear!=='centro')S.alinear='izq';
   if(typeof S.fotoUrl!=='string'||!RE_CLOUD.test(S.fotoUrl)){S.fotoUrl='';S.fotoHash=''}
-  var campos=['nombre','cargo','empresa','correo','tel','web'];
+  var campos=['nombre','cargo','empresa','correo','tel','web','ubic'];
   campos.forEach(function(k){if(typeof S[k]!=='string')S[k]=''});
 
   function solo(n){return String(n).replace(/[^\d+]/g,'')}
@@ -1349,7 +1350,7 @@ function crealab(){
     function val(k){var v=S[k].trim();return v?S[k]:(ejemplo?MUESTRA[k]:'')}
     var nombre=val('nombre'),cargo=val('cargo'),empresa=val('empresa');
     var sobreC=lumHex(c)>.5?'#2B1721':'#FFFFFF';
-    var correo=val('correo'),tel=val('tel'),web=val('web');
+    var correo=val('correo'),tel=val('tel'),web=val('web'),ubic=val('ubic');
     var T='role="presentation" cellpadding="0" cellspacing="0" border="0"';
     var cs='font-family:'+f+';font-size:13px;line-height:19px;white-space:nowrap;color:'+tx;
     function AL(a){return a==='center'?' align="center"':''}
@@ -1358,6 +1359,7 @@ function crealab(){
     if(correo)datos.push({i:'mail',h:'mailto:'+correo.trim(),t:correo.trim()});
     if(tel)datos.push({i:'phone',h:'tel:'+solo(tel),t:tel.trim()});
     if(web)datos.push({i:'web',h:url(web),t:web.trim().replace(/^https?:\/\//i,'')});
+    if(ubic.trim())datos.push({i:'pin',h:'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(ubic.trim()),t:ubic.trim()});
     var redes=[];
     (ejemplo?['wa','ig','li','yt']:S.redesSel).forEach(function(k){
       var v=ejemplo?EJRED[k]:(S.rd[k]||'').trim();
