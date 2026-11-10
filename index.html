@@ -676,6 +676,16 @@ body.interna footer{background:transparent;position:relative;z-index:1}
 .combos-col button i+i{margin-left:-7px}
 
 .combos-col{flex-wrap:wrap}
+.rec{position:fixed;inset:0;z-index:300;background:rgba(43,23,33,.55);display:flex;align-items:center;justify-content:center;padding:20px}
+.rec[hidden]{display:none}
+.rec-card{background:#fff;border-radius:22px;padding:22px;max-width:420px;width:100%;box-shadow:0 30px 60px rgba(0,0,0,.35);text-align:center}
+.rec-card h3{font-family:'Bricolage Grotesque',sans-serif;font-size:1.15rem;color:var(--tinta);margin:0 0 4px}
+.rec-card .sub{font-size:.84rem;color:var(--vino);margin:0 0 14px}
+.rec-stage{position:relative;overflow:hidden;margin:0 auto;border-radius:14px;background:var(--lila);touch-action:none;cursor:grab;outline-offset:3px}
+.rec-stage:active{cursor:grabbing}
+.rec-stage img{position:absolute;left:0;top:0;max-width:none;user-select:none;-webkit-user-drag:none;pointer-events:none}
+.rec-mask{position:absolute;inset:0;box-shadow:0 0 0 999px rgba(43,23,33,.5);border:2px solid #fff;pointer-events:none}
+.rec-btns{display:flex;justify-content:center;gap:10px;margin-top:16px}
 </style>
 </head>
 <body>
@@ -1755,6 +1765,40 @@ function crealab(){
     $('btn-foto').textContent=S.foto?'Cambiar foto':'Elegir foto';
   }
   $('btn-foto').addEventListener('click',function(){$('f-foto').click()});
+  /* al elegir "Subir foto" se abre directo el selector de archivos; si lo cancelan sin foto, vuelve a "Mi inicial" */
+  document.querySelector('input[name="fotoModo"][value="subir"]').addEventListener('click',function(){if(!S.foto)$('f-foto').click()});
+  function volverInicial(){if(!S.foto&&S.fotoModo==='subir'){S.fotoModo='inicial';S.sinfoto='inicial';marcarRadios();revelar();estadoFoto();pintarFirma()}}
+  $('f-foto').addEventListener('cancel',volverInicial);
+  /* panel para elegir qué parte de la foto se queda (recorte cuadrado: se mueve y se acerca) */
+  function abrirRecorte(img,ok,cancelar){
+    var w=img.naturalWidth||img.width,h=img.naturalHeight||img.height,rec=$('rec');
+    if(!rec){
+      rec=document.createElement('div');rec.id='rec';rec.className='rec';rec.setAttribute('role','dialog');rec.setAttribute('aria-modal','true');rec.setAttribute('aria-labelledby','rec-t');rec.hidden=true;
+      rec.innerHTML='<div class="rec-card"><h3 id="rec-t">Elige la parte de tu foto</h3><p class="sub">Arrastra la foto para moverla y usa el control para acercar.</p><div class="rec-stage" id="rec-stage" tabindex="0" aria-label="Zona de recorte: arrastra o usa las flechas"><img id="rec-img" alt="" draggable="false"><div class="rec-mask" id="rec-mask"></div></div><div class="rango"><input type="range" id="rec-zoom" min="100" max="300" step="1" value="100" aria-label="Acercar"></div><div class="rec-btns"><button type="button" class="btn-mini claro" id="rec-no">Cancelar</button><button type="button" class="btn-mini" id="rec-si">Usar esta parte</button></div></div>';
+      document.body.appendChild(rec);
+    }
+    var st=$('rec-stage'),im=$('rec-img'),zm=$('rec-zoom'),mk=$('rec-mask'),V=Math.max(180,Math.min(300,window.innerWidth-90));
+    st.style.width=st.style.height=V+'px';mk.style.borderRadius=S.forma==='cuadrada'?'12%':'50%';
+    var base=V/Math.min(w,h),z=1,ox=0,oy=0,previo=document.activeElement;
+    im.src=img.src;
+    function limitar(){var s=base*z;ox=Math.min(0,Math.max(V-w*s,ox));oy=Math.min(0,Math.max(V-h*s,oy))}
+    function pintar(){var s=base*z;limitar();im.style.width=(w*s)+'px';im.style.height=(h*s)+'px';im.style.transform='translate('+ox+'px,'+oy+'px)'}
+    ox=(V-w*base)/2;oy=(V-h*base)*(h>w?.2:.5);zm.value=100;pintar();
+    function cerrar(){rec.hidden=true;document.removeEventListener('keydown',tecla);if(previo&&previo.focus)try{previo.focus()}catch(e){}}
+    function tecla(e){
+      if(e.key==='Escape'){cerrar();cancelar();return}
+      if(document.activeElement===st&&/^Arrow/.test(e.key)){e.preventDefault();var d=12;if(e.key==='ArrowLeft')ox+=d;if(e.key==='ArrowRight')ox-=d;if(e.key==='ArrowUp')oy+=d;if(e.key==='ArrowDown')oy-=d;pintar()}
+    }
+    document.addEventListener('keydown',tecla);
+    var arr=null;
+    st.onpointerdown=function(e){arr={x:e.clientX,y:e.clientY,ox:ox,oy:oy};try{st.setPointerCapture(e.pointerId)}catch(x){}};
+    st.onpointermove=function(e){if(!arr)return;ox=arr.ox+(e.clientX-arr.x);oy=arr.oy+(e.clientY-arr.y);pintar()};
+    st.onpointerup=st.onpointercancel=function(){arr=null};
+    zm.oninput=function(){var s0=base*z,cx=(V/2-ox)/s0,cy=(V/2-oy)/s0;z=(parseInt(zm.value,10)||100)/100;var s1=base*z;ox=V/2-cx*s1;oy=V/2-cy*s1;pintar()};
+    $('rec-no').onclick=function(){cerrar();cancelar()};
+    $('rec-si').onclick=function(){var s=base*z;limitar();cerrar();ok(Math.max(0,-ox/s),Math.max(0,-oy/s),Math.min(V/s,Math.min(w,h)))};
+    rec.hidden=false;st.focus();
+  }
   $('btn-quitar-foto').addEventListener('click',function(){S.foto='';$('f-foto').value='';estadoFoto();pintarFirma()});
   var TOPE_FOTO=100*1024;
   $('f-foto').addEventListener('change',function(){
@@ -1762,15 +1806,15 @@ function crealab(){
     if(!/^image\//.test(f.type)){aviso('Ese archivo no es una imagen.');return}
     if(f.size>25*1024*1024){aviso('La foto pesa demasiado. Prueba con una de menos de 25 MB.');return}
     var img=new Image(),u=URL.createObjectURL(f);
-    img.onload=function(){
-      var l=Math.min(img.width,img.height),sx=(img.width-l)/2,sy=(img.height-l)/2,cv=document.createElement('canvas'),lado=400,q=.85,url;
+    img.onload=function(){abrirRecorte(img,function(sx,sy,l){
+      var cv=document.createElement('canvas'),lado=400,q=.85,url;
       function codificar(){cv.width=cv.height=lado;var x=cv.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,lado,lado);x.drawImage(img,sx,sy,l,l,0,0,lado,lado);url=cv.toDataURL('image/jpeg',q)}
       codificar();
       /* si todavia pesa mas del tope, se baja la calidad y luego el tamano */
       while(url.length*0.75>TOPE_FOTO&&(q>.5||lado>240)){if(q>.55)q-=.1;else lado-=60;codificar()}
       S.foto=url;URL.revokeObjectURL(u);S.fotoModo='subir';if(S.fase<3)S.fase=3;marcarRadios();estadoFoto();pintarFirma();
       if(f.size>TOPE_FOTO*2)aviso('Tu foto era pesada, la reduje a '+Math.round(url.length*0.75/1024)+' KB');
-    };
+    },function(){URL.revokeObjectURL(u);$('f-foto').value='';volverInicial()})};
     img.onerror=function(){aviso('No pude leer esa imagen. Prueba con otra.')};
     img.src=u;
   });
