@@ -1399,7 +1399,7 @@ function crealab(){
       return '<span style="'+cs+'">'+lnk(d.h,d.t,tx)+'</span>';
     }
     function chips(max,alin){
-      var ch=datos.map(function(d){return {len:d.t.length+5,html:'<td bgcolor="'+tint+'" style="background-color:'+tint+';border-radius:999px;padding:5px 14px;font-family:'+f+';font-size:12px;line-height:17px;white-space:nowrap">'+lnk(d.h,d.t,txChip)+'</td>'}});
+      var ch=datos.map(function(d){return {len:d.t.length+5,html:'<td bgcolor="'+tint+'" style="background-color:'+tint+';border-radius:999px;padding:4px 12px;font-family:'+f+';font-size:11px;line-height:16px;white-space:nowrap">'+lnk(d.h,d.t,txChip)+'</td>'}});
       var filas=[],fila=[],n=0;
       ch.forEach(function(it){if(fila.length&&n+it.len>max){filas.push(fila);fila=[];n=0}fila.push(it.html);n+=it.len+2});
       if(fila.length)filas.push(fila);
@@ -1440,7 +1440,7 @@ function crealab(){
     /* nombre y cargo segun el diseno */
     var fn=(S.fuenteNombre&&FUENTES[S.fuenteNombre])?FUENTES[S.fuenteNombre]:f;
     function tcase(t,m){return m==='mayus'?t.toUpperCase():t}
-    function NOM_BASE(){return {minimalista:23,perfil:20,destacada:19,portada:23,lineas:19}[P]||22}
+    function NOM_BASE(){return {minimalista:21,perfil:20,destacada:19,portada:23,lineas:19}[P]||22}
     function efCase(m){return m==='auto'?(P==='lineas'?'mayus':'normal'):m}
     var cNom=efCase(S.caseNombre),cCar=efCase(S.caseCargo);
     var tamN=Math.max(11,Math.round((NOM_BASE()+S.tamNombre)*((cNom==='mayus'&&P!=='lineas')?.86:1)));
@@ -1560,17 +1560,17 @@ function crealab(){
     }
 
     /* MINIMALISTA */
-    var Vm=V+1,fm=foto(Vm===3?50:56);
+    var Vm=V+1,FT=(Vm===3?44:50),fm=foto(FT),lfM=lineaFuerte.replace('padding:10px 0 12px 0','padding:8px 0 10px 0');
     var rs=filaRedes(aT,20),bloqueC=chips(56,aT)+ubFila(aT);
     var juntas=redes.length<=2;
     var pieMin=(bloqueC||rs)?(juntas?'<tr><td><table '+T+'><tr>'+(bloqueC?'<td valign="middle">'+bloqueC+'</td>':'')+(rs?'<td valign="middle" style="padding-left:'+(bloqueC?14:0)+'px">'+rs+'</td>':'')+'</tr></table></td></tr>':(bloqueC?'<tr><td>'+bloqueC+'</td></tr>':'')+(rs?'<tr><td style="padding-top:'+(bloqueC?10:0)+'px">'+rs+'</td></tr>':'')):'';
     if(Vm===1||Vm===2){
-      var te1='<table '+T+'>'+nTd(aT)+cTd(aT)+((bloqueC||rs)?lineaFuerte:'')+pieMin+'</table>';
-      return base+'<tr>'+(fm?'<td valign="'+(Vm===1?'middle':'top')+'" width="80" style="padding-right:16px;width:80px">'+fm+'</td>':'')+'<td valign="middle">'+te1+'</td></tr></table>';
+      var te1='<table '+T+'>'+nTd(aT)+cTd(aT)+((bloqueC||rs)?lfM:'')+pieMin+'</table>';
+      return base+'<tr>'+(fm?'<td valign="'+(Vm===1?'middle':'top')+'" width="'+FT+'" style="padding-right:14px;width:'+FT+'px">'+fm+'</td>':'')+'<td valign="middle">'+te1+'</td></tr></table>';
     }
-    var cab2='<table '+T+'><tr>'+(fm?'<td valign="middle" width="72" style="padding-right:16px;width:72px">'+fm+'</td>':'')+'<td valign="middle"><table '+T+'>'+nTd(aT)+cTd(aT)+'</table></td></tr></table>';
+    var cab2='<table '+T+'><tr>'+(fm?'<td valign="middle" width="'+FT+'" style="padding-right:14px;width:'+FT+'px">'+fm+'</td>':'')+'<td valign="middle"><table '+T+'>'+nTd(aT)+cTd(aT)+'</table></td></tr></table>';
     var pie=(bloqueC||rs)?(juntas?'<tr><td style="padding-top:12px"><table '+T+'><tr><td valign="middle">'+bloqueC+'</td>'+(rs?'<td valign="middle" style="padding-left:14px">'+rs+'</td>':'')+'</tr></table></td></tr>':'<tr><td style="padding-top:12px">'+bloqueC+'</td></tr>'+(rs?'<tr><td style="padding-top:10px">'+rs+'</td></tr>':'')):'';
-    return base+'<tr><td style="border-top:2px solid '+LIN+';padding-top:14px">'+cab2+'</td></tr>'+pie+'</table>';
+    return base+'<tr><td style="border-top:2px solid '+LIN+';padding-top:12px">'+cab2+'</td></tr>'+pie+'</table>';
   }
 
   /* diagramas esquematicos */
