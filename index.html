@@ -693,6 +693,10 @@ body.interna footer{background:transparent;position:relative;z-index:1}
 .seg.sut input:checked+span,.seg.sut input:checked+span:hover{background:#fff;color:var(--ciruela);border:0;box-shadow:0 1px 4px rgba(61,35,47,.16)}
 .seg.sut svg{width:16px;height:16px;flex:none;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 .seg.sut .gl{font-size:.78rem;font-weight:700;letter-spacing:-.02em;min-width:16px}
+.hist-wrap{margin:0 0 16px}
+.hist-wrap .guardar-caja{margin-top:10px}
+#q-desc-prev{display:flex;margin:14px auto 0}
+#q-desc-prev[hidden]{display:none}
 </style>
 </head>
 <body>
@@ -985,6 +989,14 @@ body.interna footer{background:transparent;position:relative;z-index:1}
     <div class="deco"><div class="aro p3" style="width:200px;height:200px;top:30%;left:-80px"></div><div class="bola p4"></div><div class="bola p5" style="width:26px;height:26px;bottom:18%;right:5%"></div></div>
     <div class="contenedor">
       <div class="vista-titulo dentro"><h1>Generador de QR</h1><p>Pega tu link, elige cómo se ve, ponle tus colores y tu logo, y descárgalo en PNG o SVG.</p></div>
+      <div class="hist-wrap">
+        <button type="button" class="btn-mini claro" id="q-hist-btn" aria-expanded="false" aria-controls="q-hist-caja">Ver mis QRs anteriores <span id="q-hist-n"></span></button>
+        <div class="guardar-caja" id="q-hist-caja" hidden>
+          <p>Se guardan en este navegador cuando descargas un QR. Si borras los datos del navegador o cambias de equipo, se pierden.</p>
+          <div class="hist" id="q-hist"></div>
+          <p id="q-hist-vacio" class="sub">Aún no tienes QRs guardados.</p>
+        </div>
+      </div>
       <div class="herr-grid">
         <div class="col-form">
           <div class="pasos-barra" id="pb-qr" aria-label="Pasos"></div>
@@ -1040,12 +1052,6 @@ body.interna footer{background:transparent;position:relative;z-index:1}
                 <button class="btn suave grande" type="button" id="q-svg">Descargar SVG</button>
               </div>
               <p class="sub" style="margin-top:12px">El SVG sirve para imprimir en grande sin que se pixele. Para imprimir, usa mínimo <b id="q-min">2 cm</b> de lado.</p>
-              <div class="guardar-caja">
-                <b>Mis QRs anteriores</b>
-                <p>Se guardan en este navegador cuando descargas un QR. Si borras los datos del navegador o cambias de equipo, se pierden.</p>
-                <div class="hist" id="q-hist"></div>
-                <p id="q-hist-vacio" class="sub">Aún no tienes QRs guardados.</p>
-              </div>
               <div class="nav-pasos"><button type="button" class="btn-atr" data-ir="2"><i aria-hidden="true">←</i> Atrás</button><span></span></div>
             </section>
           </div>
@@ -1058,6 +1064,7 @@ body.interna footer{background:transparent;position:relative;z-index:1}
             <div class="qr-avisos" id="q-avisos" hidden></div>
             <button type="button" class="qr-badge" id="q-badge" aria-expanded="false" aria-controls="q-badge-det" hidden><i class="pt" aria-hidden="true"></i><span id="q-badge-t"></span></button>
             <div class="qr-badge-det" id="q-badge-det" role="status" hidden></div>
+            <button type="button" class="btn suave" id="q-desc-prev" hidden>Descargar PNG</button>
           </div>
         </aside>
       </div>
@@ -1244,7 +1251,7 @@ function crealab(){
     });
   }
   /* ---------- asistente por pasos ---------- */
-  function asistente(wiz,bar,puede,bloqueado){
+  function asistente(wiz,bar,puede,bloqueado,alCambiar){
     var paneles=[].slice.call(wiz.querySelectorAll('.paso-panel')),btns=[],idx=0;
     paneles.forEach(function(p,i){
       var b=document.createElement('button');b.type='button';b.title='Paso '+(i+1)+': '+p.dataset.titulo;b.setAttribute('aria-label','Paso '+(i+1)+': '+p.dataset.titulo);b.innerHTML='<b>'+(i+1)+'</b><span>'+esc(p.dataset.titulo)+'</span>';
@@ -1255,7 +1262,7 @@ function crealab(){
       var atras=n<idx;
       paneles.forEach(function(p,i){p.classList.toggle('on',i===n);p.classList.toggle('atras',atras)});
       btns.forEach(function(b,i){b.classList.toggle('on',i===n);b.classList.toggle('hecho',i<n);if(i===n)b.setAttribute('aria-current','step');else b.removeAttribute('aria-current')});
-      idx=n;
+      idx=n;if(alCambiar)alCambiar(n);
       var r=bar.getBoundingClientRect();if(r.top<70||r.top>window.innerHeight*.6)window.scrollTo({top:window.scrollY+r.top-90,behavior:reducido?'auto':'smooth'});
     }
     wiz.addEventListener('click',function(e){var b=e.target.closest('[data-ir]');if(b)ir(+b.dataset.ir)});
@@ -2073,15 +2080,19 @@ function crealab(){
     $('q-tam-fila').hidden=Q.logo==='none';$('q-logo-nota').hidden=Q.logo==='none';
     $('q-col-esq').hidden=Q.esqcol!=='otro';
   }
+  var qNivel='',qPaso=0;
+  function actualizarDescPrev(){var b=$('q-desc-prev');if(b)b.hidden=!(qPaso===3&&qNivel==='ok'&&linkValido(Q.link))}
   /* badge único: junta el estado de lectura y los avisos del QR */
   (function(){
-    var bd=$('q-badge'),bt=$('q-badge-t'),det=$('q-badge-det'),est=$('q-estado'),av=$('q-avisos'),abierto=false;
+    var bd=$('q-badge'),bt=$('q-badge-t'),det=$('q-badge-det'),est=$('q-estado'),av=$('q-avisos'),abierto=false,ultima='';
     function pintar(){
       var items=[].slice.call(av.children).map(function(d){return {n:/error/.test(d.className)?'error':'alerta',t:d.textContent}});
       var cl=est.className,tx=est.textContent;
       if(/\bmal\b/.test(cl)&&tx)items.push({n:'alerta',t:tx});
       var nivel=items.some(function(x){return x.n==='error'})?'error':(items.length?'alerta':(/\bok\b/.test(cl)?'ok':(/\bpend\b/.test(cl)?'pend':'')));
+      qNivel=nivel;actualizarDescPrev();
       if(!nivel){bd.hidden=true;det.hidden=true;return}
+      var firma=items.map(function(x){return x.t}).join('|');if(firma!==ultima){ultima=firma;if(items.length)abierto=true}
       bd.hidden=false;bd.className='qr-badge '+nivel+(items.length?' abre':'');
       bt.textContent=items.length?(items.length===1?'1 aviso':items.length+' avisos'):(nivel==='ok'?'Se lee bien':'Revisando…');
       det.innerHTML=items.map(function(x){return '<div class="aviso '+x.n+'">'+esc(x.t)+'</div>'}).join('');
@@ -2150,7 +2161,7 @@ function crealab(){
   $('q-link').addEventListener('input',function(){Q.link=this.value;pedirPintar()});
   function radiosQ(nombre,clave){document.querySelectorAll('input[name="'+nombre+'"]').forEach(function(r){r.checked=(r.value===Q[clave]);r.addEventListener('change',function(){Q[clave]=r.value;if(clave==='logo'&&r.value==='subir'&&!Q.logoImg)$('q-logo-file').click();pedirPintar()})})}
   radiosQ('q-logo','logo');radiosQ('q-esqcol','esqcol');radiosQ('q-logocol','logoColor');
-  var PAL=['#3D232F','#63404D','#000000','#1F3A8A','#2F8F5B','#C0562C'];
+  var PAL=['#3D232F','#1E3A8A','#0B5D3B','#7A1F3D','#0F4C5C'];
   selectorColor($('q-col-fg'),PAL,Q.fg,function(c){Q.fg=c;pedirPintar()});
   selectorColor($('q-col-esq'),PAL,Q.cesq,function(c){Q.cesq=c;pedirPintar()});
   selectorColor($('q-col-bg'),['#FFFFFF','#F6EFF3','#E6D3DA','#EFECEC'],Q.bg,function(c){Q.bg=c;pedirPintar()});
@@ -2196,8 +2207,9 @@ function crealab(){
       };r.readAsDataURL(b);
     },function(){});
   }
+  $('q-hist-btn').addEventListener('click',function(){var c=$('q-hist-caja');c.hidden=!c.hidden;this.setAttribute('aria-expanded',String(!c.hidden))});
   function pintarHist(){
-    var l=listaHist(),c=$('q-hist');c.innerHTML='';$('q-hist-vacio').hidden=l.length>0;
+    var l=listaHist(),c=$('q-hist');c.innerHTML='';$('q-hist-vacio').hidden=l.length>0;$('q-hist-n').textContent=l.length?'('+l.length+')':'';
     l.forEach(function(it){
       var d=document.createElement('div');d.className='hist-item';
       var link=String(it.link||'');
@@ -2228,7 +2240,8 @@ function crealab(){
   }
   asistente($('w-qr'),$('pb-qr'),function(){return !!linkValido(Q.link)},function(){
     var e=$('q-err');e.textContent=Q.link.trim()?'Ese link no parece válido. Revisa que empiece con https:// o escribe la dirección completa.':'Pega un link para continuar. Solo funciona con links.';e.hidden=false;$('q-link').focus();
-  });
+  },function(n){qPaso=n;actualizarDescPrev()});
+  $('q-desc-prev').addEventListener('click',function(){$('q-png').click()});
   pintarHist();
 
   /* QR de ejemplo del inicio (usa el mismo dibujo real) */
