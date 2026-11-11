@@ -697,6 +697,10 @@ body.interna footer{background:transparent;position:relative;z-index:1}
 .hist-wrap .guardar-caja{margin-top:10px}
 #q-desc-prev{display:flex;margin:14px auto 0}
 #q-desc-prev[hidden]{display:none}
+@keyframes sacude{0%,100%{transform:translateX(0)}20%{transform:translateX(-7px)}40%{transform:translateX(7px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+@keyframes destello{0%,100%{box-shadow:0 0 0 0 rgba(255,154,165,0)}40%{box-shadow:0 0 0 6px rgba(255,154,165,.55)}}
+.qr-badge.sacude,.qr-badge-det.sacude{animation:sacude .5s ease,destello .9s ease}
+@media (prefers-reduced-motion:reduce){.qr-badge.sacude,.qr-badge-det.sacude{animation:destello .9s ease}}
 </style>
 </head>
 <body>
@@ -1258,7 +1262,7 @@ function crealab(){
       b.addEventListener('click',function(){ir(i)});bar.appendChild(b);btns.push(b);
     });
     function ir(n){
-      if(puede&&n>idx&&!puede()){if(bloqueado)bloqueado();return}
+      if(puede&&n>idx&&!puede(n)){if(bloqueado)bloqueado(n);return}
       var atras=n<idx;
       paneles.forEach(function(p,i){p.classList.toggle('on',i===n);p.classList.toggle('atras',atras)});
       btns.forEach(function(b,i){b.classList.toggle('on',i===n);b.classList.toggle('hecho',i<n);if(i===n)b.setAttribute('aria-current','step');else b.removeAttribute('aria-current')});
@@ -2081,7 +2085,17 @@ function crealab(){
     $('q-col-esq').hidden=Q.esqcol!=='otro';
   }
   var qNivel='',qPaso=0;
-  function actualizarDescPrev(){var b=$('q-desc-prev');if(b)b.hidden=!(qPaso===3&&qNivel==='ok'&&linkValido(Q.link))}
+  function actualizarDescPrev(){
+    var b=$('q-desc-prev');if(b)b.hidden=!(qPaso===3&&qNivel==='ok'&&linkValido(Q.link));
+    /* con un aviso de error (p. ej. sin contraste) "Siguiente" del paso 3 se ve apagado: sigue activo solo para llamar la atención sobre el aviso */
+    var p=$('w-qr').querySelectorAll('.paso-panel')[2],s3=p&&p.querySelector('.btn-sig');
+    if(s3){var mal=(qNivel==='error');s3.style.opacity=mal?'.5':'';s3.style.cursor=mal?'not-allowed':'';if(mal)s3.setAttribute('aria-disabled','true');else s3.removeAttribute('aria-disabled')}
+  }
+  function llamarAtencion(){
+    var bd=$('q-badge'),det=$('q-badge-det');if(bd._abrir)bd._abrir();aviso('Primero corrige el aviso para poder continuar.');
+    [bd,det].forEach(function(el){el.classList.remove('sacude');void el.offsetWidth;el.classList.add('sacude')});
+    try{bd.scrollIntoView({block:'center',behavior:'smooth'})}catch(e){}
+  }
   /* badge único: junta el estado de lectura y los avisos del QR */
   (function(){
     var bd=$('q-badge'),bt=$('q-badge-t'),det=$('q-badge-det'),est=$('q-estado'),av=$('q-avisos'),abierto=false,ultima='';
@@ -2100,6 +2114,7 @@ function crealab(){
       det.hidden=!(items.length&&abierto);bd.setAttribute('aria-expanded',String(!det.hidden));
     }
     bd.addEventListener('click',function(){if(!/abre/.test(bd.className))return;abierto=!abierto;pintar()});
+    bd._abrir=function(){if(/abre/.test(bd.className)){abierto=true;pintar()}};
     var mo=new MutationObserver(pintar);
     mo.observe(est,{childList:true,characterData:true,subtree:true,attributes:true,attributeFilter:['class']});
     mo.observe(av,{childList:true,subtree:true});
@@ -2238,7 +2253,8 @@ function crealab(){
     [['q-logo','logo'],['q-esqcol','esqcol'],['q-logocol','logoColor']].forEach(function(p){document.querySelectorAll('input[name="'+p[0]+'"]').forEach(function(r){r.checked=(r.value===Q[p[1]])})});
     $('q-col-fg')._set(Q.fg);$('q-col-esq')._set(Q.cesq);$('q-col-bg')._set(Q.bg);$('q-tam').value=Q.tam;$('q-tam-v').textContent=Q.tam+'%';pintarQR();
   }
-  asistente($('w-qr'),$('pb-qr'),function(){return !!linkValido(Q.link)},function(){
+  asistente($('w-qr'),$('pb-qr'),function(n){return !!linkValido(Q.link)&&!(n>=3&&qNivel==='error')},function(n){
+    if(linkValido(Q.link)){llamarAtencion();return}
     var e=$('q-err');e.textContent=Q.link.trim()?'Ese link no parece válido. Revisa que empiece con https:// o escribe la dirección completa.':'Pega un link para continuar. Solo funciona con links.';e.hidden=false;$('q-link').focus();
   },function(n){qPaso=n;actualizarDescPrev()});
   $('q-desc-prev').addEventListener('click',function(){$('q-png').click()});
