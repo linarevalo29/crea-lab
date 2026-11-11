@@ -722,21 +722,16 @@ body.interna footer{background:transparent;position:relative;z-index:1}
 .mis-card{padding:26px 28px}
 .mis-card h2{margin-top:0}
 .mis-cab2{margin-bottom:14px}
-.mis-card .hist{grid-template-columns:1fr;gap:14px}
-.mis-card .hist-item{display:grid;grid-template-columns:176px minmax(0,1fr) minmax(190px,270px);grid-template-areas:"img info met";gap:22px;align-items:center;text-align:left;background:var(--lila);border-radius:18px;padding:18px}
-.mis-card .hist-item img{grid-area:img;width:176px;height:176px;border-radius:14px}
+.mis-card .hist{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+@media (max-width:980px){.mis-card .hist{grid-template-columns:1fr}}
+@media (max-width:520px){.mis-card{padding:20px 16px}.mis-card .hist-item{grid-template-columns:104px minmax(0,1fr);gap:12px;padding:12px}.mis-card .hist-item img{width:104px;height:104px}}
+.mis-card .hist-item{display:grid;grid-template-columns:160px minmax(0,1fr);grid-template-areas:"img info";gap:18px;align-items:center;text-align:left;background:var(--lila);border-radius:18px;padding:18px}
+.mis-card .hist-item img{grid-area:img;width:160px;height:160px;border-radius:14px}
 .hist-info{grid-area:info;display:grid;gap:6px;min-width:0}
 .hist-fecha{font-size:.8rem;font-weight:600;color:var(--rosa)}
-.hist-link{font-size:.95rem;font-weight:600;color:var(--ciruela);word-break:break-all;line-height:1.35}
-.mis-card .hist-acc{justify-content:flex-start;flex-wrap:wrap;gap:8px;margin-top:8px}
-.mis-card .hist-acc button{font-size:.82rem;padding:9px 16px}
-.hist-met{grid-area:met;background:rgba(255,255,255,.65);border-radius:14px;padding:14px 16px;border:1px dashed var(--rosa-claro)}
-.hist-met-t{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:.78rem;font-weight:700;color:var(--vino);margin-bottom:8px}
-.hist-met-t em{font-style:normal;font-weight:600;font-size:.68rem;color:var(--rosa);background:var(--lila);border-radius:999px;padding:2px 8px}
-.hist-met dl{margin:0;display:grid;gap:6px}
-.hist-met dl div{display:flex;justify-content:space-between;gap:10px;font-size:.84rem}
-.hist-met dt{color:var(--vino)}.hist-met dd{margin:0;font-weight:700;color:var(--malva);letter-spacing:.08em}
-@media (max-width:760px){.mis-card .hist-item{grid-template-columns:130px minmax(0,1fr);grid-template-areas:"img info" "met met";gap:14px 16px}.mis-card .hist-item img{width:130px;height:130px}}
+.hist-link{font-size:.92rem;font-weight:600;color:var(--ciruela);overflow-wrap:anywhere;line-height:1.35}
+.mis-card .hist-acc{justify-content:flex-start;flex-wrap:wrap;gap:6px;margin-top:8px}
+.mis-card .hist-acc button{font-size:.78rem;padding:8px 12px}
 </style>
 </head>
 <body>
@@ -2275,9 +2270,7 @@ function crealab(){
       var f=new Date(Number(it.id)),fecha=isFinite(f.getTime())&&Number(it.id)>0?'Creado el '+f.toLocaleDateString('es',{day:'numeric',month:'long',year:'numeric'}):'Fecha sin registrar';
       d.innerHTML='<img alt="QR de '+esc(link)+'" src="'+esc(imgOk(it.mini))+'">'
         +'<div class="hist-info"><span class="hist-fecha">'+esc(fecha)+'</span><span class="hist-link" title="'+esc(link)+'">'+esc(link.replace(/^https?:\/\//,''))+'</span>'
-        +'<div class="hist-acc"><button type="button" data-a="usar">Editar</button><button type="button" data-a="dup">Duplicar</button><button type="button" data-a="del">Borrar</button></div></div>'
-        +'<div class="hist-met" role="group" aria-label="Métricas del QR (próximamente)"><span class="hist-met-t">Métricas <em>Próximamente</em></span><dl>'
-        +'<div><dt>Escaneos</dt><dd>XX</dd></div><div><dt>Esta semana</dt><dd>XX</dd></div><div><dt>Último escaneo</dt><dd>XX</dd></div></dl></div>';
+        +'<div class="hist-acc"><button type="button" data-a="usar">Editar</button><button type="button" data-a="dup">Duplicar</button><button type="button" data-a="del">Borrar</button></div></div>';
       d.addEventListener('click',function(e){
         var a=e.target.getAttribute&&e.target.getAttribute('data-a');if(!a)return;
         if(a==='del'){guardar(HIST,listaHist().filter(function(x){return x.id!==it.id}));pintarHist();return}
