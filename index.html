@@ -701,6 +701,14 @@ body.interna footer{background:transparent;position:relative;z-index:1}
 @keyframes parpadeo{0%,100%{opacity:1}50%{opacity:.35}}
 .qr-badge.sacude,.qr-badge-det.sacude{animation:sacude .5s ease}
 @media (prefers-reduced-motion:reduce){.qr-badge.sacude,.qr-badge-det.sacude{animation:parpadeo .6s ease}}
+.mis-qrs{margin-top:16px;padding:0;overflow:hidden}
+.mis-cab{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 22px;background:none;border:0;font:inherit;font-size:.95rem;color:var(--ciruela);cursor:pointer;text-align:left}
+.mis-cab b{font-weight:700}.mis-cab small{color:var(--rosa);font-size:.82rem;font-weight:600}
+.mis-cab i{font-style:normal;font-size:.8rem;opacity:.7;transition:transform .25s}
+.mis-cab[aria-expanded="true"] i{transform:rotate(180deg)}
+.mis-cab:focus-visible{outline:3px solid var(--rosa);outline-offset:-3px}
+.mis-cuerpo{padding:0 22px 20px}
+.mis-cuerpo p{color:var(--vino);font-size:.86rem;margin:0 0 12px}
 </style>
 </head>
 <body>
@@ -993,14 +1001,6 @@ body.interna footer{background:transparent;position:relative;z-index:1}
     <div class="deco"><div class="aro p3" style="width:200px;height:200px;top:30%;left:-80px"></div><div class="bola p4"></div><div class="bola p5" style="width:26px;height:26px;bottom:18%;right:5%"></div></div>
     <div class="contenedor">
       <div class="vista-titulo dentro"><h1>Generador de QR</h1><p>Pega tu link, elige cómo se ve, ponle tus colores y tu logo, y descárgalo en PNG o SVG.</p></div>
-      <div class="hist-wrap">
-        <button type="button" class="btn-mini claro" id="q-hist-btn" aria-expanded="false" aria-controls="q-hist-caja">Ver mis QRs anteriores <span id="q-hist-n"></span></button>
-        <div class="guardar-caja" id="q-hist-caja" hidden>
-          <p>Se guardan en este navegador cuando descargas un QR. Si borras los datos del navegador o cambias de equipo, se pierden.</p>
-          <div class="hist" id="q-hist"></div>
-          <p id="q-hist-vacio" class="sub">Aún no tienes QRs guardados.</p>
-        </div>
-      </div>
       <div class="herr-grid">
         <div class="col-form">
           <div class="pasos-barra" id="pb-qr" aria-label="Pasos"></div>
@@ -1058,6 +1058,14 @@ body.interna footer{background:transparent;position:relative;z-index:1}
               <p class="sub" style="margin-top:12px">El SVG sirve para imprimir en grande sin que se pixele. Para imprimir, usa mínimo <b id="q-min">2 cm</b> de lado.</p>
               <div class="nav-pasos"><button type="button" class="btn-atr" data-ir="2"><i aria-hidden="true">←</i> Atrás</button><span></span></div>
             </section>
+          </div>
+          <div class="card mis-qrs" id="q-mis">
+            <button type="button" class="mis-cab" id="q-hist-btn" aria-expanded="false" aria-controls="q-hist-caja"><span><b>Ver mis QRs</b> <small id="q-hist-n"></small></span><i aria-hidden="true">▾</i></button>
+            <div class="mis-cuerpo" id="q-hist-caja" hidden>
+              <p>Se guardan en este navegador cuando descargas un QR. Si borras los datos del navegador o cambias de equipo, se pierden.</p>
+              <div class="hist" id="q-hist"></div>
+              <p id="q-hist-vacio" class="sub">Aún no tienes QRs guardados.</p>
+            </div>
           </div>
         </div>
 
