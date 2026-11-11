@@ -710,8 +710,8 @@ body.interna footer{background:transparent;position:relative;z-index:1}
 .mis-cuerpo{padding:0 22px 20px}
 .mis-cuerpo p{color:var(--vino);font-size:.86rem;margin:0 0 12px}
 .herr-grid[hidden]{display:none}
-.mis-ir{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:16px;padding:16px 22px;border:0;border-radius:var(--radio);background:var(--ciruela);color:#fff;font:inherit;font-weight:600;font-size:.95rem;cursor:pointer;box-shadow:0 14px 30px rgba(61,35,47,.28);transition:transform .25s var(--ease),background .25s}
-.mis-ir:hover{background:var(--vino);transform:translateY(-1px)}
+.mis-ir{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:16px;padding:16px 22px;border:0;border-radius:var(--radio);background:var(--vino);color:#fff;font:inherit;font-weight:600;font-size:.95rem;cursor:pointer;box-shadow:0 12px 26px rgba(99,64,77,.28);transition:transform .25s var(--ease),background .25s}
+.mis-ir:hover{background:#74505E;transform:translateY(-1px)}
 .mis-ir small{font-weight:600;opacity:.75;font-size:.85rem}
 .mis-ir i{font-style:normal;font-size:1.1rem;transition:transform .25s var(--ease)}
 .mis-ir:hover i{transform:translateX(4px)}
@@ -719,8 +719,15 @@ body.interna footer{background:transparent;position:relative;z-index:1}
 .mis-panel{padding-bottom:80px}
 .mis-panel h2{font-family:'Bricolage Grotesque',sans-serif;color:var(--tinta);margin:16px 0 4px}
 .mis-panel .sub{margin:0 0 18px}
-.mis-panel .hist{grid-template-columns:repeat(auto-fill,minmax(190px,1fr))}
-.mis-panel .hist-item{background:#fff;border-radius:18px;padding:14px;box-shadow:var(--sombra)}
+.mis-card{padding:26px 28px}
+.mis-card h2{margin-top:0}
+.mis-cab2{margin-bottom:14px}
+.mis-card .hist{grid-template-columns:1fr;gap:14px}
+.mis-card .hist-item{display:grid;grid-template-columns:132px 1fr;grid-template-areas:"img acc" "link acc";gap:8px 22px;align-items:start;text-align:left;background:var(--lila);border-radius:18px;padding:16px}
+.mis-card .hist-item img{grid-area:img;width:132px;height:132px;border-radius:12px}
+.mis-card .hist-item small{grid-area:link;max-width:132px;font-size:.76rem;white-space:normal;word-break:break-all;overflow:visible;text-overflow:clip}
+.mis-card .hist-acc{grid-area:acc;flex-direction:column;align-items:stretch;justify-self:end;align-self:center;min-width:120px;gap:8px}
+.mis-card .hist-acc button{font-size:.82rem;padding:9px 16px}
 </style>
 </head>
 <body>
@@ -1087,10 +1094,12 @@ body.interna footer{background:transparent;position:relative;z-index:1}
       </div>
       <section class="mis-panel" id="q-panel-hist" aria-labelledby="mis-t" hidden>
         <div class="mis-cab2"><button type="button" class="btn-mini claro" id="q-hist-volver"><i aria-hidden="true">←</i> Volver al generador</button></div>
-        <h2 id="mis-t">Mis QRs</h2>
-        <p class="sub">Se guardan en este navegador cuando descargas un QR. Si borras los datos del navegador o cambias de equipo, se pierden.</p>
-        <div class="hist" id="q-hist"></div>
-        <p id="q-hist-vacio" class="sub">Aún no tienes QRs guardados.</p>
+        <div class="card mis-card">
+          <h2 id="mis-t">Mis QRs</h2>
+          <p class="sub">Se guardan en este navegador cuando descargas un QR. Si borras los datos del navegador o cambias de equipo, se pierden.</p>
+          <div class="hist" id="q-hist"></div>
+          <p id="q-hist-vacio" class="sub">Aún no tienes QRs guardados.</p>
+        </div>
       </section>
     </div>
    </div>
