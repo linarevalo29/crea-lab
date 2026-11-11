@@ -709,6 +709,18 @@ body.interna footer{background:transparent;position:relative;z-index:1}
 .mis-cab:focus-visible{outline:3px solid var(--rosa);outline-offset:-3px}
 .mis-cuerpo{padding:0 22px 20px}
 .mis-cuerpo p{color:var(--vino);font-size:.86rem;margin:0 0 12px}
+.herr-grid[hidden]{display:none}
+.mis-ir{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:16px;padding:16px 22px;border:0;border-radius:var(--radio);background:var(--ciruela);color:#fff;font:inherit;font-weight:600;font-size:.95rem;cursor:pointer;box-shadow:0 14px 30px rgba(61,35,47,.28);transition:transform .25s var(--ease),background .25s}
+.mis-ir:hover{background:var(--vino);transform:translateY(-1px)}
+.mis-ir small{font-weight:600;opacity:.75;font-size:.85rem}
+.mis-ir i{font-style:normal;font-size:1.1rem;transition:transform .25s var(--ease)}
+.mis-ir:hover i{transform:translateX(4px)}
+.mis-ir:focus-visible{outline:3px solid var(--rosa);outline-offset:3px}
+.mis-panel{padding-bottom:80px}
+.mis-panel h2{font-family:'Bricolage Grotesque',sans-serif;color:var(--tinta);margin:16px 0 4px}
+.mis-panel .sub{margin:0 0 18px}
+.mis-panel .hist{grid-template-columns:repeat(auto-fill,minmax(190px,1fr))}
+.mis-panel .hist-item{background:#fff;border-radius:18px;padding:14px;box-shadow:var(--sombra)}
 </style>
 </head>
 <body>
@@ -1059,14 +1071,7 @@ body.interna footer{background:transparent;position:relative;z-index:1}
               <div class="nav-pasos"><button type="button" class="btn-atr" data-ir="2"><i aria-hidden="true">←</i> Atrás</button><span></span></div>
             </section>
           </div>
-          <div class="card mis-qrs" id="q-mis">
-            <button type="button" class="mis-cab" id="q-hist-btn" aria-expanded="false" aria-controls="q-hist-caja"><span><b>Ver mis QRs</b> <small id="q-hist-n"></small></span><i aria-hidden="true">▾</i></button>
-            <div class="mis-cuerpo" id="q-hist-caja" hidden>
-              <p>Se guardan en este navegador cuando descargas un QR. Si borras los datos del navegador o cambias de equipo, se pierden.</p>
-              <div class="hist" id="q-hist"></div>
-              <p id="q-hist-vacio" class="sub">Aún no tienes QRs guardados.</p>
-            </div>
-          </div>
+          <button type="button" class="mis-ir" id="q-hist-btn"><span>Ver mis QRs <small id="q-hist-n"></small></span><i aria-hidden="true">→</i></button>
         </div>
 
         <aside class="col-prev" aria-label="Vista previa del QR">
@@ -1080,6 +1085,13 @@ body.interna footer{background:transparent;position:relative;z-index:1}
           </div>
         </aside>
       </div>
+      <section class="mis-panel" id="q-panel-hist" aria-labelledby="mis-t" hidden>
+        <div class="mis-cab2"><button type="button" class="btn-mini claro" id="q-hist-volver"><i aria-hidden="true">←</i> Volver al generador</button></div>
+        <h2 id="mis-t">Mis QRs</h2>
+        <p class="sub">Se guardan en este navegador cuando descargas un QR. Si borras los datos del navegador o cambias de equipo, se pierden.</p>
+        <div class="hist" id="q-hist"></div>
+        <p id="q-hist-vacio" class="sub">Aún no tienes QRs guardados.</p>
+      </section>
     </div>
    </div>
   </div>
@@ -2230,7 +2242,13 @@ function crealab(){
       };r.readAsDataURL(b);
     },function(){});
   }
-  $('q-hist-btn').addEventListener('click',function(){var c=$('q-hist-caja');c.hidden=!c.hidden;this.setAttribute('aria-expanded',String(!c.hidden))});
+  function verHistorial(si){
+    var g=document.querySelector('#v-qr .herr-grid');g.hidden=si;$('q-panel-hist').hidden=!si;
+    try{window.scrollTo({top:Math.max(0,document.querySelector('#v-qr .vista-titulo').getBoundingClientRect().top+window.scrollY-80),behavior:'smooth'})}catch(e){}
+  }
+  function volverGenerador(){verHistorial(false)}
+  $('q-hist-btn').addEventListener('click',function(){verHistorial(true)});
+  $('q-hist-volver').addEventListener('click',volverGenerador);
   function pintarHist(){
     var l=listaHist(),c=$('q-hist');c.innerHTML='';$('q-hist-vacio').hidden=l.length>0;$('q-hist-n').textContent=l.length?'('+l.length+')':'';
     l.forEach(function(it){
@@ -2240,7 +2258,7 @@ function crealab(){
       d.addEventListener('click',function(e){
         var a=e.target.getAttribute&&e.target.getAttribute('data-a');if(!a)return;
         if(a==='del'){guardar(HIST,listaHist().filter(function(x){return x.id!==it.id}));pintarHist();return}
-        cargarQ(it);aviso(a==='dup'?'Copia lista: cámbiale lo que quieras':'QR cargado');
+        cargarQ(it);volverGenerador();aviso(a==='dup'?'Copia lista: cámbiale lo que quieras':'QR cargado');
       });
       c.appendChild(d);
     });
