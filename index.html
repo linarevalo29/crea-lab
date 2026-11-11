@@ -698,9 +698,9 @@ body.interna footer{background:transparent;position:relative;z-index:1}
 #q-desc-prev{display:flex;margin:14px auto 0}
 #q-desc-prev[hidden]{display:none}
 @keyframes sacude{0%,100%{transform:translateX(0)}20%{transform:translateX(-7px)}40%{transform:translateX(7px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
-@keyframes destello{0%,100%{box-shadow:0 0 0 0 rgba(255,154,165,0)}40%{box-shadow:0 0 0 6px rgba(255,154,165,.55)}}
-.qr-badge.sacude,.qr-badge-det.sacude{animation:sacude .5s ease,destello .9s ease}
-@media (prefers-reduced-motion:reduce){.qr-badge.sacude,.qr-badge-det.sacude{animation:destello .9s ease}}
+@keyframes parpadeo{0%,100%{opacity:1}50%{opacity:.35}}
+.qr-badge.sacude,.qr-badge-det.sacude{animation:sacude .5s ease}
+@media (prefers-reduced-motion:reduce){.qr-badge.sacude,.qr-badge-det.sacude{animation:parpadeo .6s ease}}
 </style>
 </head>
 <body>
